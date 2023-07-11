@@ -14,8 +14,8 @@
 
 <style>
   .main{
-   /**  background-image: url("assets/fondo1.jpg") !important;
+   background-image: url("assets/fondo3.png") !important;
     background-attachment: fixed !important;
-    background-size: cover;*/
+    background-size: cover;
   }
 </style>
