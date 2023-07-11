@@ -2,7 +2,6 @@
   <v-app>
     <v-main class="d-flex align-center justify-center main">
       <v-container>
-        <h1>Velox</h1>
         <router-view />
       </v-container>
     </v-main>
