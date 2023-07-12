@@ -65,8 +65,8 @@
 
       <v-card-text class="text-center">
         <a
-          class="text-blue text-decoration-none"
-          href="#"
+          class="text-blue text-decoration-none "
+          @click="toCreateUser()"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -84,11 +84,16 @@
 
 <script setup>
 
+import router from '@/router';
 import { useLoginStore } from '@/store/index';
 import { ref } from 'vue'
 
 let valid = ref(false)
 const loginStore = useLoginStore()
+
+const toCreateUser = () => {
+  router.push('/create')
+}
 
 </script>
 
@@ -97,8 +102,8 @@ const loginStore = useLoginStore()
   background-color: transparent !important;
 }
 
-h2{
-  font-family: DMSerifDisplayRegular;
+.cursorPointer{
+  cursor: pointer;
 }
 </style>
 
