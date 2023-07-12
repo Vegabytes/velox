@@ -14,9 +14,6 @@ import router from "./router/index"
 // Plugins
 import { registerPlugins } from '@/plugins'
 
-//fonts
-import './assets/fonts/DMSerifDisplay/DMSerifDisplay-Regular.ttf'
-
 const app = createApp(App)
 const pinia = createPinia()
 

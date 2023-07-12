@@ -17,7 +17,7 @@ const customLightTheme = {
     background: '#E3F2FD',
     surface: '#82B1FF',
     primary: '#3e2723',
-    secondary: '#039BE5',
+    secondary: '#E1F5FE',
   }
 }
 
@@ -34,6 +34,7 @@ const customDarkTheme = {
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   theme: {
+    defaultFontFamily: 'Calistoga',
     defaultTheme: 'customLightTheme',
     themes: {
       customDarkTheme,
