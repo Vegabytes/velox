@@ -2,11 +2,16 @@ export default [
     {
         path: "/login",
         name:"Login",
-        component:()=> import('@/modules/login/pages/Login')
+        component:async ()=> await import('@/modules/login/pages/Login')
+    },
+    {
+        path: "/",
+        name:"Home",
+        component:async ()=> await import('@/modules/login/pages/Login')
     },
     {
         path: "/create",
         name:"Create",
-        component:()=> import('@/modules/login/pages/Create')
+        component:async ()=> await import('@/modules/login/pages/Create')
     },
 ]

@@ -1,9 +1,8 @@
 <template>
   
-  <div>
-
-
-    <v-card
+  <v-container class="h-screen d-flex align-center justify-center">
+    <v-col>
+      <v-card
       class="mx-auto pa-12 pb-8"
       elevation="8"
       max-width="448"
@@ -54,7 +53,12 @@
       </v-btn>
 
     </v-card>
-  </div>
+    </v-col>
+  </v-container>
+
+
+    
+
 
 
 
@@ -64,11 +68,14 @@
 
 <script setup>
 
-import { useLoginStore } from '@/store/index';
 import { ref } from 'vue'
+import { useAppStore } from '@/store/index';
 
-let valid = ref(false)
-const loginStore = useLoginStore()
+const appStore = useAppStore()
+appStore.showMenu = false
+
+
+let visible = ref(false)
 
 </script>
 
