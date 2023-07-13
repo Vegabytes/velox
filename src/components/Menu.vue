@@ -14,8 +14,15 @@
 
         <v-divider></v-divider>
 
+        <h4 class="pa-4">Admin</h4>
+
         <v-list density="compact" nav>
-            <v-list-item prepend-icon="mdi-view-dashboard" title="Dispositivos" value="dispositivos"></v-list-item>
+            <v-list-item prepend-icon="mdi-account-plus" title="Nuevo usuario" value="newUser"></v-list-item>
+            <v-list-item prepend-icon="mdi-view-dashboard" title="Asignar grupos de usuarios" value="AsignGroups"></v-list-item>
+            <v-list-item prepend-icon="mdi-view-dashboard" title="Asignar usuario a grupo" value="AsignUserGroup"></v-list-item>
+            <v-list-item prepend-icon="mdi-view-dashboard" title="Asignar grupo a otro grupo" value="AsignGroupGroup"></v-list-item>
+            <v-list-item prepend-icon="mdi-view-dashboard" title="Asignar grupo cliente a dispositivo" value="AsignClienteDispositivo"></v-list-item>
+            <v-list-item prepend-icon="mdi-tablet-cellphone" title="Dispositivos" value="Dispositivos"></v-list-item>
             <!--<v-list-item prepend-icon="mdi-forum" title="About" value="about"></v-list-item>-->
         </v-list>
     </v-navigation-drawer>

@@ -1,9 +1,7 @@
 <template>
-  
-  <div>
 
-
-
+  <v-container class="h-screen d-flex align-center justify-center">
+    <v-col>
     <v-row class="d-flex mx-auto my-6 justify-center text-h1 font-weight-thin">
       <h2>Velox</h2>
     </v-row>
@@ -22,6 +20,8 @@
       rounded="lg"
       color="white"
     >
+
+    <form>
       <div class="text-subtitle-1 text-medium-emphasis">Usuario</div>
 
       <v-text-field
@@ -73,10 +73,11 @@
           Crear cuenta <v-icon icon="mdi-chevron-right"></v-icon>
         </a>
       </v-card-text>
+    </form>
     </v-card>
-  </div>
+  </v-col>
 
-
+  </v-container>
 
 </template>
 
@@ -85,11 +86,13 @@
 <script setup>
 
 import router from '@/router';
-import { useLoginStore } from '@/store/index';
 import { ref } from 'vue'
+import { useAppStore } from '@/store/index';
 
-let valid = ref(false)
-const loginStore = useLoginStore()
+const appStore = useAppStore()
+appStore.showMenu = false
+
+let visible = ref(false)
 
 const toCreateUser = () => {
   router.push('/create')
