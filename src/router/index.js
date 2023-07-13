@@ -1,8 +1,8 @@
 // Composables
-import { createRouter, createWebHistory } from 'vue-router'
-import {routes as adminsRoutes} from "@/modules/admins"
-import {routes as loginRoutes} from "@/modules/login"
-import {routes as usersRoutes} from "@/modules/users"
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
+import { routes as adminsRoutes } from "@/modules/admins"
+import { routes as loginRoutes } from "@/modules/login"
+import { routes as usersRoutes } from "@/modules/users"
 
 const routes = [
   ...adminsRoutes,
@@ -11,7 +11,8 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  //history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(),
   routes,
 })
 
