@@ -2,28 +2,72 @@
   <v-container class="h-screen d-flex align-center justify-center">
     <v-col>
       <v-form v-model="valid" @submit.prevent>
-        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg" color="white">
+        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="1200" rounded="lg" color="white">
 
           <h2 class="mb-6">Nueva cuenta</h2>
 
-          <div class="text-subtitle-1 text-medium-emphasis">Nombre y apellidos</div>
-
-          <v-text-field v-model="loginStore.createdUser.name" density="compact" placeholder="Nombre y apellidos"
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-text-field v-model="loginStore.createdUser.name" density="compact" placeholder="Nombre" label="Nombre"
             variant="outlined" :rules="[rules.required]"></v-text-field>
-
-          <div class="text-subtitle-1 text-medium-emphasis">Correo electrónico</div>
-
-          <v-text-field v-model="loginStore.createdUser.email" density="compact" placeholder="Correo electrónico"
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field v-model="loginStore.createdUser.lastname" density="compact" placeholder="Apellidos" label="Apellidos"
+            variant="outlined" :rules="[rules.required]"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-text-field v-model="loginStore.createdUser.email" density="compact" placeholder="Correo electrónico" type="email" label="Correo electrónico"
             variant="outlined" :rules="[rules.required, rules.email]"></v-text-field>
-
-          <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
-            Contraseña
-          </div>
-
-          <v-text-field v-model="loginStore.createdUser.pass" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-text-field v-model="loginStore.createdUser.pass" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
             :type="visible ? 'text' : 'password'" density="compact" placeholder="Contraseña"
             prepend-inner-icon="mdi-lock-outline" variant="outlined" @click:append-inner="visible = !visible"
             :rules="[rules.required]"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-text-field
+                label="Dirección (Opcional)" 
+                v-model="loginStore.createdUser.address" 
+                density="compact" placeholder="Dirección"
+                variant="outlined" ></v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-text-field
+                label="Teléfono (Opcional)" 
+                v-model="loginStore.createdUser.phone" 
+                density="compact" placeholder="Teléfono"
+                variant="outlined" ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-select
+                label="Grupo"
+                v-model="loginStore.createdUser.status" 
+                density="compact"
+                :items="['Administrador', 'Cliente']"
+                variant="outlined"
+              ></v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-textarea 
+                label="Descripción (Opcional)"
+                v-model="loginStore.createdUser.description"
+                density="compact"
+                variant="outlined"
+              ></v-textarea>
+            </v-col>
+          </v-row>
 
           <v-btn block class="mb-8" color="primary" size="large" variant="tonal" type="submit" @click="create">
             Crear cuenta
