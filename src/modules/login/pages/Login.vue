@@ -1,11 +1,11 @@
 <template>
-
   <v-container class="h-screen d-flex align-center justify-center">
     <v-col>
-    <v-row class="d-flex mx-auto my-6 justify-center text-h1 font-weight-thin">
-      <h2>Velox</h2>
-    </v-row>
-    <!--
+      <v-form v-model="valid" @submit.prevent>
+        <v-row class="d-flex mx-auto my-6 justify-center text-h1 font-weight-thin">
+          <h2>Velox</h2>
+        </v-row>
+        <!--
     <v-img
       class="mx-auto my-6"
       max-width="228"
@@ -13,72 +13,44 @@
     >
   </v-img>-->
 
-    <v-card
-      class="mx-auto pa-12 pb-8"
-      elevation="8"
-      max-width="448"
-      rounded="lg"
-      color="white"
-    >
+        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg" color="white">
 
-    <form>
-      <div class="text-subtitle-1 text-medium-emphasis">Usuario</div>
+          <form>
+            <div class="text-subtitle-1 text-medium-emphasis">Correo electrónico</div>
 
-      <v-text-field
-        density="compact"
-        placeholder="Correo electrónico"
-        prepend-inner-icon="mdi-email-outline"
-        variant="outlined"
-      ></v-text-field>
+            <v-text-field v-model="loginStore.loggedUser.email" density="compact" placeholder="Correo electrónico"
+              prepend-inner-icon="mdi-email-outline" variant="outlined"
+              :rules="[rules.required, rules.email]"></v-text-field>
 
-      <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
-        Contraseña
+            <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between"
+              :rules="[rules.required]">
+              Contraseña
 
-        <a
-          class="text-caption text-decoration-none text-blue"
-          href="#"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          ¿Olvidaste la contraseña?</a>
-      </div>
+              <a class="text-caption text-decoration-none text-blue" href="#" rel="noopener noreferrer" target="_blank">
+                ¿Olvidaste la contraseña?</a>
+            </div>
 
-      <v-text-field
-        :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-        :type="visible ? 'text' : 'password'"
-        density="compact"
-        placeholder="Contraseña"
-        prepend-inner-icon="mdi-lock-outline"
-        variant="outlined"
-        @click:append-inner="visible = !visible"
-      ></v-text-field>
+            <v-text-field v-model="loginStore.loggedUser.pass" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+              :type="visible ? 'text' : 'password'" density="compact" placeholder="Contraseña"
+              prepend-inner-icon="mdi-lock-outline" variant="outlined"
+              @click:append-inner="visible = !visible"></v-text-field>
 
-      <v-btn
-        block
-        class="mb-8"
-        color="primary"
-        size="large"
-        variant="tonal"
-      >
-        iniciar sesión
-      </v-btn>
+            <v-btn block class="mb-8" color="primary" size="large" variant="tonal" type="submit" @click="login">
+              iniciar sesión
+            </v-btn>
 
-      <v-card-text class="text-center">
-        <a
-          class="text-blue text-decoration-none "
-          @click="toCreateUser()"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Crear cuenta <v-icon icon="mdi-chevron-right"></v-icon>
-        </a>
-      </v-card-text>
-    </form>
-    </v-card>
-  </v-col>
+            <v-card-text class="text-center">
+              <v-btn class="text-blue text-decoration-none " @click="toCreateUser()" rel="noopener noreferrer"
+                target="_blank">
+                Crear cuenta <v-icon icon="mdi-chevron-right"></v-icon>
+              </v-btn>
+            </v-card-text>
+          </form>
+        </v-card>
+      </v-form>
+    </v-col>
 
   </v-container>
-
 </template>
 
 
@@ -87,15 +59,31 @@
 
 import router from '@/router';
 import { ref } from 'vue'
-import { useAppStore } from '@/store/index';
+import { useAppStore, useLoginStore } from '@/store/index';
+import loginService from '../login.service';
+import rules from '../../../support/rules/fieldRules'
 
 const appStore = useAppStore()
+const loginStore = useLoginStore()
 appStore.showMenu = false
 
+const valid = ref(false)
 let visible = ref(false)
 
 const toCreateUser = () => {
   router.push('/create')
+}
+
+
+const login = async () => {
+  try {
+    if (valid.value) {
+      await loginService.login(loginStore.loggedUser);
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 </script>
@@ -105,7 +93,7 @@ const toCreateUser = () => {
   background-color: transparent !important;
 }
 
-.cursorPointer{
+.cursorPointer {
   cursor: pointer;
 }
 </style>

@@ -1,5 +1,4 @@
 <template>
-  loginStore.createdUser {{ loginStore.createdUser }}
   <v-container class="h-screen d-flex align-center justify-center">
     <v-col>
       <v-form v-model="valid" @submit.prevent>
@@ -45,15 +44,11 @@ import { useAppStore, useLoginStore } from '@/store/index';
 import loginService from '../login.service';
 import rules from '../../../support/rules/fieldRules'
 
-
 const appStore = useAppStore()
 const loginStore = useLoginStore()
+
 appStore.showMenu = false
-
-
 const valid = ref(false)
-
-
 let visible = ref(false)
 
 /* const required = [
@@ -65,7 +60,10 @@ let visible = ref(false)
 
 const create = async () => {
   try {
-    await loginService.create(loginStore.createdUser);
+    if (valid.value) {
+      await loginService.create(loginStore.createdUser);
+    }
+
   } catch (error) {
     console.error(error);
   }
