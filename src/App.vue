@@ -3,8 +3,8 @@
     <v-main class="main">
 
       <Menu v-if="appStore.showMenu"></Menu>
-      
-        <router-view />
+
+      <router-view />
 
     </v-main>
   </v-app>
@@ -13,6 +13,7 @@
 <script setup>
 import Menu from '@/components/Menu.vue';
 import { useAppStore } from '@/store/index';
+import "./support/http/interceptors";
 
 const appStore = useAppStore()
 
@@ -20,20 +21,20 @@ const appStore = useAppStore()
 </script>
 
 <style>
-
-
 @font-face {
   font-family: 'Calistoga';
   src: url('@/assets/fonts/Calistoga/Calistoga-Regular.ttf') format('truetype');
 }
 
-  .main{
-    background-image: url("assets/fondo3.png") !important;
-    background-attachment: fixed !important;
-    background-size: cover;
-  }
+.main {
+  background-image: url("assets/fondo3.png") !important;
+  background-attachment: fixed !important;
+  background-size: cover;
+}
 
-  h2,h3,h4{
-    font-family: Calistoga;
-  }
+h2,
+h3,
+h4 {
+  font-family: Calistoga;
+}
 </style>
