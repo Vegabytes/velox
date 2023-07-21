@@ -23,6 +23,7 @@ export default {
     try {
       const res = await axios.post(`${url}/login`, payload)
       const { data } = res;
+      return data;
       console.log(`Data: ${data} `);
     }
     catch (err) {
@@ -30,4 +31,19 @@ export default {
       throw err;
     }
   },
+  logout: async () => {
+    const url = import.meta.env['VITE_SERVER_BASE_URL']
+
+    try {
+      const res = await axios.get(`${url}/logout`)
+      const { data } = res;
+      return data;
+    }
+    catch (err) {
+      console.error(err);
+      throw err;
+    }
+
+
+  }
 }

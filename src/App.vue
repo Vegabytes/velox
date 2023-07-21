@@ -2,7 +2,7 @@
   <v-app>
     <v-main class="main">
 
-      <Menu v-if="appStore.showMenu"></Menu>
+      <Menu v-if="appStore.showMenu" :user="currentUser"></Menu>
 
       <router-view />
 
@@ -14,10 +14,11 @@
 import Menu from '@/components/Menu.vue';
 import { useAppStore } from '@/store/index';
 import "./support/http/interceptors";
+import { computed } from 'vue'
 
 const appStore = useAppStore()
 
-
+const currentUser = computed(() => appStore.currentUser);
 </script>
 
 <style>
