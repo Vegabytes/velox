@@ -62,7 +62,10 @@ import { ref } from 'vue'
 import { useAppStore, useLoginStore } from '@/store/index';
 import loginService from '../login.service';
 import rules from '../../../support/rules/fieldRules'
+import { useRoute, useRouter } from "vue-router";
 
+const $router = useRouter();
+const $route = useRoute();
 const appStore = useAppStore()
 const loginStore = useLoginStore()
 appStore.showMenu = false
@@ -78,7 +81,10 @@ const toCreateUser = () => {
 const login = async () => {
   try {
     if (valid.value) {
-      await loginService.login(loginStore.loggedUser);
+      const user = await loginService.login(loginStore.loggedUser);
+      appStore.currentUser = user.user;
+      const to = $route.query.to?.toString();
+      $router.push(to || "/admins");
     }
 
   } catch (error) {

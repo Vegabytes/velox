@@ -11,8 +11,15 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//app.use(cookieParser);
+app.use(cookieParser());
 app.use('/', router);
 
+
+//Para eliminar la cache
+app.use(function (req, res, next) {
+  if (!req.user)
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  next();
+});
 app.listen(PORT, () => console.log(`Server running on port : http://localhost:${PORT}`));
 

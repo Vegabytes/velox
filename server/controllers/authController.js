@@ -28,11 +28,9 @@ export const login = async (req, res) => {
       if (error) console.log(error);
       if (results.length === 0 || !(await bcryptjs.compare(pass, results[0].pass))) { res.status(403).send('Usuario incorrecto') }
       else {
-        const { id } = results[0];
-        console.log("id", id);
-        console.log("process.env.JWT_SECRET", process.env.JWT_SECRET);
+        const user = results[0];
+        const { id } = user;
         const token = await jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TIME_EXPIRATION });
-        console.log("TOKEN", token);
 
         //Configuramos las cookies con token
         const cookiesOptions = {
@@ -41,11 +39,39 @@ export const login = async (req, res) => {
         }
 
         res.cookie('jwt', token, cookiesOptions)
-        res.status(200).send('Usuario autorizado')
+        res.status(200).send({ user: user, msg: 'Usuario autorizado' })
       }
     });
   } catch (error) {
-    console.log(error);
+    console.log(error); { }
   }
+
+}
+
+export const isAuthenticated = async (req, res, next) => {
+  console.log('req.cookies', req.cookies);
+  if (req.cookies.jwt) {
+    /*     try {
+          const decodified = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+          console.log("decodified", decodified);
+          connection.query('SELECT * FROM Users WHERE id = ?', decodified.id), (error, results) => {
+            if (!results) return next()
+            req.user = results[0];
+            return next();
+          }
+        } catch (error) {
+          console.log(error);
+          return next();
+        } */
+  } else {
+    //res.status(400).send('Usuario no autenticado')
+    next();
+  }
+}
+
+
+export const logout = async (req, res) => {
+  res.clearCookie('jwt');
+  res.status(200).send('Usuario deslogado')
 
 }
