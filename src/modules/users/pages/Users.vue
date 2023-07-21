@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-card color="white" class="d-flex justify-start">
+        <v-card class="d-flex justify-start">
             <v-card-title class="pa-6">
                 <h2>Usuarios</h2>
             </v-card-title>

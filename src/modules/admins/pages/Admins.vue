@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-card color="white">
+        <v-card>
             <v-card-text>
 
                 <v-row>
@@ -9,7 +9,7 @@
 
                             <div class="mb-8">
                                 <v-row class="d-flex justify-center mb-2">
-                                    <v-avatar color="brown" size="large">
+                                    <v-avatar color="secondary" size="large">
                                         <span class="text-h5">JD</span>
                                     </v-avatar>
                                 </v-row>
@@ -59,7 +59,7 @@
                     <v-col cols="12" md="8">
                         <v-card class="mb-8" variant="outlined">
                             <v-card-title>
-                                <h2>Grupos a los que pertenece</h2>
+                                <h2 class="text-primary">Grupos a los que pertenece</h2>
                             </v-card-title>
                             <v-card-text>
 
@@ -122,12 +122,12 @@
                                 </v-expansion-panels>
                             </v-card-text>
                         </v-card>
-                        <v-card class="mb-8" color="white">
+                        <v-card class="mb-8">
                             <v-card-title>
-                                <h2>Logs</h2>
+                                <h2 class="text-primary">Logs</h2>
                             </v-card-title>
                             <v-card-text>
-                                <v-table theme="light">
+                                <v-table>
                                     <thead>
                                         <tr>
                                             <th class="text-left">

@@ -1,13 +1,17 @@
 <template>
-  <v-app-bar color="secondary" prominent>
+
+  <v-app-bar flat :elevation="2">
     <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-    <v-toolbar-title>
-      <h3>Velox</h3>
-    </v-toolbar-title>
-    <v-btn icon="mdi-logout " size="x-large" @click="logout"></v-btn>
+    <v-app-bar-title>
+      <h2 class="text-primary">Velox</h2>
+    </v-app-bar-title>
+    <template v-slot:append>
+      <v-btn size="small" color="secondary" @click="toggleTheme" icon="mdi-theme-light-dark"/>
+      <v-btn icon="mdi-logout " size="small" @click="logout"></v-btn>
+    </template>
   </v-app-bar>
 
-  <v-navigation-drawer v-model="drawer" color="secondary" temporary>
+  <v-navigation-drawer v-model="drawer" temporary>
     <v-list-item class="mt-6" prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg"
       :title="user.email"></v-list-item>
 
@@ -34,6 +38,11 @@
 import { useRoute, useRouter } from "vue-router";
 import { ref } from 'vue'
 
+import { useTheme } from 'vuetify'
+
+const theme = useTheme()
+
+const toggleTheme= () => theme.global.name.value = theme.global.current.value.dark ? 'customLightTheme' : 'customDarkTheme'
 
 const $router = useRouter();
 const $route = useRoute();

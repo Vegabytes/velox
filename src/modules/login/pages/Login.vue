@@ -2,8 +2,8 @@
   <v-container class="h-screen d-flex align-center justify-center">
     <v-col>
       <v-form v-model="valid" @submit.prevent>
-        <v-row class="d-flex mx-auto my-6 justify-center text-h1 font-weight-thin">
-          <h2>Velox</h2>
+        <v-row class="d-flex mx-auto my-6 justify-center text-h2 font-weight-thin">
+          <h2 class="text-primary title">Velocikaptor</h2>
         </v-row>
         <!--
     <v-img
@@ -13,20 +13,20 @@
     >
   </v-img>-->
 
-        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg" color="white">
+        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg">
 
           <form>
-            <div class="text-subtitle-1 text-medium-emphasis">Correo electrónico</div>
+            <div class="text-subtitle-1">Correo electrónico</div>
 
             <v-text-field v-model="loginStore.loggedUser.email" density="compact" placeholder="Correo electrónico"
               prepend-inner-icon="mdi-email-outline" variant="outlined"
               :rules="[rules.required, rules.email]"></v-text-field>
 
-            <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between"
+            <div class="text-subtitle-1 d-flex align-center justify-space-between"
               :rules="[rules.required]">
               Contraseña
 
-              <a class="text-caption text-decoration-none text-blue" href="#" rel="noopener noreferrer" target="_blank">
+              <a class="text-caption text-decoration-none text-primary" href="#" rel="noopener noreferrer" target="_blank">
                 ¿Olvidaste la contraseña?</a>
             </div>
 
@@ -40,7 +40,7 @@
             </v-btn>
 
             <v-card-text class="text-center">
-              <v-btn class="text-blue text-decoration-none " @click="toCreateUser()" rel="noopener noreferrer"
+              <v-btn class="text-blue text-decoration-none " @click="toCreateUser()" rel="noopener noreferrer" color="primary"
                 target="_blank">
                 Crear cuenta <v-icon icon="mdi-chevron-right"></v-icon>
               </v-btn>
@@ -102,5 +102,10 @@ const login = async () => {
 .cursorPointer {
   cursor: pointer;
 }
+
+.title{
+  text-shadow: 1px 1px 2px black;
+}
+
 </style>
 

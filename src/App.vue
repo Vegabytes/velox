@@ -28,14 +28,18 @@ const currentUser = computed(() => appStore.currentUser);
 }
 
 .main {
+  /**
   background-image: url("assets/fondo3.png") !important;
   background-attachment: fixed !important;
   background-size: cover;
+  */
+  
 }
 
 h2,
 h3,
 h4 {
   font-family: Calistoga;
+  font-weight: lighter;
 }
 </style>
