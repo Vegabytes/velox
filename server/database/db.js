@@ -2,7 +2,7 @@ import mysql from 'mysql'
 import 'dotenv/config'
 
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST || '185.166.213.42',
+  host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'userdev',
   password: process.env.DB_PASS || 'mysql202',
   database: process.env.DB_DATABASE || 'velocikaptor'
