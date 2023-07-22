@@ -4,7 +4,7 @@ export default {
 
   create: async (payload) => {
 
-    const url = import.meta.env['VITE_SERVER_BASE_URL']
+    const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://localhost:5000'
 
     try {
       const res = await axios.post(`${url}/create`, payload)
@@ -18,7 +18,7 @@ export default {
   },
   login: async (payload) => {
 
-    const url = import.meta.env['VITE_SERVER_BASE_URL']
+    const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://localhost:5000'
 
     try {
       const res = await axios.post(`${url}/login`, payload)
@@ -32,7 +32,7 @@ export default {
     }
   },
   logout: async () => {
-    const url = import.meta.env['VITE_SERVER_BASE_URL']
+    const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://localhost:5000'
 
     try {
       const res = await axios.get(`${url}/logout`)

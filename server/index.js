@@ -8,6 +8,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 console.log("cors", cors);
 app.use(cors())
+
+app.use(cors({
+  origin: 'http://185.166.213.42'
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
