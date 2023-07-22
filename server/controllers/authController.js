@@ -30,11 +30,11 @@ export const login = async (req, res) => {
       else {
         const user = results[0];
         const { id } = user;
-        const token = await jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TIME_EXPIRATION });
+        const token = await jwt.sign({ id }, process.env.JWT_SECRET || 'velox', { expiresIn: process.env.JWT_TIME_EXPIRATION || '7d' });
 
         //Configuramos las cookies con token
         const cookiesOptions = {
-          expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRATION * 24 * 60 * 60 * 1000),
+          expires: new Date(Date.now() + (process.env.JWT_COOKIE_EXPIRATION || 90) * 24 * 60 * 60 * 1000),
           httpOnly: true
         }
 
