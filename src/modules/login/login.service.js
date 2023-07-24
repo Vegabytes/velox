@@ -23,8 +23,9 @@ export default {
     try {
       const res = await axios.post(`${url}/login`, payload)
       const { data } = res;
-      return data;
       console.log(`Data: ${data} `);
+      return data;
+
     }
     catch (err) {
       console.error(err);
