@@ -1,12 +1,11 @@
 <template>
     <v-container>
-        <v-card>
+        <v-card color="onPrimary" variant="flat">
             <v-card-text>
 
                 <v-row>
                     <v-col cols="12" md="4">
-                        <v-card variant="tonal" color="primary" class="pa-8">
-
+                        <v-card color="onSecondary" variant="tonal" class="pa-8">
                             <div class="mb-8">
                                 <v-row class="d-flex justify-center mb-2">
                                     <v-avatar color="secondary" size="large">
@@ -57,22 +56,26 @@
                         </v-card>
                     </v-col>
                     <v-col cols="12" md="8">
-                        <v-card class="mb-8" variant="outlined">
+                        <v-card class="mb-8" variant="flat">
                             <v-card-title>
-                                <h2 class="text-primary">Grupos a los que pertenece</h2>
+                                <v-row class="py-2">
+                                    <v-col cols="12">
+                                        <h3 class="text-h4 text-primary">Grupos a los que pertenece</h3>
+                                    </v-col>
+                                </v-row>
                             </v-card-title>
                             <v-card-text>
 
                                 <v-expansion-panels>
                                     <v-expansion-panel v-for="item in groups">
-                                    <v-expansion-panel-title v-slot="{ open }">
+                                    <v-expansion-panel-title v-slot="{ open }" color="onSecondary">
                                         <v-row no-gutters>
-                                            <h3>{{ item.name.toUpperCase() }}</h3>
+                                            <h5 class="text-h6">{{ item.name}}</h5>
                                         </v-row>
                                     </v-expansion-panel-title>
-                                    <v-expansion-panel-text>
+                                    <v-expansion-panel-text bg-color="white" color="white">
 
-                                        <v-row>
+                                        <v-row bg-color="white">
                                             <v-col cols="12">
                                                 <h4>Dispositivos</h4>
                                             </v-col>
@@ -122,9 +125,13 @@
                                 </v-expansion-panels>
                             </v-card-text>
                         </v-card>
-                        <v-card class="mb-8">
+                        <v-card class="mb-8" variant="flat">
                             <v-card-title>
-                                <h2 class="text-primary">Logs</h2>
+                                <v-row class="py-2">
+                                    <v-col cols="12">
+                                        <h3 class="text-primary text-h4">Logs</h3>
+                                    </v-col>
+                                </v-row>
                             </v-card-title>
                             <v-card-text>
                                 <v-table>
@@ -134,14 +141,38 @@
                                                 Id
                                             </th>
                                             <th class="text-left">
-                                                Nombre
+                                                deviceId
+                                            </th>
+                                            <th class="text-left">
+                                                data
+                                            </th>
+                                            <th class="text-left">
+                                                position
+                                            </th>
+                                            <th class="text-left">
+                                                eventType
+                                            </th>
+                                            <th class="text-left">
+                                                eventTimeStamp
+                                            </th>
+                                            <th class="text-left">
+                                                createdAt
+                                            </th>
+                                            <th class="text-left">
+                                                createdBy
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="item in items" :key="item.name">
+                                        <tr v-for="item in logs" :key="item.name">
                                             <td>{{ item.id }}</td>
-                                            <td>{{ item.name }}</td>
+                                            <td>{{ item.deviceId }}</td>
+                                            <td>{{ item.data }}</td>
+                                            <td>{{ item.position }}</td>
+                                            <td>{{ item.eventType }}</td>
+                                            <td>{{ item.eventTimeStamp }}</td>
+                                            <td>{{ item.createdAt }}</td>
+                                            <td>{{ item.createdBy }}</td>
                                         </tr>
                                     </tbody>
                                 </v-table>
@@ -161,6 +192,11 @@ import { useAppStore } from '@/store/index';
 import { ref } from 'vue'
 const appStore = useAppStore()
 
+import { useTheme } from 'vuetify'
+const theme = useTheme()
+
+console.log('theme --> ' , theme.global.name)
+
 appStore.showMenu = true
 
 let mostrarInfo = ref(false)
@@ -178,10 +214,51 @@ const user = ref({
 const groups = [
     { id: 1, name: 'Grupo Uno Ejemplo', dispositivos:[{id:1,name:"Dispositivo 1",active:true},{id:2,name:"Dispositivo 2",active:false},{id:3,name:"Dispositivo 3",active:true}] },
     { id: 2, name: 'Segundo grupo',dispositivos:[{id:1,name:"Dispositivo 1",active:true},{id:2,name:"Dispositivo 2",active:true},{id:3,name:"Dispositivo 3",active:true}]  },
-    { id: 3, name: 'tercer grupo',dispositivos:[{id:1,name:"Dispositivo 1",active:true},{id:2,name:"Dispositivo 2",active:true},{id:3,name:"Dispositivo 3",active:true}]  },
+    { id: 3, name: 'Tercer grupo',dispositivos:[{id:1,name:"Dispositivo 1",active:true},{id:2,name:"Dispositivo 2",active:true},{id:3,name:"Dispositivo 3",active:true}]  },
     { id: 4, name: 'Último grupo',dispositivos:[{id:1,name:"Dispositivo 1",active:true},{id:2,name:"Dispositivo 2",active:true},{id:3,name:"Dispositivo 3",active:true}]  }
 ]
+
+const logs = ref([
+    {
+        id : '1',
+        deviceId: '4',
+        data: 'Lorem ipsum dolor',
+        position: 'center',
+        imagenPath: '../assets/images',
+        eventType:' -- prueba --',
+        eventTimeStamp:'',
+        createdAt:'Usuario 1',
+        createdBy:'Usuario 2'
+    },
+    {
+        id : '2',
+        deviceId: '4',
+        data: 'Lorem ipsum dolor',
+        position: 'center',
+        imagenPath: '../assets/images',
+        eventType:' -- prueba --',
+        eventTimeStamp:'',
+        createdAt:'Usuario 1',
+        createdBy:'Usuario 2'
+    },
+    {
+        id : '3',
+        deviceId: '4',
+        data: 'Lorem ipsum dolor',
+        position: 'center',
+        imagenPath: '../assets/images',
+        eventType:' -- prueba --',
+        eventTimeStamp:'',
+        createdAt:'Usuario 1',
+        createdBy:'Usuario 2'
+    },
+
+])
 
 
 
 </script>
+
+<style scope>
+
+</style>
