@@ -13,7 +13,7 @@
     >
   </v-img>-->
 
-        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg" color="white">
+        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg" color="white" :loading="loading">
 
           <form>
             <div class="text-subtitle-1">Correo electrónico</div>
@@ -25,9 +25,6 @@
             <div class="text-subtitle-1 d-flex align-center justify-space-between"
               :rules="[rules.required]">
               Contraseña
-
-              <a class="text-caption text-decoration-none text-primary" href="#" rel="noopener noreferrer" target="_blank">
-                ¿Olvidaste la contraseña?</a>
             </div>
 
             <v-text-field v-model="loginStore.loggedUser.pass" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
@@ -35,12 +32,12 @@
               prepend-inner-icon="mdi-lock-outline" variant="outlined"
               @click:append-inner="visible = !visible"></v-text-field>
 
-            <v-btn block class="mb-8" color="primary" size="large" variant="tonal" type="submit" @click="login">
+            <v-btn block class="mb-8" color="primary" size="large" type="submit" @click="login">
               iniciar sesión
             </v-btn>
 
             <v-card-text class="text-center">
-              <v-btn class="text-blue text-decoration-none " @click="toCreateUser()" rel="noopener noreferrer" color="primary"
+              <v-btn class="text-blue text-decoration-none " @click="toCreateUser()" rel="noopener noreferrer" color="primary" variant="tonal"
                 target="_blank">
                 Crear cuenta <v-icon icon="mdi-chevron-right"></v-icon>
               </v-btn>
@@ -72,6 +69,7 @@ appStore.showMenu = false
 
 const valid = ref(false)
 let visible = ref(false)
+let loading = ref(false)
 
 const toCreateUser = () => {
   router.push('/create')
@@ -79,6 +77,9 @@ const toCreateUser = () => {
 
 
 const login = async () => {
+
+  loading.value = true
+
   try {
     if (valid.value) {
       const user = await loginService.login(loginStore.loggedUser);
@@ -89,6 +90,9 @@ const login = async () => {
 
   } catch (error) {
     console.error(error);
+  }
+  finally {
+    loading.value = false
   }
 }
 
