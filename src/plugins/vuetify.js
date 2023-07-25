@@ -29,7 +29,7 @@ const CapriIsle = '#4F5954'
 const SpringKiss = '#E5F2B6'
 
 const MaastrichtBlue = '#011C40'
-const MaastrichtBlue2 = '#d7dee7'
+const MaastrichtBlue2 = '#d7e4ed'
 const BlueJeans = '#5CB9F2'
 const HeisenbergBlue = '#6DCCF2'
 const Scandal = '#ADD9D4'
