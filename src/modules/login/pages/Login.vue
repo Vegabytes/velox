@@ -85,7 +85,7 @@ const login = async () => {
       const user = await loginService.login(loginStore.loggedUser);
       appStore.currentUser = user.user;
       const to = $route.query.to?.toString();
-      $router.push(to || "/admins");
+      $router.push(to || "/user");
     }
 
   } catch (error) {
