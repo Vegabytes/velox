@@ -6,8 +6,8 @@
       <h2 class="text-primary">Velox</h2>
     </v-app-bar-title>
     <template v-slot:append>
-      <v-btn size="small" color="secondary" @click="toggleTheme" icon="mdi-theme-light-dark"/>
-      <v-btn icon="mdi-logout " size="small" @click="logout"></v-btn>
+      <v-btn size="small" icon="mdi-theme-light-dark" @click="toggleTheme" />
+      <v-btn size="small" icon="mdi-logout "  @click="logout"></v-btn>
     </template>
   </v-app-bar>
 
@@ -39,7 +39,6 @@ import { useRoute, useRouter } from "vue-router";
 import { ref } from 'vue'
 
 import { useTheme } from 'vuetify'
-
 const theme = useTheme()
 
 const toggleTheme= () => theme.global.name.value = theme.global.current.value.dark ? 'customLightTheme' : 'customDarkTheme'

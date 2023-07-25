@@ -1,10 +1,22 @@
 <template>
+
   <v-container class="h-screen d-flex align-center justify-center">
     <v-col>
       <v-form v-model="valid" @submit.prevent>
-        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="1200" rounded="lg" color="white">
+      
+        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="1200" rounded="lg">
 
-          <h2 class="mb-6">Nueva cuenta</h2>
+          <v-row>
+            <v-col cols="6">
+              <h2 class="text-primary text-h2">Nueva cuenta</h2>
+            </v-col>
+            <v-col cols="6" class="d-flex justify-end">
+              <v-btn class="justify-end" color="primary" variant="tonal" prepend-icon="mdi-arrow-left-thin">
+                Volver inicio</v-btn>
+            </v-col>
+          </v-row>
+
+          
 
           <v-row>
             <v-col cols="12" md="6">
@@ -69,9 +81,15 @@
             </v-col>
           </v-row>
 
-          <v-btn block class="mb-8" color="primary" size="large" variant="tonal" type="submit" @click="create">
-            Crear cuenta
-          </v-btn>
+          <v-row>
+            <v-col cols="12">
+              <v-btn block class="mb-8" color="primary" size="large" type="submit" @click="create">
+                Crear cuenta
+              </v-btn>
+            </v-col>
+          </v-row>
+
+          
 
         </v-card>
       </v-form>

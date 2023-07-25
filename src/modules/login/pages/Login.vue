@@ -3,7 +3,7 @@
     <v-col>
       <v-form v-model="valid" @submit.prevent>
         <v-row class="d-flex mx-auto my-6 justify-center text-h2 font-weight-thin">
-          <h2 class="text-primary title">Velocikaptor</h2>
+          <h2 class="text-primary text-h1">Velocikaptor</h2>
         </v-row>
         <!--
     <v-img
@@ -13,7 +13,7 @@
     >
   </v-img>-->
 
-        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg">
+        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg" color="white">
 
           <form>
             <div class="text-subtitle-1">Correo electrónico</div>
