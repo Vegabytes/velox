@@ -5,15 +5,20 @@
 
                 <v-row>
                     <v-col cols="12" md="4">
-                        <v-card color="onSecondary" variant="tonal" class="pa-8">
+                        <v-card  class="pa-8" color="surface">
                             <div class="mb-8">
                                 <v-row class="d-flex justify-center mb-2">
-                                    <v-avatar color="secondary" size="large">
-                                        <span class="text-h5">JD</span>
+                                    <v-avatar color="primary" size="large">
+                                        <span class="text-h5" v-if="!appStore.currentUser.path">JD</span>
+                                        <v-img
+                                            v-if="appStore.currentUser.path"
+                                            :src="appStore.currentUser.path"
+                                            alt="John"
+                                        ></v-img>
                                     </v-avatar>
                                 </v-row>
                                 <v-row class="d-flex justify-center">
-                                    <h2 class="mr-2">{{ user.name }}</h2> <h2>{{ user.lastname }}</h2>
+                                    <h2 class="mr-2 text-primary">{{ appStore.currentUser.name }}</h2> <h2 class="text-primary">{{ appStore.currentUser.lastName }}</h2>
                                 </v-row>
                                 <v-row class="d-flex justify-center">
                                     <span class="text-subtitle-3 text-medium-emphasis">{{ user.status }}</span>
@@ -22,7 +27,8 @@
 
                             <div class="d-flex justify-center">
                                 <v-btn 
-                                    variant="tonal" 
+                                    variant="tonal"
+                                    color="primary"
                                     rounded="xl" 
                                     size="small"
                                     :prepend-icon="(mostrarInfo)?'mdi-minus':'mdi-plus'"
@@ -33,19 +39,19 @@
 
                             <div v-if="mostrarInfo" class="py-6 mt-6">
                                 <v-row class="mb-2">
-                                    <v-text-field v-model="user.email" flat="true" label="Correo electrónico"
+                                    <v-text-field v-model="appStore.currentUser.email" flat="true" label="Correo electrónico"
                                         :readonly="true"></v-text-field>
                                 </v-row>
                                 <v-row class="mb-2">
-                                    <v-text-field v-model="user.phone" flat="true" label="Teléfono"
+                                    <v-text-field v-model="appStore.currentUser.phone" flat="true" label="Teléfono"
                                         :readonly="true"></v-text-field>
                                 </v-row>
                                 <v-row class="mb-2">
-                                    <v-text-field v-model="user.address" flat="true" label="Dirección"
+                                    <v-text-field v-model="appStore.currentUser.address" flat="true" label="Dirección"
                                         :readonly="true"></v-text-field>
                                 </v-row>
                                 <v-row class="mb-2">
-                                    <v-textarea v-model="user.description" label="Descripción" flat="true"
+                                    <v-textarea v-model="appStore.currentUser.description" label="Descripción" flat="true"
                                         :readonly="true" rows="10"></v-textarea>
                                 </v-row>
                             </div>    
@@ -56,7 +62,7 @@
                         </v-card>
                     </v-col>
                     <v-col cols="12" md="8">
-                        <v-card class="mb-8" variant="flat">
+                        <v-card class="mb-8" variant="flat" color="onPrimary">
                             <v-card-title>
                                 <v-row class="py-2">
                                     <v-col cols="12">
@@ -66,8 +72,8 @@
                             </v-card-title>
                             <v-card-text>
 
-                                <v-expansion-panels>
-                                    <v-expansion-panel v-for="item in groups">
+                                <v-expansion-panels color="onPrimary">
+                                    <v-expansion-panel v-for="item in groups" color="onPrimary">
                                     <v-expansion-panel-title v-slot="{ open }" color="onSecondary">
                                         <v-row no-gutters>
                                             <h5 class="text-h6">{{ item.name}}</h5>
@@ -125,7 +131,7 @@
                                 </v-expansion-panels>
                             </v-card-text>
                         </v-card>
-                        <v-card class="mb-8" variant="flat">
+                        <v-card class="mb-8" variant="flat" color="onPrimary">
                             <v-card-title>
                                 <v-row class="py-2">
                                     <v-col cols="12">
@@ -134,7 +140,22 @@
                                 </v-row>
                             </v-card-title>
                             <v-card-text>
-                                <v-table>
+
+                                <v-alert v-if="!grupoDispositivoSelected" color="info" class="text-center" text="Para visualizar los logs correspondientes a un grupo de dispositivos, seleccione un grupo en el elemento 'Seleccionar un grupo de dispositivos' " variant="tonal"></v-alert>
+
+                                <v-row class="mt-2">
+                                    <v-col cols="12">
+                                        <v-select
+                                            label="Seleccionar un grupo de dispositivos"
+                                            :items="gruposDispositivos"
+                                            v-model="grupoDispositivoSelected"
+                                            @change="getLogs()"
+                                        ></v-select>
+                                    </v-col>
+                                </v-row>
+
+
+                                <v-table v-if="grupoDispositivoSelected" >
                                     <thead>
                                         <tr>
                                             <th class="text-left">
@@ -192,11 +213,6 @@ import { useAppStore } from '@/store/index';
 import { ref } from 'vue'
 const appStore = useAppStore()
 
-import { useTheme } from 'vuetify'
-const theme = useTheme()
-
-console.log('theme --> ' , theme.global.name)
-
 appStore.showMenu = true
 
 let mostrarInfo = ref(false)
@@ -217,6 +233,16 @@ const groups = [
     { id: 3, name: 'Tercer grupo',dispositivos:[{id:1,name:"Dispositivo 1",active:true},{id:2,name:"Dispositivo 2",active:true},{id:3,name:"Dispositivo 3",active:true}]  },
     { id: 4, name: 'Último grupo',dispositivos:[{id:1,name:"Dispositivo 1",active:true},{id:2,name:"Dispositivo 2",active:true},{id:3,name:"Dispositivo 3",active:true}]  }
 ]
+
+const gruposDispositivos = ref(['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming','Madrid'])
+let grupoDispositivoSelected = ref(null)
+
+function getLogs (){
+
+    console.log('llamndo ...')
+
+    alert('recogiendo logs')
+}
 
 const logs = ref([
     {
