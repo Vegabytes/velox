@@ -23,27 +23,33 @@ export const create = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, pass } = req.body;
+
     if (!email || !pass) res.status(400).send('Faltan datos')
+
     connection.query('SELECT * FROM Users WHERE email = ?', [email], async (error, results) => {
       if (error) console.log(error);
-      if (results.length === 0 || !(await bcryptjs.compare(pass, results[0].pass))) { res.status(403).send('Usuario incorrecto') }
+
+      if (results.length === 0 || !(await bcryptjs.compare(pass, results[0].pass))) {
+        res.status(403).send('Usuario incorrecto')
+      }
       else {
         const user = results[0];
-        const { id } = user;
-        const token = await jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TIME_EXPIRATION });
+        console.log("user", user);
+        /*     const { id } = user; */
+        //const token = await jwt.sign({ id }, process.env.JWT_SECRET || 'velox', { expiresIn: process.env.JWT_TIME_EXPIRATION || '7d' });
 
         //Configuramos las cookies con token
-        const cookiesOptions = {
-          expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRATION * 24 * 60 * 60 * 1000),
-          httpOnly: true
-        }
+        /*   const cookiesOptions = {
+            expires: new Date(Date.now() + (process.env.JWT_COOKIE_EXPIRATION || 90) * 24 * 60 * 60 * 1000),
+            httpOnly: true
+          } */
 
-        res.cookie('jwt', token, cookiesOptions)
+        //res.cookie('jwt', token, cookiesOptions)
         res.status(200).send({ user: user, msg: 'Usuario autorizado' })
       }
     });
   } catch (error) {
-    console.log(error); { }
+    console.log(error);
   }
 
 }
