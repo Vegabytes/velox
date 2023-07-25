@@ -1,8 +1,8 @@
 export default [
   {
-    path: "/admins",
-    name: "Admins",
-    component: async () => await import('@/modules/admins/pages/Admins.vue')
+    path: "/admin",
+    name: "Admin",
+    component: async () => await import('@/modules/admins/pages/Admin.vue')
   },
   {
     path: "/admins/nuevoUsuario",

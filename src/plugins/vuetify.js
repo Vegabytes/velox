@@ -29,6 +29,7 @@ const CapriIsle = '#4F5954'
 const SpringKiss = '#E5F2B6'
 
 const MaastrichtBlue = '#011C40'
+const MaastrichtBlue2 = '#d7e4ed'
 const BlueJeans = '#5CB9F2'
 const HeisenbergBlue = '#6DCCF2'
 const Scandal = '#ADD9D4'
@@ -39,20 +40,22 @@ const customLightTheme = {
   dark: false,
   colors: {
     background: '#E3F2FD',
-    surface: Scandal,
+    surface: '#E3F2FD',
     primary: MaastrichtBlue,
-    secondary: '#E1F5FE',
+    onPrimary:MaastrichtBlue2,
+    secondary: '#FFFFFF',
   }
 }
 
 const customDarkTheme = {
   dark: true,
   colors: {
-    background: '#52A5D9',
-    surface:MaastrichtBlue ,
-    primary: Scandal,
-    secondary: CapriIsle,
-    error:Scandal
+    background: '#000b18',
+    surface:'#000b18',
+    primary: 'd7e4ed',
+    onPrimary:MaastrichtBlue,
+    secondary: MaastrichtBlue,
+    error:'d7e4ed'
   }
 }
 

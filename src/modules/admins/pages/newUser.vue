@@ -3,7 +3,7 @@
         <v-card class="d-flex justify-start">
             <v-col>
                 <v-card-title class="pa-6">
-                <h2>Nuevo Usuario</h2>
+                <h2 class="text-primary">Nuevo Usuario</h2>
             </v-card-title>
             <v-card-text>
                 
