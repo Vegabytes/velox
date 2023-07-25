@@ -43,18 +43,19 @@ const customLightTheme = {
     surface: '#E3F2FD',
     primary: MaastrichtBlue,
     onPrimary:MaastrichtBlue2,
-    secondary: '#E1F5FE',
+    secondary: '#FFFFFF',
   }
 }
 
 const customDarkTheme = {
   dark: true,
   colors: {
-    background: '#52A5D9',
-    surface:MaastrichtBlue ,
-    primary: Scandal,
-    secondary: CapriIsle,
-    error:Scandal
+    background: '#000b18',
+    surface:'#000b18',
+    primary: 'd7e4ed',
+    onPrimary:MaastrichtBlue,
+    secondary: MaastrichtBlue,
+    error:'d7e4ed'
   }
 }
 

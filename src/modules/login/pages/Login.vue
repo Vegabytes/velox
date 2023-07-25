@@ -13,7 +13,7 @@
     >
   </v-img>-->
 
-        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg" color="white" :loading="loading">
+        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg" color="secondary" :loading="loading">
 
           <form>
             <div class="text-subtitle-1">Correo electrónico</div>

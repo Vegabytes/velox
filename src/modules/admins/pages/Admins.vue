@@ -73,7 +73,7 @@
                                         >
                                         
                                         <v-card-item>
-                                        <v-card-title class="text-white">{{ item.title  }}</v-card-title>
+                                        <v-card-title class="text-white"><h4>{{ item.title  }}</h4></v-card-title>
                                         <v-card-subtitle class="text-white">{{ item.description }}</v-card-subtitle>
                                     </v-card-item>
                                         </v-img>
