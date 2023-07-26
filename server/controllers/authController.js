@@ -26,7 +26,7 @@ export const login = async (req, res) => {
 
     if (!email || !pass) res.status(400).send('Faltan datos')
 
-    connection.query('SELECT * FROM Users WHERE email = ?', [email], async (error, results) => {
+    await connection.query('SELECT * FROM Users WHERE email = ?', [email], async (error, results) => {
       if (error) console.log(error);
 
       if (results.length === 0 || !(await bcryptjs.compare(pass, results[0].pass))) {
