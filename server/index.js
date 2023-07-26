@@ -1,6 +1,7 @@
 import express from 'express';
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
+import bodyParser from 'body-parser';
+/* import cookieParser from 'cookie-parser';
+import cors from 'cors'; */
 import router from './routes/router.js';
 import 'dotenv/config'
 
@@ -20,8 +21,11 @@ app.use(function (req, res, next) {
 
   next();
 });
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+/* app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); */
+
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 /* app.use(cookieParser()); */
 app.use('/', router);
