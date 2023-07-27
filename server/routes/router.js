@@ -3,6 +3,7 @@ const router = express.Router();
 
 import { create, login, isAuthenticated, logout } from '../controllers/authController.js'
 import { getDevices } from '../controllers/groupController.js'
+import { getLogsByDeviceId } from '../controllers/logsController.js'
 
 router.get('/', (req, res) => {
   res.status(200).send('Hola desde server')
@@ -15,5 +16,8 @@ router.get('/logout', logout)
 
 //Groups
 router.get('/groups/user/:id', getDevices)
+
+//Logs
+router.get('/devices/logs/:id', getLogsByDeviceId)
 
 export default router;

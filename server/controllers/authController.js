@@ -30,7 +30,7 @@ export const login = async (req, res) => {
       if (error) console.log(error);
 
       if (results.length === 0 || !(await bcryptjs.compare(pass, results[0].pass))) {
-        res.status(403).send('Usuario incorrecto')
+        res.status(403).send({ msg: 'Usuario incorrecto' })
       }
       else {
         const user = results[0];
