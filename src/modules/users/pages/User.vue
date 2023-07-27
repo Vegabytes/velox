@@ -233,44 +233,6 @@ function getLogs (){
     alert('recogiendo logs')
 }
 
-const logs = ref([
-    {
-        id : '1',
-        deviceId: '4',
-        data: 'Lorem ipsum dolor',
-        position: 'center',
-        imagenPath: '../assets/images',
-        eventType:' -- prueba --',
-        eventTimeStamp:'',
-        createdAt:'Usuario 1',
-        createdBy:'Usuario 2'
-    },
-    {
-        id : '2',
-        deviceId: '4',
-        data: 'Lorem ipsum dolor',
-        position: 'center',
-        imagenPath: '../assets/images',
-        eventType:' -- prueba --',
-        eventTimeStamp:'',
-        createdAt:'Usuario 1',
-        createdBy:'Usuario 2'
-    },
-    {
-        id : '3',
-        deviceId: '4',
-        data: 'Lorem ipsum dolor',
-        position: 'center',
-        imagenPath: '../assets/images',
-        eventType:' -- prueba --',
-        eventTimeStamp:'',
-        createdAt:'Usuario 1',
-        createdBy:'Usuario 2'
-    },
-
-])
-
-
 
 </script>
 
