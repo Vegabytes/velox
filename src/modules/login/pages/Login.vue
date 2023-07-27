@@ -13,36 +13,34 @@
     >
   </v-img>-->
 
-        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg" color="secondary" :loading="loading">
+        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg" color="secondary"
+          :loading="loading">
 
-          <form>
-            <div class="text-subtitle-1">Correo electrónico</div>
+          <div class="text-subtitle-1">Correo electrónico</div>
 
-            <v-text-field v-model="loginStore.loggedUser.email" density="compact" placeholder="Correo electrónico"
-              prepend-inner-icon="mdi-email-outline" variant="outlined"
-              :rules="[rules.required, rules.email]"></v-text-field>
+          <v-text-field v-model="loginStore.loggedUser.email" density="compact" placeholder="Correo electrónico"
+            prepend-inner-icon="mdi-email-outline" variant="outlined"
+            :rules="[rules.required, rules.email]"></v-text-field>
 
-            <div class="text-subtitle-1 d-flex align-center justify-space-between"
-              :rules="[rules.required]">
-              Contraseña
-            </div>
+          <div class="text-subtitle-1 d-flex align-center justify-space-between" :rules="[rules.required]">
+            Contraseña
+          </div>
 
-            <v-text-field v-model="loginStore.loggedUser.pass" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-              :type="visible ? 'text' : 'password'" density="compact" placeholder="Contraseña"
-              prepend-inner-icon="mdi-lock-outline" variant="outlined"
-              @click:append-inner="visible = !visible"></v-text-field>
+          <v-text-field v-model="loginStore.loggedUser.pass" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+            :type="visible ? 'text' : 'password'" density="compact" placeholder="Contraseña"
+            prepend-inner-icon="mdi-lock-outline" variant="outlined"
+            @click:append-inner="visible = !visible"></v-text-field>
 
-            <v-btn block class="mb-8" color="primary" size="large" type="submit" @click="login">
-              iniciar sesión
+          <v-btn block class="mb-8" color="primary" size="large" type="submit" @click="login">
+            iniciar sesión
+          </v-btn>
+
+          <v-card-text class="text-center">
+            <v-btn class="text-blue text-decoration-none " @click="toCreateUser()" rel="noopener noreferrer"
+              color="primary" variant="tonal" target="_blank">
+              Crear cuenta <v-icon icon="mdi-chevron-right"></v-icon>
             </v-btn>
-
-            <v-card-text class="text-center">
-              <v-btn class="text-blue text-decoration-none " @click="toCreateUser()" rel="noopener noreferrer" color="primary" variant="tonal"
-                target="_blank">
-                Crear cuenta <v-icon icon="mdi-chevron-right"></v-icon>
-              </v-btn>
-            </v-card-text>
-          </form>
+          </v-card-text>
         </v-card>
       </v-form>
     </v-col>
@@ -107,9 +105,8 @@ const login = async () => {
   cursor: pointer;
 }
 
-.title{
+.title {
   text-shadow: 1px 1px 2px black;
 }
-
 </style>
 
