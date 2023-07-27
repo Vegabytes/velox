@@ -41,9 +41,23 @@ export const getDevices = async (req, res) => {
       gruposUsuarios.map(async gu => {
         return await Promise.all(gu.devicesGroups.map(async gd => {
           const devices = await getDeviceIdBygroupId(gd);
-          devices.forEach(device => {
+
+          let _devices = {}
+
+          devices.forEach(d => {
+            if(!_devices[d.id]){
+              _devices[d.id] = d
+            }
+          })
+
+          gu.devices.push(Object.values(_devices))
+
+          /**
+           *  devices.forEach(device => {
             gu.devices.push(device)
           });
+           */
+         
           //gu.devices.push(devices);
           return devices;
         })
