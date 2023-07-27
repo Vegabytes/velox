@@ -5,58 +5,59 @@ import 'dotenv/config'
 
 export const getDevices = async (req, res) => {
   const { id } = req.params;
-  let respond = {};
   try {
     const gruposByUserId = await getGroupsByUserId(id);
 
-    const gruposUsuarios = await Promise.all(
+    let gruposUsuarios = await Promise.all(
       gruposByUserId.map(async (element) => {
         return await getGroupInfo(element);
       })
+    );
+    gruposUsuarios.forEach(element => {
+      element['devicesGroups'] = [], element['devices'] = []
+    }
+    );
+
+    let gruposDevices = await Promise.all(
+      gruposUsuarios.map(async (element) => {
+        return await getDevicesGroupsByUserGroupId(element);
+      })
     )
 
+    const flattenDeep = (arr1) => {
+      return arr1.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), []);
+    }
+    gruposDevices = flattenDeep(gruposDevices);
 
-    await Promise.all(
-      gruposUsuarios.map(async (element) => {
-        element['devices'] = [];
-        const groups = await getDevicesGroupsByUserGroupId(element);
-        groups.map(group => {
-          gruposUsuarios.map(gu => {
-            if (group.userGroupId === gu.id) element['devices'].push(group);
-          })
-        });
+    gruposUsuarios.forEach(gu => {
+      gruposDevices.map(gd => {
+        if (gd.userGroupId === gu.id) gu.devicesGroups.push(gd);
+      })
+    });
+
+
+
+    let grupoDevicesInfo = await Promise.all(
+      gruposUsuarios.map(async gu => {
+        return await Promise.all(gu.devicesGroups.map(async gd => {
+          const devices = await getDeviceIdBygroupId(gd);
+          devices.forEach(device => {
+            gu.devices.push(device)
+          });
+          //gu.devices.push(devices);
+          return devices;
+        })
+        )
       })
     )
 
 
 
 
-
-    /*     gruposUsuarios.forEach(gu => {
-          gu['devices'] = [];
-          gruposDevices.map(gd => {
-            console.log("gu",gu);
-            if (gu.id === gd.userGroupId) gu['devices'].push(gd);
-          })
-        }); */
+    console.log("grupoDevicesInfo", grupoDevicesInfo);
 
 
 
-    /*     console.log("gruposDevices", gruposUsuarios); */
-    /*
-            const devicesIds = await Promise.all(
-              gruposDevices.map(async (element) => {
-                return await getDeviceIdBygroupId(element);
-              })
-            ) */
-
-    /*     const devices = await Promise.all(
-          devicesIds.map(async (element) => {
-            return await getDeviceByDeviceId(element);
-          })
-        ) */
-
-    /*     console.log("gruposDevices", gruposDevices); */
     res.status(202).send(gruposUsuarios)
   } catch (error) {
     console.log(error);
@@ -87,38 +88,40 @@ const getGroupInfo = ({ groupId }) => {
 };
 
 const getDevicesGroupsByUserGroupId = ({ id }) => {
-  console.log("id", id);
   return new Promise((resolve, reject) => {
     connection.query('SELECT * FROM DeviceGroupUserGroup WHERE userGroupId = ?', [id], (error, elements) => {
       if (error) {
         return reject(error);
       }
-      return resolve([...elements]);
+      return resolve(elements);
     });
   });
 };
+
+
+
 
 const getDeviceIdBygroupId = ({ deviceGroupId }) => {
   return new Promise((resolve, reject) => {
-    connection.query('SELECT * FROM DeviceGroupMembers WHERE groupId = ?', [deviceGroupId], (error, elements) => {
+    connection.query('SELECT * FROM DeviceGroupMembers WHERE deviceId = ?', [deviceGroupId], (error, elements) => {
       if (error) {
         return reject(error);
       }
-      return resolve(elements[0]);
+      return resolve(elements);
     });
   });
 };
 
-const getDeviceByDeviceId = ({ deviceId }) => {
+/* const getDeviceByDeviceId = ({ deviceId }) => {
   return new Promise((resolve, reject) => {
     connection.query('SELECT * FROM Devices WHERE id = ?', [deviceId], (error, elements) => {
       if (error) {
         return reject(error);
       }
-      return resolve(elements[0]);
+      return resolve(elements);
     });
   });
-};
+}; */
 
 
 
