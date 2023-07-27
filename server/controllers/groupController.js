@@ -101,7 +101,7 @@ const getDevicesGroupsByUserGroupId = ({ id }) => {
 
 
 
-const getDeviceIdBygroupId = ({ deviceGroupId }) => {
+/* const getDeviceIdBygroupId = ({ deviceGroupId }) => {
   return new Promise((resolve, reject) => {
     connection.query('SELECT * FROM DeviceGroupMembers WHERE deviceId = ?', [deviceGroupId], (error, elements) => {
       if (error) {
@@ -110,18 +110,26 @@ const getDeviceIdBygroupId = ({ deviceGroupId }) => {
       return resolve(elements);
     });
   });
-};
+}; */
 
-/* const getDeviceByDeviceId = ({ deviceId }) => {
+const getDeviceIdBygroupId = ({ deviceGroupId }) => {
   return new Promise((resolve, reject) => {
-    connection.query('SELECT * FROM Devices WHERE id = ?', [deviceId], (error, elements) => {
+    connection.query('SELECT * FROM DeviceGroupMembers INNER JOIN Devices WHERE deviceId = ? and Devices.id = DeviceGroupMembers.deviceId', [deviceGroupId], (error, elements) => {
       if (error) {
         return reject(error);
       }
       return resolve(elements);
     });
   });
-}; */
+};
+
+
+
+/*
+SELECT * FROM DeviceGroupMembers INNER JOIN Devices WHERE deviceId = 2 and Devices.id = DeviceGroupMembers.deviceId
+
+SELECT * FROM Devices where id in (select deviceId from DeviceGroupMembers where groupid = 2)*/
+
 
 
 
