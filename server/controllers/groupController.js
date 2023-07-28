@@ -50,15 +50,8 @@ export const getDevices = async (req, res) => {
             }
           })
 
-          gu.devices.push(Object.values(_devices))
+          gu.devices.push(Object.values(_devices)[0])
 
-          /**
-           *  devices.forEach(device => {
-            gu.devices.push(device)
-          });
-           */
-         
-          //gu.devices.push(devices);
           return devices;
         })
         )
