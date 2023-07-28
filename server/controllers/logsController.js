@@ -8,7 +8,7 @@ export const getLogsByDeviceId = async (req, res) => {
     const { id } = req.params;
     connection.query('SELECT * FROM Logs where deviceId = ?', [id], (error, results) => {
       if (error) console.log(error);
-      res.status(200).send(results[0])
+      res.status(200).send(results)
     });
   } catch (error) {
     res.status(500).send(error)

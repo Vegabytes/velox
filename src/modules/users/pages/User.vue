@@ -125,19 +125,18 @@
                             </v-card-title>
                             <v-card-text>
 
-                                <v-alert v-if="!grupoDispositivoSelected" color="info" class="text-center"
+                                <v-alert v-if="!dispositivoSelected" color="info" class="text-center"
                                     text="Para visualizar los Logs correspondientes a un dispositivo, seleccione un elemento en el campo 'Seleccionar Dispositivo'"
                                     variant="tonal"></v-alert>
 
                                 <v-row class="mt-2">
                                     <v-col cols="12">
-                                        <v-select label="Seleccionar un grupo de dispositivos" :items="gruposDispositivos"
-                                            v-model="grupoDispositivoSelected" @update:modelValue="getLogs()"></v-select>
+                                        <v-select label="Seleccionar un grupo de dispositivos" :items="devicesList" item-title="name" item-value="id"
+                                            v-model="dispositivoSelected" @update:modelValue="getLogs()"></v-select>
                                     </v-col>
                                 </v-row>
 
-
-                                <v-table v-if="grupoDispositivoSelected">
+                                <v-table v-if="dispositivoSelected && logsList">
                                     <thead>
                                         <tr>
                                             <th class="text-left">
@@ -166,8 +165,9 @@
                                             </th>
                                         </tr>
                                     </thead>
+
                                     <tbody>
-                                        <tr v-for="item in logs" :key="item.name">
+                                        <tr v-for="item in logsList">
                                             <td>{{ item.id }}</td>
                                             <td>{{ item.deviceId }}</td>
                                             <td>{{ item.data }}</td>
@@ -193,18 +193,34 @@
 
 import { useAppStore } from '@/store/index';
 import axios from "axios";
+import { computed } from 'vue';
 import { ref,onBeforeMount } from 'vue'
 const appStore = useAppStore()
 
 appStore.showMenu = true
 
-let grupoDispositivoSelected = ref(null)
+let dispositivoSelected = ref(null)
 let mostrarInfo = ref(false)
 const gruposDispositivos = ref(['Dispositivo 1', 'Dispositivo 2', 'Dispositivo 3'])
-let devicesGroups = ref({})
+let devicesList = ref([])
 
-function getLogs() {
-    alert('recogiendo logs')
+
+const logsList = computed(() => {
+  return appStore.currentLogs
+})
+
+async function getLogs() {
+   try {
+        const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://localhost:5000'
+        const res = await axios.get(`${url}/devices/logs/${dispositivoSelected.value}`)
+
+        appStore.currentLogs = res.data;
+    }
+    catch (err) {
+        console.error(err);
+        throw err;
+    }
+
 }
 
 const getUserGroup = async()=>{
@@ -214,20 +230,17 @@ const getUserGroup = async()=>{
         const res = await axios.get(`${url}/groups/user/${appStore.currentUser.id}`)
         appStore.currentUserGroups = res.data;
 
-        let dispositivosList = {}
+        let _devicesList = {}
 
         res.data.forEach(grupoUsuario => {
-            grupoUsuario.devicesGroups.forEach(gruposDispositivo => {
-
-            
-
-
-
-                if(!dispositivosList[gruposDispositivo.deviceGroupId]){
-                    dispositivosList[gruposDispositivo.deviceGroupId] = gruposDispositivo
+            grupoUsuario.devices.forEach(devices => {
+                if(!_devicesList[devices.id]){
+                    _devicesList[devices.id] = devices
                 }
             })
         });
+
+        devicesList.value = Object.values(_devicesList)
 
     }
     catch (err) {
