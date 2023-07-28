@@ -104,9 +104,9 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr v-for="d in item.devices" :key="d.id">
-                                                        <td>{{ d[0].id }}</td>
-                                                        <td>{{ d[0].name }}</td>
-                                                        <td>{{ d[0].description }}</td>
+                                                        <td>{{ d.id }}</td>
+                                                        <td>{{ d.name }}</td>
+                                                        <td>{{ d.description }}</td>
                                                     </tr>
                                                 </tbody>
                                             </v-table>
