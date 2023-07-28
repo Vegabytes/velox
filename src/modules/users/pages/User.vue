@@ -49,10 +49,6 @@
                                         :readonly="true" rows="10"></v-textarea>
                                 </v-row>
                             </div>
-
-
-
-
                         </v-card>
                     </v-col>
                     <v-col cols="12" md="8">
@@ -67,15 +63,12 @@
                             <v-card-text>
 
                                 <v-expansion-panels color="onPrimary">
- 
+
                                     <v-expansion-panel v-for="item in appStore.currentUserGroups" color="onPrimary">
                                         <v-expansion-panel-title v-slot="{ open }" color="onSecondary">
                                             <v-row no-gutters class="d-flex align-center">
-                                                <v-avatar
-                                                    color="primary"
-                                                    class="mr-6"
-                                                >
-                                                <v-img v-if="item.path" :src="item.path" alt="GroupAvatar"></v-img>
+                                                <v-avatar color="primary" class="mr-6">
+                                                    <v-img v-if="item.path" :src="item.path" alt="GroupAvatar"></v-img>
                                                 </v-avatar>
                                                 <h5 class="text-h6">{{ item.name }}</h5>
                                             </v-row>
@@ -100,6 +93,9 @@
                                                         <th class="text-left">
                                                             Descripción
                                                         </th>
+                                                        <th>
+                                                            Ubicación
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -107,6 +103,12 @@
                                                         <td>{{ d.id }}</td>
                                                         <td>{{ d.name }}</td>
                                                         <td>{{ d.description }}</td>
+                                                        <td>
+                                                            <v-btn variant="tonal" color="primary" rounded="xl" size="small"
+                                                                prepend-icon="mdi-google-maps" @click="openDialog(d.path)">
+                                                                Mostrar ubicación
+                                                            </v-btn>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </v-table>
@@ -131,8 +133,9 @@
 
                                 <v-row class="mt-2">
                                     <v-col cols="12">
-                                        <v-select label="Seleccionar un grupo de dispositivos" :items="devicesList" item-title="name" item-value="id"
-                                            v-model="dispositivoSelected" @update:modelValue="getLogs()"></v-select>
+                                        <v-select label="Seleccionar un grupo de dispositivos" :items="devicesList"
+                                            item-title="name" item-value="id" v-model="dispositivoSelected"
+                                            @update:modelValue="getLogs()"></v-select>
                                     </v-col>
                                 </v-row>
 
@@ -140,38 +143,38 @@
                                     <thead>
                                         <tr>
                                             <th class="text-left">
-                                                Id
+                                                Dispositivo
                                             </th>
                                             <th class="text-left">
-                                                deviceId
+                                                Descripción
                                             </th>
                                             <th class="text-left">
-                                                data
+                                                Ubicación
                                             </th>
                                             <th class="text-left">
-                                                position
-                                            </th>
-                                            <th class="text-left">
-                                                eventType
+                                                Tipo
                                             </th>
                                             <th class="text-left">
                                                 eventTimeStamp
                                             </th>
                                             <th class="text-left">
-                                                createdAt
+                                                Fecha
                                             </th>
                                             <th class="text-left">
-                                                createdBy
+                                                Usuario
                                             </th>
                                         </tr>
                                     </thead>
-
                                     <tbody>
                                         <tr v-for="item in logsList">
-                                            <td>{{ item.id }}</td>
                                             <td>{{ item.deviceId }}</td>
                                             <td>{{ item.data }}</td>
-                                            <td>{{ item.position }}</td>
+                                            <td>
+                                                <v-btn variant="tonal" color="primary" rounded="xl" size="small"
+                                                    prepend-icon="mdi-google-maps" @click="openDialog(item.position)">
+                                                    Mostrar ubicación
+                                                </v-btn>
+                                            </td>
                                             <td>{{ item.eventType }}</td>
                                             <td>{{ item.eventTimeStamp }}</td>
                                             <td>{{ item.createdAt }}</td>
@@ -179,11 +182,17 @@
                                         </tr>
                                     </tbody>
                                 </v-table>
+
+                                <v-dialog v-model="dialog" width="auto">
+                                    <v-card>
+                                        <mapa :position="appStore.devicePosition"></mapa>
+                                    </v-card>
+                                </v-dialog>
+
                             </v-card-text>
                         </v-card>
                     </v-col>
                 </v-row>
-
             </v-card-text>
         </v-card>
     </v-container>
@@ -191,26 +200,32 @@
 
 <script setup>
 
-import { useAppStore } from '@/store/index';
+
 import axios from "axios";
 import { computed } from 'vue';
-import { ref,onBeforeMount } from 'vue'
-const appStore = useAppStore()
+import { ref, onBeforeMount } from 'vue'
+import mapa from '../mapa.vue'
 
+import { useAppStore } from '@/store/index';
+const appStore = useAppStore()
 appStore.showMenu = true
 
 let dispositivoSelected = ref(null)
 let mostrarInfo = ref(false)
-const gruposDispositivos = ref(['Dispositivo 1', 'Dispositivo 2', 'Dispositivo 3'])
 let devicesList = ref([])
-
+const dialog = ref(false)
 
 const logsList = computed(() => {
-  return appStore.currentLogs
+    return appStore.currentLogs
 })
 
+const openDialog = (position) => {
+    appStore.devicePosition = position.split(',')
+    dialog.value = true;
+}
+
 async function getLogs() {
-   try {
+    try {
         const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://localhost:5000'
         const res = await axios.get(`${url}/devices/logs/${dispositivoSelected.value}`)
 
@@ -220,10 +235,9 @@ async function getLogs() {
         console.error(err);
         throw err;
     }
-
 }
 
-const getUserGroup = async()=>{
+const getUserGroup = async () => {
     const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://localhost:5000'
 
     try {
@@ -234,7 +248,7 @@ const getUserGroup = async()=>{
 
         res.data.forEach(grupoUsuario => {
             grupoUsuario.devices.forEach(devices => {
-                if(!_devicesList[devices.id]){
+                if (!_devicesList[devices.id]) {
                     _devicesList[devices.id] = devices
                 }
             })
@@ -250,49 +264,6 @@ const getUserGroup = async()=>{
 }
 
 onBeforeMount(() => {
-      getUserGroup()
+    getUserGroup()
 });
-
-
-const logs = ref([
-    {
-        id: '1',
-        deviceId: '4',
-        data: 'Lorem ipsum dolor',
-        position: 'center',
-        imagenPath: '../assets/images',
-        eventType: ' -- prueba --',
-        eventTimeStamp: '',
-        createdAt: 'Usuario 1',
-        createdBy: 'Usuario 2'
-    },
-    {
-        id: '2',
-        deviceId: '4',
-        data: 'Lorem ipsum dolor',
-        position: 'center',
-        imagenPath: '../assets/images',
-        eventType: ' -- prueba --',
-        eventTimeStamp: '',
-        createdAt: 'Usuario 1',
-        createdBy: 'Usuario 2'
-    },
-    {
-        id: '3',
-        deviceId: '4',
-        data: 'Lorem ipsum dolor',
-        position: 'center',
-        imagenPath: '../assets/images',
-        eventType: ' -- prueba --',
-        eventTimeStamp: '',
-        createdAt: 'Usuario 1',
-        createdBy: 'Usuario 2'
-    },
-
-])
-
-
-
 </script>
-
-<style scope></style>
