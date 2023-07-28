@@ -104,9 +104,9 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr v-for="d in item.devices" :key="d.id">
-                                                        <td>{{ d.id }}</td>
-                                                        <td>{{ d.name }}</td>
-                                                        <td>{{ d.description }}</td>
+                                                        <td>{{ d[0].id }}</td>
+                                                        <td>{{ d[0].name }}</td>
+                                                        <td>{{ d[0].description }}</td>
                                                     </tr>
                                                 </tbody>
                                             </v-table>
@@ -126,7 +126,7 @@
                             <v-card-text>
 
                                 <v-alert v-if="!grupoDispositivoSelected" color="info" class="text-center"
-                                    text="Para visualizar los logs correspondientes a un grupo de dispositivos, seleccione un grupo en el elemento 'Seleccionar un grupo de dispositivos' "
+                                    text="Para visualizar los Logs correspondientes a un dispositivo, seleccione un elemento en el campo 'Seleccionar Dispositivo'"
                                     variant="tonal"></v-alert>
 
                                 <v-row class="mt-2">
@@ -200,7 +200,7 @@ appStore.showMenu = true
 
 let grupoDispositivoSelected = ref(null)
 let mostrarInfo = ref(false)
-const gruposDispositivos = ref(['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming', 'Madrid'])
+const gruposDispositivos = ref(['Dispositivo 1', 'Dispositivo 2', 'Dispositivo 3'])
 let devicesGroups = ref({})
 
 function getLogs() {
@@ -214,19 +214,20 @@ const getUserGroup = async()=>{
         const res = await axios.get(`${url}/groups/user/${appStore.currentUser.id}`)
         appStore.currentUserGroups = res.data;
 
-        
-
-        let gruposDispositivos = {}
+        let dispositivosList = {}
 
         res.data.forEach(grupoUsuario => {
             grupoUsuario.devicesGroups.forEach(gruposDispositivo => {
-                if(!gruposDispositivos[gruposDispositivo.deviceGroupId]){
-                    gruposDispositivos[gruposDispositivo.deviceGroupId] = gruposDispositivo
+
+            
+
+
+
+                if(!dispositivosList[gruposDispositivo.deviceGroupId]){
+                    dispositivosList[gruposDispositivo.deviceGroupId] = gruposDispositivo
                 }
             })
         });
-
-        console.log(' gruposDispositivos --> ' , gruposDispositivos)
 
     }
     catch (err) {
