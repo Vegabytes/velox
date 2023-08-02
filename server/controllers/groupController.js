@@ -3,6 +3,21 @@ import connection from '../database/db.js';
 import 'dotenv/config'
 
 
+export const getGroupByGrupoId = async (req, res) => {
+  const { id } = req.params;
+  try {
+    connection.query('SELECT * FROM UserGroups where id = ?', [id], (error, results) => {
+      if (error) console.log(error);
+      if (results.length === 0) res.status(200).send({});
+      res.status(200).send(results[0])
+    });
+  } catch (error) {
+    res.status(500).send(error)
+    console.log(error);
+  }
+
+}
+
 export const getDevices = async (req, res) => {
   const { id } = req.params;
   try {
@@ -45,7 +60,7 @@ export const getDevices = async (req, res) => {
           let _devices = {}
 
           devices.forEach(d => {
-            if(!_devices[d.id]){
+            if (!_devices[d.id]) {
               _devices[d.id] = d
             }
           })
