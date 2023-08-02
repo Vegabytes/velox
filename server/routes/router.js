@@ -1,9 +1,9 @@
 import express from 'express';
 const router = express.Router();
 
-import { create, login, isAuthenticated, logout } from '../controllers/authController.js'
+import { login, isAuthenticated, logout } from '../controllers/authController.js'
 import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createUserGroup } from '../controllers/groupController.js'
-import { getAllUsers } from '../controllers/usersController.js'
+import { getAllUsers, createUser } from '../controllers/usersController.js'
 import { getLogsByDeviceId } from '../controllers/logsController.js'
 import { getDevicesByUserId } from '../controllers/devicesController.js'
 
@@ -13,7 +13,6 @@ router.get('/', (req, res) => {
 })
 
 //Authorization
-router.post('/auth/create', create)
 router.post('/auth/login', login)
 router.get('/auth/logout', logout)
 
@@ -25,6 +24,7 @@ router.post('/groups/group/', createUserGroup)
 
 //Users
 router.get('/users', getAllUsers)
+router.post('/users/create', createUser)
 
 //Logs
 router.get('/logs/device/:id', getLogsByDeviceId)
