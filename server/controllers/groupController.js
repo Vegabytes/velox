@@ -76,7 +76,7 @@ const getGroupInfo = ({ groupId }) => {
 };
 
 
-export const createUserGroups = async (req, res) => {
+export const createUserGroup = async (req, res) => {
   try {
     const { name, description, parentGroupId, status, createdBy, path } = req.body;
     connection.query('INSERT INTO UserGroups SET ?', { name, description, parentGroupId, status, createdBy, path }, (error, results) => {
