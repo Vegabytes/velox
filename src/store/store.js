@@ -4,6 +4,7 @@ export const appStore = defineStore('app', {
   state: () => ({
     showMenu: false,
     currentUser: {},
+    currentGroup: {},
     currentLogs: [],
     devicePosition: null
   }),

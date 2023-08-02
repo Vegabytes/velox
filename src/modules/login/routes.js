@@ -5,7 +5,7 @@ export default [
     component: async () => await import('@/modules/login/pages/Login')
   },
   {
-    path: "/login",
+    path: "/:idGroup/login",
     name: "Login",
     component: async () => await import('@/modules/login/pages/Login')
   },

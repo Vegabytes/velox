@@ -13,35 +13,49 @@
     >
   </v-img>-->
 
-        <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg" color="secondary"
+  <v-row class="d-flex justify-center">
+        <v-card elevation="8" min-width="448" rounded="lg" color="white"
           :loading="loading">
+            <v-img
+              :src="appStore.currentGroup.path"
+              class="align-end"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+              height="200px"
+              cover
+            >
+            <v-card-item>
+              <v-card-title class="text-white" v-text="appStore.currentGroup.name"></v-card-title>
+              <v-card-subtitle class="text-white" v-text="appStore.currentGroup.description"></v-card-subtitle>
+            </v-card-item>
+            </v-img>
+            <v-card-text class="pa-8">
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field v-model="loginStore.loggedUser.email" placeholder="Correo electrónico" label="Correo electrónico"
+                  prepend-inner-icon="mdi-email-outline"
+                  :rules="[rules.required, rules.email]"></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field v-model="loginStore.loggedUser.pass" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                    :type="visible ? 'text' : 'password'" placeholder="Contraseña" label="Contraseña"
+                    prepend-inner-icon="mdi-lock-outline"
+                    @click:append-inner="visible = !visible"></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <v-btn block class="mb-8" color="primary" size="large" type="submit" @click="login">
+                    iniciar sesión
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card-text>
+            </v-card>
+      </v-row>
 
-          <div class="text-subtitle-1">Correo electrónico</div>
-
-          <v-text-field v-model="loginStore.loggedUser.email" density="compact" placeholder="Correo electrónico"
-            prepend-inner-icon="mdi-email-outline" variant="outlined"
-            :rules="[rules.required, rules.email]"></v-text-field>
-
-          <div class="text-subtitle-1 d-flex align-center justify-space-between" :rules="[rules.required]">
-            Contraseña
-          </div>
-
-          <v-text-field v-model="loginStore.loggedUser.pass" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-            :type="visible ? 'text' : 'password'" density="compact" placeholder="Contraseña"
-            prepend-inner-icon="mdi-lock-outline" variant="outlined"
-            @click:append-inner="visible = !visible"></v-text-field>
-
-          <v-btn block class="mb-8" color="primary" size="large" type="submit" @click="login">
-            iniciar sesión
-          </v-btn>
-
-          <v-card-text class="text-center">
-            <v-btn class="text-blue text-decoration-none " @click="toCreateUser()" rel="noopener noreferrer"
-              color="primary" variant="tonal" target="_blank">
-              Crear cuenta <v-icon icon="mdi-chevron-right"></v-icon>
-            </v-btn>
-          </v-card-text>
-        </v-card>
+   
       </v-form>
     </v-col>
 
@@ -53,7 +67,7 @@
 <script setup>
 
 import router from '@/router';
-import { ref } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import { useAppStore, useLoginStore } from '@/store/index';
 import loginService from '../login.service';
 import rules from '../../../support/rules/fieldRules'
@@ -68,6 +82,28 @@ appStore.showMenu = false
 const valid = ref(false)
 let visible = ref(false)
 let loading = ref(false)
+
+onBeforeMount(() => {
+  getGroupData()
+});
+
+const getGroupData = async () => {
+
+  appStore.currentGroup = {
+      id : 1,
+      name: 'Madrid',
+      description: 'Comunidad de Madrid',
+      path: 'https://madridru.es/wp-content/uploads/2019/01/bandera-madrid.jpg'
+    }
+
+  try{
+    await appStore.currentGroup
+  } catch (err) {
+      console.error(err);
+      throw err;
+  } finally{
+  }  
+}
 
 const toCreateUser = () => {
   router.push('/create')
