@@ -1,6 +1,20 @@
 <template>
   <v-container>
     <v-card color="onPrimary" variant="flat">
+
+      <v-img
+              :src="appStore.currentGroup.path"
+              class="align-end"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+              height="150px"
+              cover
+            >
+            
+              <v-card-title class="text-white text-h2" v-text="appStore.currentGroup.name"></v-card-title>
+              <v-card-subtitle class="text-white text-h5 mb-4" v-text="appStore.currentGroup.description"></v-card-subtitle>
+            
+            </v-img>
+
       <v-card-text>
         <v-row>
           <v-col cols="12" md="4">
