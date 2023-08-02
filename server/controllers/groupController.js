@@ -7,13 +7,12 @@ import 'dotenv/config'
 export const getAllGroups = async (req, res) => {
   try {
     connection.query('SELECT * FROM UserGroups', (error, results) => {
-      if (error) console.log(error);
+      if (error) res.status(400).send(error);
       if (results.length === 0) res.status(200).send([]);
       res.status(200).send(results)
     });
   } catch (error) {
     res.status(500).send(error)
-    console.log(error);
   }
 
 }
@@ -22,13 +21,12 @@ export const getGroupByGrupoId = async (req, res) => {
   const { id } = req.params;
   try {
     connection.query('SELECT * FROM UserGroups where id = ?', [id], (error, results) => {
-      if (error) console.log(error);
+      if (error) res.status(400).send(error);
       if (results.length === 0) res.status(200).send({});
       res.status(200).send(results[0])
     });
   } catch (error) {
     res.status(500).send(error)
-    console.log(error);
   }
 
 }
@@ -44,11 +42,11 @@ export const getGroupByUserId = async (req, res) => {
         return await getGroupInfo(element);
       })
     );
-    res.status(202).send(gruposUsuarios)
+    res.status(200).send(gruposUsuarios)
 
 
   } catch (error) {
-    console.log(error);
+    res.status(500).send(error)
   }
 }
 
@@ -80,12 +78,25 @@ export const createUserGroup = async (req, res) => {
   try {
     const { name, description, parentGroupId, status, createdBy, path } = req.body;
     connection.query('INSERT INTO UserGroups SET ?', { name, description, parentGroupId, status, createdBy, path }, (error, results) => {
-      if (error) console.log(error);
-      console.log(results);
-      res.status(200).send(req.body)
+      if (error) res.status(400).send(error);
+      res.status(200).send(results)
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).send(error)
+  }
+
+}
+
+
+export const associateUserUserGroup = async (req, res) => {
+  try {
+    const { userId, groupId, createdBy } = req.body;
+    connection.query('INSERT INTO UserGroupMembers SET ?', { userId, groupId, createdBy }, (error, results) => {
+      if (error) res.status(400).send(error);
+      res.status(200).send(results)
+    });
+  } catch (error) {
+    res.status(500).send(error);
   }
 
 }

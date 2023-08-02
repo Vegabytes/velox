@@ -13,14 +13,13 @@ export const login = async (req, res) => {
     if (!email || !pass) res.status(400).send('Faltan datos')
 
     await connection.query('SELECT * FROM Users WHERE email = ?', [email], async (error, results) => {
-      if (error) console.log(error);
+      if (error) res.status(400).send(error);
 
       if (results.length === 0 || !(await bcryptjs.compare(pass, results[0].pass))) {
         res.status(403).send({ msg: 'Usuario incorrecto' })
       }
       else {
         const user = results[0];
-        console.log("user", user);
         /*     const { id } = user; */
         //const token = await jwt.sign({ id }, process.env.JWT_SECRET || 'velox', { expiresIn: process.env.JWT_TIME_EXPIRATION || '7d' });
 
@@ -35,7 +34,7 @@ export const login = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).send(error)
   }
 
 }

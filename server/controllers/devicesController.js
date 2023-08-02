@@ -36,7 +36,7 @@ export const getDevicesByUserId = async (req, res) => {
 
 
 
-    let grupoDevicesInfo = await Promise.all(
+    await Promise.all(
       gruposUsuarios.map(async gu => {
         return await Promise.all(gu.devicesGroups.map(async gd => {
           const devices = await getDeviceIdBygroupId(gd);
@@ -56,17 +56,9 @@ export const getDevicesByUserId = async (req, res) => {
         )
       })
     )
-
-
-
-
-    console.log("grupoDevicesInfo", grupoDevicesInfo);
-
-
-
     res.status(202).send(gruposUsuarios)
   } catch (error) {
-    console.log(error);
+    res.status(500).send(error)
   }
 }
 
