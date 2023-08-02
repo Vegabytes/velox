@@ -2,23 +2,33 @@ import express from 'express';
 const router = express.Router();
 
 import { create, login, isAuthenticated, logout } from '../controllers/authController.js'
-import { getDevices, getGroupByGrupoId } from '../controllers/groupController.js'
+import { getAllGroups, getGroupByGrupoId, getGroupByUserId } from '../controllers/groupController.js'
+import { getAllUsers } from '../controllers/usersController.js'
 import { getLogsByDeviceId } from '../controllers/logsController.js'
+import { getDevicesByUserId } from '../controllers/devicesController.js'
+
 
 router.get('/', (req, res) => {
   res.status(200).send('Hola desde server')
 })
 
 //Authorization
-router.post('/create', create)
-router.post('/login', login)
-router.get('/logout', logout)
+router.post('/auth/create', create)
+router.post('/auth/login', login)
+router.get('/auth/logout', logout)
 
 //Groups
-router.get('/groups/user/:id', getDevices)
+router.get('/groups', getAllGroups)
 router.get('/groups/group/:id', getGroupByGrupoId)
+router.get('/groups/user/:id', getGroupByUserId)
+
+//Users
+router.get('/users', getAllUsers)
 
 //Logs
-router.get('/devices/logs/:id', getLogsByDeviceId)
+router.get('/logs/device/:id', getLogsByDeviceId)
+
+//Devices
+router.get('/devices/user/:id', getDevicesByUserId)
 
 export default router;

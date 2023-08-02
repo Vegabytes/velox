@@ -7,9 +7,9 @@ import { promisify } from 'util';
 
 export const create = async (req, res) => {
   try {
-    const { name, email, pass } = req.body;
+    const { name, lastName, email, address, description, phone, birth, createdBy, path, pass } = req.body;
     let passHash = await bcryptjs.hash(pass, 8);
-    connection.query('INSERT INTO Users SET ?', { name, email, pass: passHash }, (error, results) => {
+    connection.query('INSERT INTO Users SET ?', { name, lastName, email, address, description, phone, birth, createdBy, path, pass: passHash }, (error, results) => {
       if (error) console.log(error);
       console.log(results);
       res.status(200).send(req.body)
