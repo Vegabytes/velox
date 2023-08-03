@@ -8,7 +8,7 @@ import { promisify } from 'util';
 
 export const login = async (req, res) => {
   try {
-    const { email, pass } = req.body;
+    const { email, pass, groupId } = req.body;
 
     if (!email || !pass) res.status(400).send('Faltan datos')
 
@@ -20,6 +20,22 @@ export const login = async (req, res) => {
       }
       else {
         const user = results[0];
+
+        try {
+          const groupCreatedBy = await getUserGroupCreatedBy(groupId, results[0].id);
+          console.log(groupCreatedBy.createdBy);
+          console.log(results[0].id);
+          if (groupCreatedBy.createdBy === results[0].id) {
+
+            res.status(200).send({ user: user, msg: 'Usuario autorizado', admin: true })
+          } else {
+            res.status(200).send({ user: user, msg: 'Usuario autorizado', admin: false })
+          }
+        }
+        catch (error) {
+          res.status(500).send(error)
+        }
+
         /*     const { id } = user; */
         //const token = await jwt.sign({ id }, process.env.JWT_SECRET || 'velox', { expiresIn: process.env.JWT_TIME_EXPIRATION || '7d' });
 
@@ -30,14 +46,24 @@ export const login = async (req, res) => {
           } */
 
         //res.cookie('jwt', token, cookiesOptions)
-        res.status(200).send({ user: user, msg: 'Usuario autorizado' })
+
       }
     });
   } catch (error) {
     res.status(500).send(error)
   }
-
 }
+
+const getUserGroupCreatedBy = (groupId) => {
+  return new Promise((resolve, reject) => {
+    connection.query('SELECT createdBy FROM  UserGroups WHERE id = ?', [groupId], (error, elements) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(elements[0]);
+    });
+  });
+};
 
 export const isAuthenticated = async (req, res, next) => {
   console.log('req.cookies', req.cookies);
@@ -59,6 +85,7 @@ export const isAuthenticated = async (req, res, next) => {
     next();
   }
 }
+
 
 
 export const logout = async (req, res) => {
