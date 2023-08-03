@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card color="onPrimary" variant="flat">
+    <v-card color="secondary" variant="flat">
 
       <v-img
               :src="appStore.currentGroup.path"
@@ -13,7 +13,7 @@
               <v-card-title class="text-white text-h2" v-text="appStore.currentGroup.name"></v-card-title>
               <v-card-subtitle class="text-white text-h5 mb-4" v-text="appStore.currentGroup.description"></v-card-subtitle>
             
-            </v-img>
+      </v-img>
 
       <v-card-text>
         <v-row>
@@ -30,9 +30,10 @@
                   <h2 class="mr-2 text-primary">{{ appStore.currentUser.name }}</h2>
                   <h2 class="text-primary">{{ appStore.currentUser.lastName }}</h2>
                 </v-row>
-                <v-row class="d-flex justify-center">
-                  <span class="text-subtitle-3 text-medium-emphasis capitalize-text">{{
-                    appStore.currentUser.status }}</span>
+                <v-row class="d-flex justify-center" v-if="appStore.admin">
+                  <span class="text-subtitle-3 text-medium-emphasis capitalize-text">
+                    Administrador
+                  </span>
                 </v-row>
               </div>
 
@@ -64,7 +65,15 @@
             </v-card>
           </v-col>
           <v-col cols="12" md="8">
-            <v-card class="mb-8" variant="flat" color="onPrimary">
+
+            <v-card variant="flat" color="secondary" v-if="appStore.admin">
+               <v-card-actions>
+                  <v-btn variant="tonal" prepend-icon="mdi-new-box" color="primary" @click="toCreateUser()">Crear Usuario</v-btn>
+                  <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="toAsignUser()">Añadir Usuario a grupo</v-btn>
+               </v-card-actions> 
+            </v-card>
+
+            <v-card class="mb-8" variant="flat" color="secondary">
               <v-card-title>
                 <v-row class="py-2">
                   <v-col cols="12">
@@ -74,10 +83,10 @@
               </v-card-title>
               <v-card-text>
 
-                <v-expansion-panels color="onPrimary">
+                <v-expansion-panels color="secondary">
 
-                  <v-expansion-panel v-for="item in appStore.currentUserGroups" color="onPrimary">
-                    <v-expansion-panel-title v-slot="{ open }" color="onSecondary">
+                  <v-expansion-panel v-for="item in appStore.currentUserGroups" color="secondary">
+                    <v-expansion-panel-title v-slot="{ open }" color="secondary">
                       <v-row no-gutters class="d-flex align-center">
                         <v-avatar color="primary" class="mr-6">
                           <v-img v-if="item.path" :src="item.path" alt="GroupAvatar"></v-img>
@@ -129,7 +138,7 @@
                 </v-expansion-panels>
               </v-card-text>
             </v-card>
-            <v-card class="mb-8" variant="flat" color="onPrimary">
+            <v-card class="mb-8" variant="flat" color="secondary">
               <v-card-title>
                 <v-row class="py-1">
                   <v-col cols="12">
@@ -219,9 +228,13 @@ import { ref, onBeforeMount } from 'vue'
 import mapa from '../mapa.vue'
 import { formatDate } from '@/support/helpers/general';
 
-import { useAppStore } from '@/store/index';
+import { useAppStore,useLoginStore } from '@/store/index';
+const loginStore = useLoginStore()
 const appStore = useAppStore()
 appStore.showMenu = true
+
+import {useRouter } from "vue-router";
+const $router = useRouter();
 
 let dispositivoSelected = ref(null)
 let mostrarInfo = ref(false)
@@ -274,6 +287,18 @@ const getUserGroup = async () => {
     console.error(err);
     throw err;
   }
+}
+
+const toCreateUser = async () => {
+  if(loginStore.loggedUser.groupId){
+    $router.push("CreateUser");
+  }else{
+    $router.push("login")
+  }
+}
+
+const toAsignUser = async () => {
+  $router.push(to || "/user");
 }
 
 onBeforeMount(() => {
