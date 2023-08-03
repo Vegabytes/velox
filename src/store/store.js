@@ -6,6 +6,7 @@ export const appStore = defineStore('app', {
     currentUser: {},
     currentGroup: {},
     currentLogs: [],
-    devicePosition: null
+    devicePosition: null,
+    admin:false
   }),
 })

@@ -21,7 +21,7 @@ export default {
     const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://localhost:5000'
 
     try {
-      const res = await axios.post(`${url}/login`, payload)
+      const res = await axios.post(`${url}/auth/login`, payload)
       const { data } = res;
       console.log(`Data: ${data} `);
       return data;

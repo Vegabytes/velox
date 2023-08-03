@@ -14,7 +14,7 @@
   </v-img>-->
 
   <v-row class="d-flex justify-center">
-        <v-card elevation="8" min-width="448" rounded="lg" color="white"
+        <v-card elevation="8" min-width="448" rounded="lg" color="secondary"
           :loading="loading">
             <v-img
               :src="appStore.currentGroup.path"
@@ -66,8 +66,9 @@
 
 <script setup>
 
+import axios from "axios";
 import router from '@/router';
-import { ref, onBeforeMount } from 'vue'
+import { ref, onBeforeMount,computed } from 'vue'
 import { useAppStore, useLoginStore } from '@/store/index';
 import loginService from '../login.service';
 import rules from '../../../support/rules/fieldRules'
@@ -83,32 +84,23 @@ const valid = ref(false)
 let visible = ref(false)
 let loading = ref(false)
 
-onBeforeMount(() => {
-  getGroupData()
-});
+const idGroup = computed(()=>{
+  loginStore.loggedUser.groupId = ($route.params.idGroup)
+  return $route.params.idGroup
+})
 
 const getGroupData = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://localhost:5000'
 
-  appStore.currentGroup = {
-      id : 1,
-      name: 'Madrid',
-      description: 'Comunidad de Madrid',
-      path: 'https://madridru.es/wp-content/uploads/2019/01/bandera-madrid.jpg'
-    }
-
-  try{
-    await appStore.currentGroup
-  } catch (err) {
-      console.error(err);
-      throw err;
-  } finally{
-  }  
+  try {
+    const res = await axios.get(`${url}/groups/group/${idGroup.value}`)
+    appStore.currentGroup = res.data;
+  }
+  catch (err) {
+    console.error(err);
+    throw err;
+  }
 }
-
-const toCreateUser = () => {
-  router.push('/create')
-}
-
 
 const login = async () => {
 
@@ -118,6 +110,7 @@ const login = async () => {
     if (valid.value) {
       const user = await loginService.login(loginStore.loggedUser);
       appStore.currentUser = user.user;
+      appStore.admin = user.admin
       const to = $route.query.to?.toString();
       $router.push(to || "/user");
     }
@@ -129,6 +122,10 @@ const login = async () => {
     loading.value = false
   }
 }
+
+onBeforeMount(() => {
+  getGroupData()
+});
 
 </script>
 
