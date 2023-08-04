@@ -40,7 +40,7 @@ const customLightTheme = {
   dark: false,
   colors: {
     background: '#E3F2FD',
-    surface: '#E3F2FD',
+    surface: '#FFFFFF',
     primary: MaastrichtBlue,
     onPrimary:MaastrichtBlue2,
     secondary: '#FFFFFF',
