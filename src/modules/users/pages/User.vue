@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card color="secondary" variant="flat">
+    <v-card variant="flat">
 
       <v-img
               :src="appStore.currentGroup.path"
@@ -18,7 +18,7 @@
       <v-card-text>
         <v-row>
           <v-col cols="12" md="4">
-            <v-card class="pa-8" color="surface">
+            <v-card class="pa-8" variant="outlined">
               <div class="mb-8">
                 <v-row class="d-flex justify-center mb-2">
                   <v-avatar color="primary" size="large">
@@ -66,14 +66,14 @@
           </v-col>
           <v-col cols="12" md="8">
 
-            <v-card variant="flat" color="secondary" v-if="appStore.admin">
+            <v-card variant="flat" v-if="appStore.admin">
                <v-card-actions>
-                  <v-btn variant="tonal" prepend-icon="mdi-new-box" color="primary" @click="toCreateUser()">Crear Usuario</v-btn>
-                  <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="toAsignUser()">Añadir Usuario a grupo</v-btn>
+                  <v-btn variant="tonal" prepend-icon="mdi-account-plus" color="primary" @click="toCreateUser()">Crear Usuario</v-btn>
+                  <v-btn variant="tonal" prepend-icon="mdi-account-arrow-up" color="primary" @click="toAsignUser()">Añadir Usuario a grupo</v-btn>
                </v-card-actions> 
             </v-card>
 
-            <v-card class="mb-8" variant="flat" color="secondary">
+            <v-card class="mb-8" variant="flat">
               <v-card-title>
                 <v-row class="py-2">
                   <v-col cols="12">
@@ -83,62 +83,33 @@
               </v-card-title>
               <v-card-text>
 
-                <v-expansion-panels color="secondary">
+                <v-expansion-panels>
 
-                  <v-expansion-panel v-for="item in appStore.currentUserGroups" color="secondary">
-                    <v-expansion-panel-title v-slot="{ open }" color="secondary">
+                  <v-expansion-panel v-for="item in appStore.currentUserGroups">
+                    <v-expansion-panel-title v-slot="{ open }">
                       <v-row no-gutters class="d-flex align-center">
                         <v-avatar color="primary" class="mr-6">
                           <v-img v-if="item.path" :src="item.path" alt="GroupAvatar"></v-img>
                         </v-avatar>
                         <h5 class="text-h6">{{ item.name }}</h5>
+                        <span class="text-subtitle-2 text-medium-emphasis pl-4">{{ item.description }}</span>
                       </v-row>
                     </v-expansion-panel-title>
-                    <v-expansion-panel-text bg-color="white" color="white">
 
-                      <v-row bg-color="white">
-                        <v-col cols="12">
-                          <h4>Dispositivos</h4>
-                        </v-col>
+
+                    <v-expansion-panel-text v-if="appStore.admin && ( loginStore.loggedUser.groupId == item.id)">
+
+                      <v-row bg-color="white" class="py-4">
+                        <v-btn variant="tonal" color="primary" prepend-icon="mdi-account" @click="toUsersList">Usuarios</v-btn>
+                        <v-btn variant="tonal" color="primary" prepend-icon="mdi-tablet-cellphone" class="ml-2">Dispositivos</v-btn>
                       </v-row>
 
-                      <v-table density="compact">
-                        <thead>
-                          <tr>
-                            <th class="text-left">
-                              Id
-                            </th>
-                            <th class="text-left">
-                              Nombre
-                            </th>
-                            <th class="text-left">
-                              Descripción
-                            </th>
-                            <th>
-                              Ubicación
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="d in item.devices" :key="d.id">
-                            <td>{{ d.id }}</td>
-                            <td>{{ d.name }}</td>
-                            <td>{{ d.description }}</td>
-                            <td>
-                              <v-btn variant="tonal" color="primary" rounded="xl" size="small"
-                                prepend-icon="mdi-google-maps" @click="openDialog(d.path)">
-                                Mostrar ubicación
-                              </v-btn>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </v-table>
                     </v-expansion-panel-text>
                   </v-expansion-panel>
                 </v-expansion-panels>
               </v-card-text>
             </v-card>
-            <v-card class="mb-8" variant="flat" color="secondary">
+            <v-card class="mb-8" variant="flat">
               <v-card-title>
                 <v-row class="py-1">
                   <v-col cols="12">
@@ -263,25 +234,12 @@ async function getLogs() {
   }
 }
 
-const getUserGroup = async () => {
+const getUserGroups = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://localhost:5000'
 
   try {
     const res = await axios.get(`${url}/groups/user/${appStore.currentUser.id}`)
     appStore.currentUserGroups = res.data;
-
-    let _devicesList = {}
-
-    res.data.forEach(grupoUsuario => {
-      grupoUsuario.devices.forEach(devices => {
-        if (!_devicesList[devices.id]) {
-          _devicesList[devices.id] = devices
-        }
-      })
-    });
-
-    devicesList.value = Object.values(_devicesList)
-
   }
   catch (err) {
     console.error(err);
@@ -298,10 +256,22 @@ const toCreateUser = async () => {
 }
 
 const toAsignUser = async () => {
-  $router.push(to || "/user");
+  if(loginStore.loggedUser.groupId){
+    $router.push("AsignUser");
+  }else{
+    $router.push("login")
+  }
+}
+
+const toUsersList = async () => {
+  if(loginStore.loggedUser.groupId){
+    $router.push("Users");
+  }else{
+    $router.push("login")
+  }
 }
 
 onBeforeMount(() => {
-  getUserGroup()
+  getUserGroups()
 });
 </script>

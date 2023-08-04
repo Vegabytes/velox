@@ -2,9 +2,6 @@
 
   <v-container class="d-flex justify-center">
 
-    
-
-
     <v-card elevation="8" rounded="lg" color="secondary" min-width="70%">
 
       <v-img
@@ -20,19 +17,13 @@
       <v-card-text class="pa-12">
         <v-form v-model="valid" @submit.prevent>
 
-
-          <v-row>
-            {{ appStore.currentUser.id }}
-          </v-row>
-
-
           <v-row class="d-flex justify-center align-center mb-6">
             <v-col cols="8">
               <h2 class="text-primary text-h2">Nuevo Usuario</h2>
             </v-col>
             <v-col cols="4" class="d-flex justify-end">
-              <v-btn class="justify-end" color="primary" variant="tonal" prepend-icon="mdi-arrow-left-thin">
-                Volver inicio</v-btn>
+              <v-btn class="justify-end" color="primary" variant="" prepend-icon="mdi-arrow-left-thin" @click="toUserPage()">
+                Volver</v-btn>
             </v-col>
           </v-row>
           <v-row>
@@ -131,6 +122,10 @@ const $router = useRouter();
 
 const valid = ref(false)
 let visible = ref(false)
+
+const toUserPage = ()=>{
+  $router.go(-1)
+}
 
 
 const createNewUser = async () => {
