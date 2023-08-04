@@ -122,7 +122,7 @@ const toCreateUser = async () => {
   if(loginStore.loggedUser.groupId){
     $router.push("CreateUser");
   }else{
-    $router.push("login")
+    $router.push("error")
   }
 }
 
@@ -130,13 +130,13 @@ const toAsignUser = async () => {
   if(loginStore.loggedUser.groupId){
     $router.push("AsignUser");
   }else{
-    $router.push("login")
+    $router.push("error")
   }
 }
 
 onBeforeMount(() => {
   if(!loginStore.loggedUser.groupId){
-    $router.push("login");
+    $router.push("error");
   }else{
     getAllUsers()
   }

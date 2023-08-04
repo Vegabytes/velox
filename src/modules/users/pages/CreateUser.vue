@@ -155,7 +155,7 @@ const createNewUser = async () => {
 
 onBeforeMount(() => {
   if(!loginStore.loggedUser.groupId){
-    $router.push("login");
+    $router.push("error");
   }
 });
 
