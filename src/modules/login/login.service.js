@@ -9,10 +9,8 @@ export default {
     try {
       const res = await axios.post(`${url}/create`, payload)
       const { data } = res;
-      console.log(`Data: ${data} `);
     }
     catch (err) {
-      console.error(err);
       throw err;
     }
   },
@@ -23,12 +21,10 @@ export default {
     try {
       const res = await axios.post(`${url}/auth/login`, payload)
       const { data } = res;
-      console.log(`Data: ${data} `);
       return data;
 
     }
     catch (err) {
-      console.error(err);
       throw err;
     }
   },
@@ -41,7 +37,6 @@ export default {
       return data;
     }
     catch (err) {
-      console.error(err);
       throw err;
     }
 
