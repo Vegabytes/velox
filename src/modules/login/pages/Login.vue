@@ -93,7 +93,7 @@ const idGroup = computed(() => {
 })
 
 const getGroupData = async () => {
-  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://localhost:5000'
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
   try {
     const res = await axios.get(`${url}/groups/group/${idGroup.value}`)
