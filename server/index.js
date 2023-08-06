@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-/* import cookieParser from 'cookie-parser';
-import cors from 'cors'; */
+/* import cookieParser from 'cookie-parser';*/
+import cors from 'cors';
 import router from './routes/router.js';
 import 'dotenv/config'
 
