@@ -7,10 +7,21 @@
     <template v-slot:append>
       <v-btn size="small" icon="mdi-theme-light-dark" @click="toggleTheme" />
       <v-btn size="small" icon="mdi-logout " @click="logout"></v-btn>
+      <!--       <v-avatar color="primary" size="x-small"
+        src="https://static.vecteezy.com/system/resources/previews/021/548/095/original/default-profile-picture-avatar-user-avatar-icon-person-icon-head-icon-profile-picture-icons-default-anonymous-user-male-and-female-businessman-photo-placeholder-social-network-avatar-portrait-free-vector.jpg">
+        32
+      </v-avatar> -->
+      <!-- <v-avatar size="50px" radius="10px">
+        <img src="https://www.figma.com/community/plugin/739659977030056719/icon">
+      </v-avatar> -->
+      <v-avatar color="secondary" size="default">
+        <v-img :src="currentUser.path" alt="user"></v-img>
+      </v-avatar>
+
     </template>
   </v-app-bar>
 
-  <v-navigation-drawer v-model="drawer" temporary>
+  <!--   <v-navigation-drawer v-model="drawer" temporary>
     <span class="my-4">
       <v-row class="d-flex justify-center mt-6">
         <v-avatar color="secondary" size="large">
@@ -34,15 +45,14 @@
       <v-list-item prepend-icon="mdi-view-dashboard" title="Asignar grupo cliente a dispositivo"
         value="AsignClienteDispositivo"></v-list-item>
       <v-list-item prepend-icon="mdi-tablet-cellphone" title="Dispositivos" value="Dispositivos"></v-list-item>
-      <!--<v-list-item prepend-icon="mdi-forum" title="About" value="about"></v-list-item>-->
     </v-list>
-  </v-navigation-drawer>
+  </v-navigation-drawer> -->
 </template>
 
 <script setup>
 
 import { useRoute, useRouter } from "vue-router";
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useAppStore } from '@/store/index';
 const appStore = useAppStore()
 
@@ -59,6 +69,8 @@ let drawer = ref(false)
 const props = defineProps({
   user: Object
 });
+
+const currentUser = computed(() => appStore.getCurrentUser);
 
 const logout = async () => {
   try {

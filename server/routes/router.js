@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 
 import { login, isAuthenticated, logout } from '../controllers/authController.js'
-import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createUserGroup, associateUserUserGroup } from '../controllers/groupController.js'
+import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createUserGroup, associateUserUserGroup, getGroupByGroupIdByUserId } from '../controllers/groupController.js'
 import { getAllUsers, createUser, getGroupUsers, getNotAssignedUser } from '../controllers/usersController.js'
 import { getLogsByDeviceId } from '../controllers/logsController.js'
 import { getDevicesByUserId } from '../controllers/devicesController.js'
@@ -18,6 +18,7 @@ router.get('/auth/logout', logout)
 
 //Groups
 router.get('/groups', getAllGroups)
+router.get('/groups/:groupId/user/:userId', getGroupByGroupIdByUserId)
 router.get('/groups/group/:id', getGroupByGrupoId)
 router.get('/groups/user/:id', getGroupByUserId)
 router.post('/groups/group', createUserGroup)

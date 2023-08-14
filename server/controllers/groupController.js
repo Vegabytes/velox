@@ -17,6 +17,30 @@ export const getAllGroups = async (req, res) => {
 
 }
 
+
+export const getGroupByGroupIdByUserId = async (req, res) => {
+  const { groupId, userId } = req.params;
+
+  try {
+    const gruposByUserId = await getGroupsByUserId(userId);
+    console.log("gruposByUserId", gruposByUserId);
+
+    let gruposUsuarios = await Promise.all(
+      gruposByUserId.map(async (element) => {
+        return await getGroupInfoByParent(element, groupId);
+      })
+    );
+    const gruposUsuariosNotNull = gruposUsuarios.filter(user => !!user);
+    res.status(200).send(gruposUsuariosNotNull)
+
+
+  } catch (error) {
+    res.status(500).send(error)
+  }
+}
+
+
+
 export const getGroupByGrupoId = async (req, res) => {
   const { id } = req.params;
   try {
@@ -72,6 +96,21 @@ const getGroupInfo = ({ groupId }) => {
     });
   });
 };
+
+const getGroupInfoByParent = ({ groupId }, parentGroupId) => {
+  return new Promise((resolve, reject) => {
+    console.error("groupId", groupId);
+    console.error("parentGroupId", parentGroupId);
+    connection.query('SELECT * FROM UserGroups WHERE id = ? and parentGroupId = ?', [groupId, parentGroupId], (error, elements) => {
+      if (error) {
+        return reject(error);
+      }
+      console.log("Elements", elements);
+      return resolve(elements[0]);
+    });
+  });
+};
+
 
 
 export const createUserGroup = async (req, res) => {

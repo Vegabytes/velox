@@ -7,14 +7,19 @@ import { routes as usersRoutes } from "@/modules/users"
 
 
 const routes = [
+  /*   {
+      path: "/error",
+      name: "Error",
+      component: async () => await import('@/views/Error')
+    }, */
+  ...adminsRoutes,
+  ...loginRoutes,
+  ...usersRoutes,
   {
-    path: "/error",
+    path: "/:catchAll(.*)",
     name: "Error",
     component: async () => await import('@/views/Error')
   },
-  ...adminsRoutes,
-  ...loginRoutes,
-  ...usersRoutes
 ]
 
 

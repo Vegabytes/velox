@@ -41,8 +41,9 @@ const customLightTheme = {
   colors: {
     background: '#E3F2FD',
     surface: '#FFFFFF',
-    primary: MaastrichtBlue,
-    onPrimary:MaastrichtBlue2,
+    //primary: MaastrichtBlue,
+    primary: '#2e1569',
+    onPrimary: MaastrichtBlue2,
     secondary: '#FFFFFF',
   }
 }
@@ -51,11 +52,11 @@ const customDarkTheme = {
   dark: true,
   colors: {
     background: '#000b18',
-    surface:'#000b18',
+    surface: '#000b18',
     primary: 'd7e4ed',
-    onPrimary:MaastrichtBlue,
+    onPrimary: MaastrichtBlue,
     secondary: MaastrichtBlue,
-    error:'d7e4ed'
+    error: 'd7e4ed'
   }
 }
 

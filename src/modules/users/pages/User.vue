@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card variant="flat">
+    <v-card variant="flat" v-if="!loadingStore.isLoading">
 
       <v-img :src="appStore.currentGroup.path" class="align-end" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
         height="150px" cover>
@@ -12,7 +12,7 @@
 
       <v-card-text>
         <v-row>
-          <v-col cols="12" md="4">
+          <!--           <v-col cols="12" md="4">
             <v-card class="pa-8" variant="outlined">
               <div class="mb-8">
                 <v-row class="d-flex justify-center mb-2">
@@ -58,8 +58,8 @@
                 </v-row>
               </div>
             </v-card>
-          </v-col>
-          <v-col cols="12" md="8">
+          </v-col> -->
+          <v-col cols="12">
 
             <v-card variant="flat" v-if="appStore.admin">
               <v-card-actions>
@@ -74,7 +74,7 @@
               <v-card-title>
                 <v-row class="py-2">
                   <v-col cols="12">
-                    <h3 class="text-h4 text-primary">Grupos a los que pertenece</h3>
+                    <h3 class="text-h4 text-primary">Mis subgrupos de dispositivos</h3>
                   </v-col>
                 </v-row>
               </v-card-title>
@@ -197,19 +197,51 @@ import { computed } from 'vue';
 import { ref, onBeforeMount } from 'vue'
 import mapa from '../mapa.vue'
 import { formatDate } from '@/support/helpers/general';
+import { useRoute, useRouter } from "vue-router";
 
-import { useAppStore, useLoginStore } from '@/store/index';
+import { useAppStore, useLoginStore, useLoadingStore } from '@/store/index';
+
+const $router = useRouter();
+const $route = useRoute();
 const loginStore = useLoginStore()
 const appStore = useAppStore()
+const loadingStore = useLoadingStore();
 appStore.showMenu = true
 
-import { useRouter } from "vue-router";
-const $router = useRouter();
+
 
 let dispositivoSelected = ref(null)
 let mostrarInfo = ref(false)
 let devicesList = ref([])
 const dialog = ref(false)
+
+
+const idGroup = computed(() => {
+  loginStore.loggedUser.groupId = ($route.params.idGroup)
+  return $route.params.idGroup
+})
+
+
+onBeforeMount(async () => {
+  loadingStore.setLoading(true);
+  if (!appStore.getCurrentUser.name) {
+    $router.push("login");
+  }
+
+  try {
+
+    if (!appStore.currentGroup) {
+      await getGroupData();
+    }
+    await getUserGroups()
+  } catch (error) {
+    console.error(error);
+  } finally {
+    loadingStore.setLoading();
+  }
+
+
+});
 
 const logsList = computed(() => {
   return appStore.currentLogs
@@ -237,7 +269,7 @@ const getUserGroups = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
   try {
-    const res = await axios.get(`${url}/groups/user/${appStore.currentUser.id}`)
+    const res = await axios.get(`${url}/groups/${idGroup.value}/user/${appStore.getCurrentUser.id}`)
     appStore.currentUserGroups = res.data;
   }
   catch (err) {
@@ -270,7 +302,18 @@ const toUsersList = async () => {
   }
 }
 
-onBeforeMount(() => {
-  getUserGroups()
-});
+
+
+const getGroupData = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+
+  try {
+    const res = await axios.get(`${url}/groups/group/${idGroup.value}`)
+    appStore.currentGroup = res.data;
+  }
+  catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
 </script>

@@ -1,33 +1,50 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 /* import cookieParser from 'cookie-parser';*/
-import cors from 'cors';
 import router from './routes/router.js';
 import 'dotenv/config'
 
-const app = express();
-const PORT = process.env.PORT || 5000;
 
-app.use(cors())
+import morgan from 'morgan';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import history from 'connect-history-api-fallback';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+
+
+// Middleware
+app.use(cors());
+app.use(morgan('tiny'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+
+app.set('port', process.env.PORT || 5000);
+
+
 
 // CORS
-app.use(function (req, res, next) {
+/* app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  /*   res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE'); */
-
   next();
-});
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+}); */
+
 
 
 /* app.use(cookieParser()); */
 app.use('/', router);
 
+// Middleware para Vue.js router modo history
+app.use(history());
+/* app.use(express.static(path.join(__dirname, 'public'))); */
 
-app.listen(PORT, () => console.log(`Server running on port : http://localhost:${PORT}`));
+app.listen(app.get('port'), function () {
+  console.log('Velox listening on port: ' + app.get('port'));
+});
 
