@@ -10,6 +10,11 @@ export default [
     component: async () => await import('@/modules/users/pages/GroupDetail.vue')
   },
   {
+    path: "/:idGroup/groups/groupDetail/:id/logs/:idDevice",
+    name: "Logs",
+    component: async () => await import('@/modules/users/pages/LogsDevice.vue')
+  },
+  {
     path: "/:idGroup/createUser",
     name: "CreateUser",
     component: async () => await import('@/modules/users/pages/CreateUser.vue')
@@ -19,9 +24,5 @@ export default [
     name: "AsignUser",
     component: async () => await import('@/modules/users/pages/AsignUser.vue')
   },
-  {
-    path: "/:idGroup/groups",
-    name: "Groups_",
-    component: async () => await import('@/modules/users/pages/Users.vue')
-  },
+
 ]

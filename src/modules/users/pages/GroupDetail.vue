@@ -1,5 +1,4 @@
 <template>
-  listDevicesByUser {{ listDevicesByUser }}
   <v-container>
     <v-card variant="flat" v-if="!loadingStore.isLoading">
       <v-img :src="currentGroup.path" class="align-end" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
@@ -14,14 +13,14 @@
               <v-card-title>
                 <v-row class="py-2">
                   <v-col cols="12">
-                    <p class="text-h5 font-weight-bold">Mis subgrupos de dispositivos</p>
+                    <p class="text-h5 font-weight-bold">{{ userGroupsCurrent[0].name }}</p>
                   </v-col>
                 </v-row>
               </v-card-title>
               <v-divider></v-divider>
               <v-card-text>
                 <div v-for="item in listDevicesByUser">
-                  <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToGroupDetail(item)">
+                  <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToLogsDevice(item)">
                     <div class="ma-2 pa-2">
                       <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover
                         class="rounded-xl"></v-img>
@@ -116,7 +115,7 @@ const getGroupData = async () => {
 }
 
 
-const goToGroupDetail = (item) => {
-  $router.push(`/${idGroup.value}/groups/groupDetail/${item.id}`);
+const goToLogsDevice = (item) => {
+  $router.push(`/${idGroup.value}/groups/groupDetail/${idViewGroup.value}/logs/${item.id}`);
 }
 </script>
