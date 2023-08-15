@@ -29,12 +29,8 @@
 
 import { useAppStore } from '@/store/index';
 import { useRoute, useRouter } from "vue-router";
-const appStore = useAppStore();
 
 const $router = useRouter();
-const $route = useRoute();
-appStore.showMenu = false
-
 
 const goToLogin = () => {
   $router.push("/1/login");

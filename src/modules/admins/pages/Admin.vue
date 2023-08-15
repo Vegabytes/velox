@@ -94,8 +94,6 @@ import { useAppStore } from '@/store/index';
 import { ref } from 'vue'
 const appStore = useAppStore()
 
-appStore.showMenu = true
-
 let mostrarInfo = ref(false)
 
 

@@ -44,8 +44,6 @@ const appStore = useAppStore()
 const userStore = useUsersStore()
 const loginStore = useLoginStore()
 
-appStore.showMenu = true
-
 import { useRouter } from "vue-router";
 const $router = useRouter();
 

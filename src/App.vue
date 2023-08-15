@@ -1,24 +1,14 @@
 <template>
   <v-app>
     <v-main class="main">
-
-      <Menu v-if="appStore.showMenu" :user="currentUser"></Menu>
-
       <router-view />
-
     </v-main>
   </v-app>
 </template>
 
 <script setup>
-import Menu from '@/components/Menu.vue';
-import { useAppStore } from '@/store/index';
-import "./support/http/interceptors";
-import { computed } from 'vue'
 
-const appStore = useAppStore()
 
-const currentUser = computed(() => appStore.currentUser);
 </script>
 
 <style>
@@ -33,7 +23,7 @@ const currentUser = computed(() => appStore.currentUser);
   background-attachment: fixed !important;
   background-size: cover;
   */
-  
+
 }
 
 h2,

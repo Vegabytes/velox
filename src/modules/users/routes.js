@@ -2,7 +2,7 @@ export default [
   {
     path: "/:idGroup/groups",
     name: "Groups",
-    component: async () => await import('@/modules/users/pages/User.vue')
+    component: async () => await import('@/modules/users/pages/groups.vue')
   },
   {
     path: "/:idGroup/groups/groupDetail/:id",
@@ -20,8 +20,8 @@ export default [
     component: async () => await import('@/modules/users/pages/AsignUser.vue')
   },
   {
-    path: "/:idGroup/users",
-    name: "Users",
+    path: "/:idGroup/groups",
+    name: "Groups_",
     component: async () => await import('@/modules/users/pages/Users.vue')
   },
 ]

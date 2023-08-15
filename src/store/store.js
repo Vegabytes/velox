@@ -3,9 +3,9 @@ import * as storage from "./storage";
 
 export const appStore = defineStore('app', {
   state: () => ({
-    showMenu: false,
     currentUser: {},
-    currentGroup: null,
+    currentGroup: {},
+    userGroups: [],
     currentLogs: [],
     devicePosition: null,
     admin: false

@@ -84,8 +84,6 @@ const appStore = useAppStore()
 const loginStore = useLoginStore()
 const snackbarStore = useSnackbarStore();
 const loadingStore = useLoadingStore();
-appStore.showMenu = false
-
 
 const isLoading = computed(() => loadingStore.isLoading);
 const valid = ref(false)

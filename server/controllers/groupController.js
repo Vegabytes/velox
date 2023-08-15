@@ -45,7 +45,6 @@ export const getGroupByGroupIdByUserId = async (req, res) => {
     //Obtenemos grupos de dispositivo por cada grupo de usuario
     let gruposDevices = await Promise.all(
       gruposUsuariosNotNull.map(async (element) => {
-        console.log("element", element);
         return await getDevicesGroupsByUserGroupId(element);
       })
     )
@@ -54,9 +53,8 @@ export const getGroupByGroupIdByUserId = async (req, res) => {
     }
     gruposDevices = flattenDeep(gruposDevices);
 
-    gruposUsuariosNotNull.forEach(gu => {
 
-      console.log("gu", gu);
+    gruposUsuariosNotNull.forEach(gu => {
       gruposDevices.map(gd => {
         if (gd.userGroupId === gu.id) gu.devicesGroups.push(gd);
       })
@@ -72,12 +70,12 @@ export const getGroupByGroupIdByUserId = async (req, res) => {
           let _devices = {}
 
           devices.forEach(d => {
-            if (!_devices[d.id]) {
+            if (d && !_devices[d.id]) {
               _devices[d.id] = d
             }
           })
-
-          gu.devices.push(Object.values(_devices)[0])
+          console.log("_devices", Object.values(_devices)[0]);
+          if (Object.values(_devices)[0]) gu.devices.push(Object.values(_devices)[0])
 
           return devices;
         })

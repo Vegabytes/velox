@@ -1,5 +1,4 @@
 <template>
-  listDevicesByUser {{ listDevicesByUser }}
   <v-container>
     <v-card variant="flat" v-if="!loadingStore.isLoading">
       <v-img :src="currentGroup.path" class="align-end" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
@@ -20,7 +19,7 @@
               </v-card-title>
               <v-divider></v-divider>
               <v-card-text>
-                <div v-for="item in listDevicesByUser">
+                <div v-for="item in userGroups">
                   <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToGroupDetail(item)">
                     <div class="ma-2 pa-2">
                       <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover
@@ -29,6 +28,9 @@
                     <div class="ma-2 pa-2 d-flex flex-column">
                       <div class="d-flex flex-row align-center">
                         <p class="text-h5 ma-1">{{ item.name }}.</p>
+                        <p class="text-h7 ma-1 font-italic font-weight-bold text-primary">{{ item.devices.length }}
+                          dispositivos
+                        </p>
                       </div>
                       <div class="d-flex flex-row mb-6 ">
                         <div>
@@ -62,11 +64,8 @@ const loadingStore = useLoadingStore();
 
 const currentGroup = computed(() => appStore.currentGroup);
 const userGroups = computed(() => appStore.userGroups);
-const userGroupsCurrent = computed(() => userGroups.value.filter(({ id }) => id == idViewGroup.value))
-const listDevicesByUser = computed(() => !!userGroupsCurrent.value.length ? userGroupsCurrent.value[0].devices : []);
 
 const idGroup = computed(() => $route.params.idGroup)
-const idViewGroup = computed(() => $route.params.id)
 
 
 onBeforeMount(async () => {
