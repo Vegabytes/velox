@@ -13,9 +13,14 @@
                 Gracias.
               </span>
             </v-card-subtitle>
-            </v-card-item>
-            </v-card>
-        </v-row>
+          </v-card-item>
+          <v-card-item class="text-right">
+            <v-btn class="rounded-lg" color="primary" type="submit" @click="goToLogin" :disabled="calling">
+              iniciar sesión
+            </v-btn>
+          </v-card-item>
+        </v-card>
+      </v-row>
     </v-col>
   </v-container>
 </template>
@@ -23,7 +28,16 @@
 <script setup>
 
 import { useAppStore } from '@/store/index';
+import { useRoute, useRouter } from "vue-router";
 const appStore = useAppStore();
+
+const $router = useRouter();
+const $route = useRoute();
 appStore.showMenu = false
+
+
+const goToLogin = () => {
+  $router.push("/1/login");
+}
 
 </script>

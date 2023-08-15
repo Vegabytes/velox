@@ -74,15 +74,58 @@
               <v-card-title>
                 <v-row class="py-2">
                   <v-col cols="12">
-                    <h3 class="text-h4 text-primary">Mis subgrupos de dispositivos</h3>
+                    <p class="text-h5 font-weight-bold">Mis subgrupos de dispositivos</p>
                   </v-col>
                 </v-row>
               </v-card-title>
+              <v-divider></v-divider>
               <v-card-text>
+                <div v-for="item in appStore.currentUserGroups">
+                  <!--           {{ item }} -->
+                  <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToGroupDetail(item)">
+                    <div class="ma-2 pa-2">
+                      <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover
+                        class="rounded-xl"></v-img>
+                    </div>
+                    <div class="ma-2 pa-2 d-flex flex-column">
+                      <div class="d-flex flex-row align-center">
+                        <p class="text-h5 ma-1">{{ item.name }}.</p>
+                        <p class="text-h7 ma-1 font-italic font-weight-bold text-primary">{{ item.devices.length }}
+                          dispositivos
+                        </p>
+                      </div>
+                      <div class="d-flex flex-row mb-6 ">
+                        <div>
+                          <p class="text-h7 mx-1"> {{ item.description }}</p>
+                        </div>
+                      </div>
 
-                <v-expansion-panels>
+
+                    </div>
+
+
+                  </div>
+
+
+
+
+
+
+
+                  <!--            <v-row>
+                    <v-col cols="3">
+                      {{ item.description }}
+
+                    </v-col>
+                  </v-row> -->
+
+                </div>
+
+
+                <!--             <v-expansion-panels>
 
                   <v-expansion-panel v-for="item in appStore.currentUserGroups">
+                    {{ item }}
                     <v-expansion-panel-title v-slot="{ open }">
                       <v-row no-gutters class="d-flex align-center">
                         <v-avatar color="primary" class="mr-6">
@@ -105,10 +148,10 @@
 
                     </v-expansion-panel-text>
                   </v-expansion-panel>
-                </v-expansion-panels>
+                </v-expansion-panels> -->
               </v-card-text>
             </v-card>
-            <v-card class="mb-8" variant="flat">
+            <!--           <v-card class="mb-8" variant="flat">
               <v-card-title>
                 <v-row class="py-1">
                   <v-col cols="12">
@@ -181,7 +224,7 @@
                 </v-dialog>
 
               </v-card-text>
-            </v-card>
+            </v-card> -->
           </v-col>
         </v-row>
       </v-card-text>
@@ -315,5 +358,10 @@ const getGroupData = async () => {
     console.error(err);
     throw err;
   }
+}
+
+
+const goToGroupDetail = (item) => {
+  $router.push(`/${idGroup.value}/groups/groupDetail/${item.id}`);
 }
 </script>

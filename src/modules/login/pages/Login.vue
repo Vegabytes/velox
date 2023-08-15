@@ -138,7 +138,7 @@ const login = async () => {
       appStore.setCurrentUser(user.user);
       appStore.setIsAdmin(user.admin)
       $router.push({
-        name: 'User', pathMatch: `${idGroup.value} `
+        name: 'Groups', pathMatch: `${idGroup.value} `
       });
 
 

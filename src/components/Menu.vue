@@ -75,8 +75,7 @@ const currentUser = computed(() => appStore.getCurrentUser);
 const logout = async () => {
   try {
     //const user = await loginService.logout();
-    const to = $route.query.to?.toString();
-    $router.push(to || "/");
+    $router.push("/");
   }
   catch (err) {
     console.log(err);
