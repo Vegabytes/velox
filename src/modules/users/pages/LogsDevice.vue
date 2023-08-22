@@ -10,35 +10,99 @@
                 <v-row>
                     <v-col cols="12">
                         <v-card class="mb-8" variant="flat">
-                            <v-card-title>
-                                <v-row class="py-2">
-                                    <v-col cols="12">
-                                        <p class="text-h5 font-weight-bold">{{ currentDevice[0].name }}</p>
-                                    </v-col>
+
+                            <v-row class="pa-5 d-flex justify-center align-center">
+                                <v-row class="py-6">
+                                    <v-avatar class="ma-3" size="x-large">
+                                        <v-img cover :src="currentDevice[0].path"></v-img>
+                                    </v-avatar>
+
+                                    <v-card-item>
+                                        <v-card-title>{{ currentDevice[0].name }}</v-card-title>
+                                        <v-card-subtitle>{{ currentDevice[0].description }}</v-card-subtitle>
+                                    </v-card-item>
                                 </v-row>
-                            </v-card-title>
+                                <v-btn class="justify-end mr-2" color="primary" variant=""
+                                    prepend-icon="mdi-arrow-left-thin" @click="toUserPage()">
+                                    Volver a vista principal</v-btn>
+                            </v-row>
+
+
                             <v-divider></v-divider>
-                            <v-card-text>
-                                <div v-for="item in currentDeviceLogs">
-                                    <div class="d-flex flex-row align-center" style="cursor: pointer;"
-                                        @click="goToLogsDevice(item)">
-                                        <div class="ma-2 pa-2">
-                                            <v-img v-if="item.path" :src="item.imagePath" alt="GroupAvatar" height="100px"
-                                                width="100px" cover class="rounded-xl"></v-img>
-                                        </div>
-                                        <div class="ma-2 pa-2 d-flex flex-column">
-                                            <div class="d-flex flex-row align-center">
-                                                <p class="text-h5 ma-1">{{ item.id }}.</p>
+
+                            <v-row>
+                                <v-col cols="6">
+                                    <v-card-text>
+                                        <v-card v-for="item in currentDeviceLogs"
+                                            class="d-flex pa-2 mb-2 align-center" @click="goToLogsDevice(item)"
+                                            style="cursor: pointer;" variant="flat">
+                                            <v-row class="d-flex align-center">
+                                                <v-avatar color="secondary" size="large">
+                                                    <v-img v-if="item.imagePath" :src="item.imagePath" alt="user"></v-img>
+                                                </v-avatar>
+                                                <strong class="pr-6">{{ item.id }}</strong> {{ item.data }}
+                                            </v-row>
+                                            <div class="d-flex justify-end">
+                                                <v-btn class="justify-end mr-2" color="primary" variant=""
+                                                    prepend-icon="mdi-arrow-right-thin">
+                                                </v-btn>
                                             </div>
-                                            <div class="d-flex flex-row mb-6 ">
-                                                <div>
-                                                    <p class="text-h7 mx-1"> {{ item.data }}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </v-card-text>
+
+                                        </v-card>
+                                    </v-card-text>
+                                </v-col>
+                                <v-col cols="6">
+
+                                    <v-card class="pa-6">
+                                        <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
+                                            :loadTilesWhileInteracting="true">
+                                            <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom"
+                                                :projection="projection" />
+
+                                            <ol-tile-layer>
+                                                <ol-source-osm />
+                                            </ol-tile-layer>
+
+                                            <ol-vector-layer>
+                                                <ol-source-vector>
+
+                                                    <ol-feature v-if="currentDeviceLogs.length > 0"
+                                                        v-for="item in currentDeviceLogs">
+                                                        <ol-geom-point
+                                                            :coordinates="item.position.split(',')"></ol-geom-point>
+                                                        <ol-style>
+                                                            <ol-style-circle :radius="radius">
+                                                                <ol-style-fill :color="fillColor"></ol-style-fill>
+                                                                <ol-style-stroke :color="strokeColor"
+                                                                    :width="strokeWidth"></ol-style-stroke>
+                                                            </ol-style-circle>
+                                                            <ol-style-text :text="item.data">
+                                                                <ol-style-fill color="white"></ol-style-fill>
+                                                            </ol-style-text>
+                                                        </ol-style>
+                                                    </ol-feature>
+
+
+                                                    <ol-feature v-for="item in currentDeviceLogs">
+                                                        <ol-geom-point :coordinates="[item.position]"></ol-geom-point>
+                                                        <ol-style>
+                                                            <ol-style-circle :radius="radius">
+                                                                <ol-style-fill :color="fillColor"></ol-style-fill>
+                                                                <ol-style-stroke :color="strokeColor"
+                                                                    :width="strokeWidth"></ol-style-stroke>
+                                                            </ol-style-circle>
+                                                        </ol-style>
+
+                                                    </ol-feature>
+                                                </ol-source-vector>
+
+                                            </ol-vector-layer>
+                                        </ol-map>
+                                    </v-card>
+                                </v-col>
+                            </v-row>
+
+
                         </v-card>
                     </v-col>
                 </v-row>
@@ -52,6 +116,7 @@ import axios from "axios";
 import { computed, ref } from 'vue';
 import { onBeforeMount } from 'vue'
 import { useRoute, useRouter } from "vue-router";
+import mapa from '../mapa.vue'
 
 import { useAppStore, useLoadingStore } from '@/store/index';
 
@@ -72,6 +137,35 @@ const idViewGroup = computed(() => $route.params.id)
 const idCurrentDevice = computed(() => $route.params.idDevice)
 
 const currentDeviceLogs = ref([]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+const center = ref([-3.7025600, 40.4165000]);
+const projection = ref("EPSG:4326");
+const zoom = ref(10);
+const rotation = ref(0);
+const radius = ref(10);
+const strokeWidth = ref(4);
+const strokeColor = ref("blue");
+const fillColor = ref("blue");
+
+
+
+
+
+
+
+
 
 
 onBeforeMount(async () => {
@@ -132,6 +226,10 @@ const getLogsByDevice = async () => {
         console.error(err);
         throw err;
     }
+}
+
+const toUserPage = () => {
+  $router.go(-1)
 }
 
 </script>
