@@ -44,11 +44,10 @@
                                             </v-row>
                                             {{item.eventTimeStamp}}
                                             <div class="d-flex justify-end">
-                                                <v-btn class="justify-end mr-2" color="primary" variant=""
+                                                <v-btn class="justify-end mr-2" color="primary" variant="" @click="toLogDetail(item.id)"
                                                     prepend-icon="mdi-arrow-right-thin">
                                                 </v-btn>
                                             </div>
-
                                         </v-card>
                                     </v-card-text>
                                 </v-col>
@@ -231,6 +230,10 @@ const getLogsByDevice = async () => {
 
 const toUserPage = () => {
   $router.go(-1)
+}
+
+const toLogDetail = (id)=>{
+    $router.push(`/${idGroup.value}/groups/groupDetail/${idViewGroup.value}/logs/${currentDevice.value[0].id}/log/${id}`);
 }
 
 </script>
