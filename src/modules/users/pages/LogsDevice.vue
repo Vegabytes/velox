@@ -42,6 +42,7 @@
                                                 </v-avatar>
                                                 <strong class="pr-6">{{ item.id }}</strong> {{ item.data }}
                                             </v-row>
+                                            {{item.eventTimeStamp}}
                                             <div class="d-flex justify-end">
                                                 <v-btn class="justify-end mr-2" color="primary" variant=""
                                                     prepend-icon="mdi-arrow-right-thin">
