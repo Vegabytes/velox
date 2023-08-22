@@ -4,7 +4,7 @@ const router = express.Router();
 import { login, isAuthenticated, logout } from '../controllers/authController.js'
 import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createUserGroup, associateUserUserGroup, getGroupByGroupIdByUserId } from '../controllers/groupController.js'
 import { getAllUsers, createUser, getGroupUsers, getNotAssignedUser } from '../controllers/usersController.js'
-import { getLogsByDeviceId } from '../controllers/logsController.js'
+import { getLogsByDeviceId,getLogDetail } from '../controllers/logsController.js'
 import { getDevicesByUserId } from '../controllers/devicesController.js'
 
 
@@ -32,6 +32,7 @@ router.get('/users/notAssignedUser/:id', getNotAssignedUser)
 
 //Logs
 router.get('/logs/device/:id', getLogsByDeviceId)
+router.get('/log/:id',getLogDetail)
 
 //Devices
 router.get('/devices/user/:id', getDevicesByUserId)
