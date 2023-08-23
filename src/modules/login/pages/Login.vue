@@ -5,10 +5,6 @@
     </v-row>
     <v-col v-if="!isLoading">
       <v-form v-model="valid" @submit.prevent>
-        <v-row class="d-flex mx-auto my-6 justify-center text-h2 font-weight-thin">
-          <!--          <h2 class="text-grey-lighten-1 text-h1">Velocikaptor</h2> -->
-        </v-row>
-        
     <v-img
       class="mx-auto my-6"
       max-width="100"
@@ -17,7 +13,7 @@
   </v-img>
 
         <v-row class="d-flex justify-center">
-          <v-card elevation="8" min-width="448" rounded="lg" color="secondary" :loading="loading">
+          <v-card elevation="8" min-width="300" rounded="lg" color="secondary" :loading="loading">
             <v-img :src="appStore.currentGroup.path" class="align-end"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" height="120px" cover>
               <!--         <v-card-item>
