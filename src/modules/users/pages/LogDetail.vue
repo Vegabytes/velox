@@ -14,18 +14,72 @@
                         </v-avatar>
 
                         <v-card-item>
-                            <v-card-title>{{ appStore.currentLog.data }}</v-card-title>
+                            <v-card-title>Dispositivo 1</v-card-title>
                             <v-card-subtitle></v-card-subtitle>
                         </v-card-item>
+
                     </v-row>
                     <v-btn class="justify-end mr-2" color="primary" variant="" prepend-icon="mdi-arrow-left-thin"
                         @click="toUserPage()">
                         Volver a vista principal</v-btn>
                 </v-row>
 
+                <v-divider></v-divider>
 
-                <v-card>
-                    {{ appStore.currentLog  }}
+                <v-card class="mt-2" variant="flat">
+
+
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <v-card-item class="mb-2">
+                                <v-card-title>{{ appStore.currentLog.data }}</v-card-title>
+                                <v-card-subtitle>{{ 'Loren ipsum' }}</v-card-subtitle>
+                            </v-card-item>
+
+                        <v-card-text class="ma-3">
+                            <v-row>
+                                <strong>
+                                    Fecha hora infracción:</strong> {{  }}</v-row>
+                            <v-row>
+                                <strong>Pos GPS: </strong>
+                                {{  }}</v-row>
+                            <v-row>
+                                <strong>Velocidad de la vía: </strong>
+                                {{  }}</v-row>
+                            <v-row>
+                                <strong>Velocidad detectada:</strong>
+                                {{  }}</v-row>
+                            <v-row>
+                                <strong>Matrícula infracción: </strong>
+                                {{  }}</v-row>
+                            <v-row>
+                                <strong>ID Agente: </strong>
+                                {{  }}
+                            </v-row>
+                            <v-row class="d-flex align-start">
+                                <v-carousel
+                                    :continuous="false"
+                                    :show-arrows="false"
+                                    hide-delimiter-background
+                                    delimiter-icon="mdi-square"
+                                    height="300"
+                                    >
+                                    <v-carousel-item
+                                        v-for="(slide, i) in [1,2,3,4,5]"
+                                        :key="i"
+                                    >
+                                        <v-img src="../../../../images/1/1.jpg"/>
+                                    </v-carousel-item>
+                                    </v-carousel>
+                            </v-row>
+                        </v-card-text>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            MAPA
+                        </v-col>
+                    </v-row>
+
+                    
                 </v-card>
 
 
@@ -63,8 +117,9 @@ onBeforeMount(async () => {
 
         if (!appStore.currentGroup || !appStore.currentGroup.id) {
             await getGroupData();
-            await getLogData();
         }
+
+        await getLogData();
 
     } catch (error) {
         console.error(error);
@@ -79,7 +134,7 @@ const getLogData =  async () => {
 
     try {
         const res = await axios.get(`${url}/log/${idLog.value}`)
-        appStore.currentLog = res.data;
+        appStore.currentLog = res.data[0];
     }
     catch (err) {
         console.error(err);
