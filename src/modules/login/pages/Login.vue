@@ -157,11 +157,11 @@ const login = async () => {
 
 <style scoped>
 @import "@fontsource/poppins";
-@import "@fontsource/poppins/200.css";
+/* @import "@fontsource/poppins/200.css";
 
 @import "@fontsource/poppins";
 @import "@fontsource/poppins/400.css";
-@import "@fontsource/poppins/400-italic.css";
+@import "@fontsource/poppins/400-italic.css"; */
 
 
 
