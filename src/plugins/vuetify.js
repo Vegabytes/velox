@@ -39,7 +39,7 @@ const SpaghettiMonster = '#F2CD88'
 const customLightTheme = {
   dark: false,
   colors: {
-    background: '#E3F2FD',
+    background: '#FFFFFF',
     surface: '#FFFFFF',
     //primary: MaastrichtBlue,
     primary: '#2e1569',
