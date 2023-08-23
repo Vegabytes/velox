@@ -7,6 +7,27 @@
                 <v-card-subtitle class="text-white text-h5 mb-4" v-text="currentGroup.description"></v-card-subtitle>
             </v-img>
             <v-card-text>
+                <v-row class="pa-5 d-flex justify-center align-center">
+                    <v-row class="py-6">
+                        <v-avatar class="ma-3" size="x-large">
+                            
+                        </v-avatar>
+
+                        <v-card-item>
+                            <v-card-title>cbvxcvbxcvb</v-card-title>
+                            <v-card-subtitle>xcvbxcvbx</v-card-subtitle>
+                        </v-card-item>
+                    </v-row>
+                    <v-btn class="justify-end mr-2" color="primary" variant="" prepend-icon="mdi-arrow-left-thin"
+                        @click="toUserPage()">
+                        Volver a vista principal</v-btn>
+                </v-row>
+
+
+                <v-card>
+                    {{ appStore.currentLog  }}
+                </v-card>
+
 
             </v-card-text>
         </v-card>
@@ -18,7 +39,6 @@ import axios from "axios";
 import { computed, ref } from 'vue';
 import { onBeforeMount } from 'vue'
 import { useRoute, useRouter } from "vue-router";
-import mapa from '../mapa.vue'
 
 import { useAppStore, useLoadingStore } from '@/store/index';
 
@@ -28,18 +48,11 @@ const appStore = useAppStore()
 const loadingStore = useLoadingStore();
 
 const currentGroup = computed(() => appStore.currentGroup);
-const userGroups = computed(() => appStore.userGroups);
-const userGroupsCurrent = computed(() => userGroups.value.filter(({ id }) => id == idViewGroup.value))
-const listDevicesByUser = computed(() => !!userGroupsCurrent.value.length ? userGroupsCurrent.value[0].devices : []);
-const currentDevice = computed(() => listDevicesByUser.value.filter(({ id }) => id == idCurrentDevice.value));
-
 
 const idGroup = computed(() => $route.params.idGroup)
-const idViewGroup = computed(() => $route.params.id)
 const idCurrentDevice = computed(() => $route.params.idDevice)
 
-const currentDeviceLogs = ref([]);
-
+const idLog = computed(()=>$route.params.idLog)
 
 onBeforeMount(async () => {
     loadingStore.setLoading(true);
@@ -50,9 +63,9 @@ onBeforeMount(async () => {
 
         if (!appStore.currentGroup || !appStore.currentGroup.id) {
             await getGroupData();
+            await getLogData();
         }
-        await getUserGroups();
-        await getLogsByDevice();
+
     } catch (error) {
         console.error(error);
     } finally {
@@ -61,12 +74,12 @@ onBeforeMount(async () => {
 });
 
 
-const getUserGroups = async () => {
-    const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+const getLogData =  async () => {
+   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
     try {
-        const res = await axios.get(`${url}/groups/${idGroup.value}/user/${appStore.getCurrentUser.id}`)
-        appStore.userGroups = res.data;
+        const res = await axios.get(`${url}/log/${idLog.value}`)
+        appStore.currentLog = res.data;
     }
     catch (err) {
         console.error(err);
@@ -88,21 +101,8 @@ const getGroupData = async () => {
     }
 }
 
-const getLogsByDevice = async () => {
-    const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
-
-    try {
-        const res = await axios.get(`${url}/logs/device/${idCurrentDevice.value}`)
-        currentDeviceLogs.value = res.data;
-    }
-    catch (err) {
-        console.error(err);
-        throw err;
-    }
-}
-
 const toUserPage = () => {
-  $router.go(-1)
+    $router.go(-1)
 }
 
 </script>

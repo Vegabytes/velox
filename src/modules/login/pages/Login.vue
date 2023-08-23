@@ -11,7 +11,7 @@
         
     <v-img
       class="mx-auto my-6"
-      max-width="150"
+      max-width="100"
       src="@/assets/logo.png"
     >
   </v-img>
