@@ -7,7 +7,7 @@
       <v-form v-model="valid" @submit.prevent>
     <v-img
       class="mx-auto my-6"
-      max-width="100"
+      max-width="80%"
       src="@/assets/logo.png"
     >
   </v-img>
