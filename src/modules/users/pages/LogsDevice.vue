@@ -31,27 +31,33 @@
                             <v-divider></v-divider>
 
                             <v-row>
-                                <v-col cols="6">
-                                    <v-card-text>
-                                        <v-card v-for="item in currentDeviceLogs"
-                                            class="d-flex pa-2 mb-2 align-center" @click="goToLogsDevice(item)"
-                                            style="cursor: pointer;" variant="flat">
-                                            <v-row class="d-flex align-center">
-                                                <v-avatar color="secondary" size="large">
-                                                    <v-img v-if="item.imagePath" :src="item.imagePath" alt="user"></v-img>
+                                <v-col cols="12" md="6">
+                                    <v-row>
+                                        <v-data-table color="white" hover="true" v-model="selected" v-model:items-per-page="itemsPerPage" :headers="headers" height="400px"
+                                            :items="currentDeviceLogs" item-value="name" class="elevation-1">
+                                            <template v-slot:item="{ item }">
+                                            <tr>
+                                                <td>
+                                                <v-avatar color="secondary" size="small">
+                                                    <v-img :src="item.columns.path" alt="John"></v-img>
                                                 </v-avatar>
-                                                <strong class="pr-6">{{ item.id }}</strong> {{ item.data }}
-                                            </v-row>
-                                            {{item.eventTimeStamp}}
-                                            <div class="d-flex justify-end">
-                                                <v-btn class="justify-end mr-2" color="primary" variant="" @click="toLogDetail(item.id)"
-                                                    prepend-icon="mdi-arrow-right-thin">
-                                                </v-btn>
-                                            </div>
-                                        </v-card>
-                                    </v-card-text>
+                                                </td>
+                                                <td>{{ item.columns.id }}</td>
+                                                <td>{{ item.columns.data }}</td>
+                                                <td>{{ item.columns.eventTimeStamp }}</td>
+                                                <td>
+                                                    <v-row class="d-flex justify-center">
+                                                        <v-btn class="justify-end mr-2" color="primary" variant="" @click="toLogDetail(item.columns.id)"
+                                                            prepend-icon="mdi-arrow-right-thin">
+                                                        </v-btn>
+                                                    </v-row>
+                                                </td>
+                                            </tr>
+                                            </template>
+                                        </v-data-table>
+                                        </v-row>
                                 </v-col>
-                                <v-col cols="6">
+                                <v-col cols="12" md="6">
 
                                     <v-card class="pa-6">
                                         <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
@@ -116,7 +122,7 @@ import axios from "axios";
 import { computed, ref } from 'vue';
 import { onBeforeMount } from 'vue'
 import { useRoute, useRouter } from "vue-router";
-import mapa from '../mapa.vue'
+import { VDataTable } from 'vuetify/labs/VDataTable'
 
 import { useAppStore, useLoadingStore } from '@/store/index';
 
@@ -137,6 +143,15 @@ const idViewGroup = computed(() => $route.params.id)
 const idCurrentDevice = computed(() => $route.params.idDevice)
 
 const currentDeviceLogs = ref([]);
+
+let itemsPerPage = ref(10)
+const headers = [
+  { title: '', align: 'start', sortable: false, key: 'path', },
+  { title: 'Id', align: 'start', key: 'id', },
+  { title: 'Log', align: 'start', key: 'data' },
+  { title: 'Fecha', align: 'start', key: 'eventTimeStamp' },
+  { title: 'Detalle', align: 'center', sortable: false, },
+]
 
 
 

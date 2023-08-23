@@ -8,13 +8,13 @@
         <v-row class="d-flex mx-auto my-6 justify-center text-h2 font-weight-thin">
           <!--          <h2 class="text-grey-lighten-1 text-h1">Velocikaptor</h2> -->
         </v-row>
-        <!--
+        
     <v-img
       class="mx-auto my-6"
-      max-width="228"
-      src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg"
+      max-width="150"
+      src="@/assets/logo.png"
     >
-  </v-img>-->
+  </v-img>
 
         <v-row class="d-flex justify-center">
           <v-card elevation="8" min-width="448" rounded="lg" color="secondary" :loading="loading">
