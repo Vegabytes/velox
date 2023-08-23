@@ -14,8 +14,8 @@
                         </v-avatar>
 
                         <v-card-item>
-                            <v-card-title>cbvxcvbxcvb</v-card-title>
-                            <v-card-subtitle>xcvbxcvbx</v-card-subtitle>
+                            <v-card-title>{{ appStore.currentLog.data }}</v-card-title>
+                            <v-card-subtitle></v-card-subtitle>
                         </v-card-item>
                     </v-row>
                     <v-btn class="justify-end mr-2" color="primary" variant="" prepend-icon="mdi-arrow-left-thin"
