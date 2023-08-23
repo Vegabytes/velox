@@ -1,5 +1,5 @@
 <template>
-  <v-container class="h-screen d-flex justify-center">
+  <v-container class="d-flex justify-center">
     <v-row v-if="isLoading" class="text-h3 pa-5 mt-10 mb-10 font-weight-thin d-flex justify-center align-center">
       <v-progress-circular :size="100" :width="10" color="orange" indeterminate></v-progress-circular>
     </v-row>
