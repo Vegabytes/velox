@@ -1,6 +1,18 @@
 import connection from '../database/db.js';
 import 'dotenv/config'
 
+export const getDevice = async (req,res)=>{
+  try{
+    const { id } = req.params;
+    connection.query('SELECT * FROM Devices where id = ?', [id], (error, results) => {
+      if (error) res.status(400).send(error)
+      res.status(200).send(results)
+    });
+  }catch(error){
+    res.status(500).send(error)
+  }
+}
+
 
 export const getDevicesByUserId = async (req, res) => {
   const { id } = req.params;
