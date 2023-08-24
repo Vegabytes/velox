@@ -32,30 +32,37 @@
 
                             <v-row>
                                 <v-col cols="12" md="6">
+
                                     <v-row>
-                                        <v-data-table color="white" hover="true" v-model="selected" v-model:items-per-page="itemsPerPage" :headers="headers" height="400px"
-                                            :items="currentDeviceLogs" item-value="name" class="elevation-1">
+                                        <v-data-table v-model:page="page" :headers="headers" :items="currentDeviceLogs" hover="true"
+                                            :items-per-page="50" hide-default-footer class="elevation-1">
                                             <template v-slot:item="{ item }">
-                                            <tr>
-                                                <td>
-                                                <v-avatar color="secondary" size="small">
-                                                    <v-img :src="item.columns.path" alt="John"></v-img>
-                                                </v-avatar>
-                                                </td>
-                                                <td>{{ item.columns.id }}</td>
-                                                <td>{{ item.columns.data }}</td>
-                                                <td>{{ item.columns.eventTimeStamp }}</td>
-                                                <td>
-                                                    <v-row class="d-flex justify-center">
-                                                        <v-btn class="justify-end mr-2" color="primary" variant="" @click="toLogDetail(item.columns.id)"
-                                                            prepend-icon="mdi-arrow-right-thin">
-                                                        </v-btn>
-                                                    </v-row>
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td>
+                                                        <v-avatar color="secondary" size="small">
+                                                            <v-img :src="item.columns.path" alt="John"></v-img>
+                                                        </v-avatar>
+                                                    </td>
+                                                    <td>{{ item.columns.id }}</td>
+                                                    <td>{{ item.columns.data }}</td>
+                                                    <td>{{ item.columns.eventTimeStamp }}</td>
+                                                    <td>
+                                                        <v-row class="d-flex justify-center">
+                                                            <v-btn class="justify-end mr-2" color="primary" variant=""
+                                                                @click="toLogDetail(item.columns.id)"
+                                                                prepend-icon="mdi-arrow-right-thin">
+                                                            </v-btn>
+                                                        </v-row>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                            <template v-slot:bottom>
+                                                <div class="text-center pt-2">
+                                                    <v-pagination v-model="page" :length="pageCount"></v-pagination>
+                                                </div>
                                             </template>
                                         </v-data-table>
-                                        </v-row>
+                                    </v-row>
                                 </v-col>
                                 <v-col cols="12" md="6">
 
@@ -144,13 +151,14 @@ const idCurrentDevice = computed(() => $route.params.idDevice)
 
 const currentDeviceLogs = ref([]);
 
-let itemsPerPage = ref(10)
+const page = ref(1)
+const itemsPerPage = ref(5)
 const headers = [
-  { title: '', align: 'start', sortable: false, key: 'path', },
-  { title: 'Id', align: 'start', key: 'id', },
-  { title: 'Log', align: 'start', key: 'data' },
-  { title: 'Fecha', align: 'start', key: 'eventTimeStamp' },
-  { title: 'Detalle', align: 'center', sortable: false, },
+    { title: '', align: 'start', sortable: false, key: 'path', },
+    { title: 'Id', align: 'start', key: 'id', },
+    { title: 'Log', align: 'start', key: 'data' },
+    { title: 'Fecha', align: 'start', key: 'eventTimeStamp' },
+    { title: 'Detalle', align: 'center', sortable: false, },
 ]
 
 
@@ -244,10 +252,10 @@ const getLogsByDevice = async () => {
 }
 
 const toUserPage = () => {
-  $router.go(-1)
+    $router.go(-1)
 }
 
-const toLogDetail = (id)=>{
+const toLogDetail = (id) => {
     $router.push(`/${idGroup.value}/groups/groupDetail/${idViewGroup.value}/logs/${currentDevice.value[0].id}/log/${id}`);
 }
 
