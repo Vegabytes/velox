@@ -7,17 +7,27 @@
         <v-card-subtitle class="text-white text-h5 mb-4" v-text="currentGroup.description"></v-card-subtitle>
       </v-img>
       <v-card-text>
+
+
+
+        <v-row class="pa-5 d-flex justify-center align-center">
+          <v-row class="py-6">
+            <v-card-item>
+              <v-card-title>
+                <span class="text-h5 font-weight-bold">Mis subgrupos de dispositivos</span>
+              </v-card-title>
+            </v-card-item>
+          </v-row>
+          <!--<v-btn class="justify-end mr-2" color="primary" variant="" prepend-icon="mdi-arrow-left-thin"
+            @click="toUserPage()">
+            Volver a vista principal</v-btn>-->
+        </v-row>
+
+        <v-divider></v-divider>
+
         <v-row>
           <v-col cols="12">
             <v-card class="mb-8" variant="flat">
-              <v-card-title>
-                <v-row class="py-2">
-                  <v-col cols="12">
-                    <p class="text-h5 font-weight-bold">Mis subgrupos de dispositivos</p>
-                  </v-col>
-                </v-row>
-              </v-card-title>
-              <v-divider></v-divider>
               <v-card-text>
                 <div v-for="item in userGroups">
                   <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToGroupDetail(item)">

@@ -5,7 +5,7 @@ import { login, isAuthenticated, logout } from '../controllers/authController.js
 import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createUserGroup, associateUserUserGroup, getGroupByGroupIdByUserId } from '../controllers/groupController.js'
 import { getAllUsers, createUser, getGroupUsers, getNotAssignedUser } from '../controllers/usersController.js'
 import { getLogsByDeviceId,getLogDetail } from '../controllers/logsController.js'
-import { getDevicesByUserId } from '../controllers/devicesController.js'
+import { getDevicesByUserId,getDevice } from '../controllers/devicesController.js'
 
 
 router.get('/', (req, res) => {
@@ -36,5 +36,6 @@ router.get('/log/:id',getLogDetail)
 
 //Devices
 router.get('/devices/user/:id', getDevicesByUserId)
+router.get('/device/:id',getDevice)
 
 export default router;

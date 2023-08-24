@@ -38,11 +38,6 @@
                                             :items-per-page="50" hide-default-footer class="elevation-1">
                                             <template v-slot:item="{ item }">
                                                 <tr>
-                                                    <td>
-                                                        <v-avatar color="secondary" size="small">
-                                                            <v-img :src="item.columns.path" alt="John"></v-img>
-                                                        </v-avatar>
-                                                    </td>
                                                     <td>{{ item.columns.id }}</td>
                                                     <td>{{ item.columns.data }}</td>
                                                     <td>{{ item.columns.eventTimeStamp }}</td>
@@ -154,23 +149,11 @@ const currentDeviceLogs = ref([]);
 const page = ref(1)
 const itemsPerPage = ref(5)
 const headers = [
-    { title: '', align: 'start', sortable: false, key: 'path', },
     { title: 'Id', align: 'start', key: 'id', },
     { title: 'Log', align: 'start', key: 'data' },
     { title: 'Fecha', align: 'start', key: 'eventTimeStamp' },
     { title: 'Detalle', align: 'center', sortable: false, },
 ]
-
-
-
-
-
-
-
-
-
-
-
 
 
 const center = ref([-3.7025600, 40.4165000]);
@@ -181,14 +164,6 @@ const radius = ref(10);
 const strokeWidth = ref(4);
 const strokeColor = ref("blue");
 const fillColor = ref("blue");
-
-
-
-
-
-
-
-
 
 
 onBeforeMount(async () => {
@@ -223,7 +198,6 @@ const getUserGroups = async () => {
         throw err;
     }
 }
-
 
 const getGroupData = async () => {
     const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
