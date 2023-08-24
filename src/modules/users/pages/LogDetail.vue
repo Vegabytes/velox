@@ -13,7 +13,7 @@
                 <v-row class="pa-5 d-flex justify-center align-center">
                     <v-row class="py-6">
                         <v-avatar class="ma-3" size="x-large">
-                            <v-img cover :src="appStore.currentDevice.path"></v-img>
+                            <v-img v-if="appStore.currentDevice" cover :src="appStore.currentDevice.path"></v-img>
                         </v-avatar>
 
                         <v-card-item>
@@ -33,10 +33,10 @@
                         <v-col cols="12" md="6">
                             <v-card-item class="mb-2">
                                 <v-card-title>
-                                    <span class="text-h5 font-weight-bold">{{ appStore.currentLog.data }}</span></v-card-title>
+                                    <span class="text-h5 font-weight-bold">{{ appStore.currentLog.data
+                                    }}</span></v-card-title>
                                 <v-card-subtitle>{{ 'Loren ipsum' }}</v-card-subtitle>
                             </v-card-item>
-
 
                             <v-card variant="tonal" class="pa-8">
                                 <v-row class="mb-2">
@@ -60,20 +60,31 @@
                                 </v-row>
                             </v-card>
 
+                            <v-card>
+
+                                <v-row class="my-4">
+                                    <v-card class="imagenRadar rounded-l d-flex justify-center ma-4"
+                                        v-for="(slide, i) in [1, 2, 3, 4, 5]" :key="i">
+                                        <v-img :src="`../../../../images/${appStore.currentDevice.id}/${i + 1}.jpg`"
+                                            cover @click="selectPhoto(i)"/>
+                                    </v-card>
+                                </v-row>
+
+                            </v-card>
+
                             <v-card class="pa-8">
-                                <v-carousel :continuous="false" hide-delimiters
-                                        delimiter-icon="mdi-square" height="300">
-                                        <v-carousel-item v-for="(slide, i) in [1, 2, 3, 4, 5]" :key="i">
-                                            <v-img src="../../../../images/1/1.jpg" />
-                                        </v-carousel-item>
-                                    </v-carousel>
+                                <v-carousel v-model="selectedPhoto" hide-delimiters>
+                                    <v-carousel-item v-for="(slide, i) in [1, 2, 3, 4, 5]" :key="i" cover>
+                                        <v-img :src="`../../../../images/${appStore.currentDevice.id}/${i + 1}.jpg`" />
+                                    </v-carousel-item>
+                                </v-carousel>
                             </v-card>
                         </v-col>
                         <v-col cols="12" md="6">
                             <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
                                 :loadTilesWhileInteracting="true">
-                                <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom"
-                                    :projection="projection" />
+                                <ol-view ref="view" :center="appStore.currentLog.position.split(',')" :rotation="rotation"
+                                    :zoom="zoom" :projection="projection" />
 
                                 <ol-tile-layer>
                                     <ol-source-osm />
@@ -141,11 +152,11 @@ const loadingStore = useLoadingStore();
 const idGroup = computed(() => $route.params.idGroup)
 const idCurrentDevice = computed(() => $route.params.idDevice)
 const idLog = computed(() => $route.params.idLog)
+const idDevice = computed(() => $route.params.idDevice)
 
 const currentGroup = computed(() => appStore.currentGroup);
 const userGroups = computed(() => appStore.userGroups);
 
-const center = ref([-3.7025600, 40.4165000]);
 const projection = ref("EPSG:4326");
 const zoom = ref(10);
 const rotation = ref(0);
@@ -153,6 +164,8 @@ const radius = ref(10);
 const strokeWidth = ref(4);
 const strokeColor = ref("blue");
 const fillColor = ref("blue");
+
+const selectedPhoto = ref(0)
 
 onBeforeMount(async () => {
     loadingStore.setLoading(true);
@@ -193,7 +206,7 @@ const getDeviceData = async () => {
     const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
     try {
-        const res = await axios.get(`${url}/device/${idLog.value}`)
+        const res = await axios.get(`${url}/device/${idDevice.value}`)
         appStore.currentDevice = res.data[0];
     }
     catch (err) {
@@ -221,4 +234,16 @@ const toUserPage = () => {
     $router.go(-1)
 }
 
+const selectPhoto = (index) => {
+    selectedPhoto.value = index
+}
+
 </script>
+
+<style scope>
+.imagenRadar {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+</style>
