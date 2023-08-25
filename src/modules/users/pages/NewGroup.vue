@@ -38,7 +38,7 @@
             <v-row>
               <v-col cols="12">
                 <v-file-input accept="image/*" label="Elige una imagen para el grupo" v-model="userStore.newGroup.path"
-                  @update:modelValue="(file) => subirArchivo(file)"></v-file-input>
+                  @update:modelValue="(file) => adjuntarArchivo(file)"></v-file-input>
               </v-col>
             </v-row>
             <v-row>
@@ -128,7 +128,6 @@ const adjuntarArchivo = files => {
 
 
 const subirArchivo = async (files) => {
-  if (!!files.length) file.value = files[0];
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000';
   const config = {
     headers: {
