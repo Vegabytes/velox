@@ -1,10 +1,8 @@
 <template>
-  <v-container>
+  <v-container class="pa-0">
     <v-card variant="flat" v-if="!loadingStore.isLoading">
       <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
       <v-card-text>
-
-
         <v-row class="pa-5 d-flex justify-center align-center">
           <v-row class="py-6">
             <v-card-item>
