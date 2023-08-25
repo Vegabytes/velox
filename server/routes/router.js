@@ -4,6 +4,8 @@ import multer from 'multer'
 import sharp from 'sharp'
 import fs from 'fs'
 import path from 'path'
+import { v4 as uuidv4 } from 'uuid';
+
 
 import { login, isAuthenticated, logout } from '../controllers/authController.js'
 import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createGroup, associateUserUserGroup, getGroupByGroupIdByUserId, uploadImage } from '../controllers/groupController.js'
@@ -16,17 +18,17 @@ const MAX_SIZE = 10000000;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './images')
+    cb(null, './images/groups')
   },
   filename: (req, file, cb) => {
+
     console.log(file);
-    cb(null, Date.now() + path.extname(file.originalname))
+    cb(null, uuidv4() + path.extname(file.originalname))
   }
 });
 const upload =
   multer({
     storage: storage,
-    /*     dest: './uploads/', */
     limits: {
       fileSize: MAX_SIZE
     }

@@ -1,15 +1,8 @@
 <template>
-    <v-container>
+    <v-container class="pa-0">
         <v-card variant="flat" v-if="!loadingStore.isLoading">
-            <v-img :src="currentGroup.path" class="align-end" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                height="150px" cover>
-                <v-card-title class="text-white text-h2" v-text="currentGroup.name"></v-card-title>
-                <v-card-subtitle class="text-white text-h5 mb-4" v-text="currentGroup.description"></v-card-subtitle>
-            </v-img>
+            <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description"/>
             <v-card-text>
-
-
-
                 <v-row class="pa-5 d-flex justify-center align-center">
                     <v-row class="py-6">
                         <v-avatar class="ma-3" size="x-large">
@@ -21,9 +14,9 @@
                             <v-card-subtitle>{{ appStore.currentDevice.description }}</v-card-subtitle>
                         </v-card-item>
                     </v-row>
-                    <v-btn class="justify-end mr-2" color="primary" variant="" prepend-icon="mdi-arrow-left-thin"
-                        @click="toUserPage()">
-                        Volver a vista principal</v-btn>
+
+                    <veloxBtnReturn/>
+
                 </v-row>
 
                 <v-divider></v-divider>
@@ -141,8 +134,9 @@ import axios from "axios";
 import { computed, ref } from 'vue';
 import { onBeforeMount } from 'vue'
 import { useRoute, useRouter } from "vue-router";
-
 import { useAppStore, useLoadingStore } from '@/store/index';
+import veloxHeader from '@/components/veloxHeader.vue'
+import veloxBtnReturn from '@/components/veloxBtnReturn.vue'
 
 const $router = useRouter();
 const $route = useRoute();
@@ -231,10 +225,6 @@ const getGroupData = async () => {
         console.error(err);
         throw err;
     }
-}
-
-const toUserPage = () => {
-    $router.go(-1)
 }
 
 const selectPhoto = (index) => {
