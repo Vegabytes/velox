@@ -158,22 +158,31 @@ const getGroupInfoByParent = ({ groupId }, parentGroupId) => {
 };
 
 
-export const uploadImage = async (req, res) => {
-  console.log(req.body);
-}
 
 export const createGroup = async (req, res) => {
+  const { name, description, parentGroupId, status, createdBy, path } = req.body;
+
   try {
-    const { name, description, parentGroupId, status, createdBy, path } = req.body;
-    connection.query('INSERT INTO UserGroups SET ?', { name, description, parentGroupId, status, createdBy, path }, (error, results) => {
-      if (error) res.status(400).send(error);
-      res.status(200).send(results)
-    });
+    await createGroupService(name, description, parentGroupId, status, createdBy, path);
+
+    res.status(200).send(req.body)
+
+
   } catch (error) {
     res.status(500).send(error)
   }
-
 }
+
+const createGroupService = (name, description, parentGroupId, status, createdBy, path) => {
+  return new Promise((resolve, reject) => {
+    connection.query('INSERT INTO UserGroups SET ?', { name, description, parentGroupId, status, createdBy, path }, (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(results);
+    });
+  });
+};
 
 
 export const associateUserUserGroup = async (req, res) => {
@@ -186,8 +195,8 @@ export const associateUserUserGroup = async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
   }
-
 }
+
 
 
 const getDevicesGroupsByUserGroupId = ({ id }) => {

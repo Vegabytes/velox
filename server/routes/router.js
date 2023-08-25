@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 import { login, isAuthenticated, logout } from '../controllers/authController.js'
-import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createGroup, associateUserUserGroup, getGroupByGroupIdByUserId, uploadImage } from '../controllers/groupController.js'
+import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createGroup, associateUserUserGroup, getGroupByGroupIdByUserId } from '../controllers/groupController.js'
 import { getAllUsers, createUser, getGroupUsers, getNotAssignedUser } from '../controllers/usersController.js'
 import { getLogsByDeviceId, getLogDetail } from '../controllers/logsController.js'
 import { getDevicesByUserId, getDevice } from '../controllers/devicesController.js'
@@ -62,7 +62,6 @@ router.get('/groups/:groupId/user/:userId', getGroupByGroupIdByUserId)
 router.get('/groups/group/:id', getGroupByGrupoId)
 router.get('/groups/user/:id', getGroupByUserId)
 router.post('/groups/create', createGroup)
-/* router.post('/groups/upload', uploadImage) */
 router.post('/groups/group/user', associateUserUserGroup)
 
 //Users

@@ -28,7 +28,7 @@ app.set('port', process.env.PORT || 5000);
 
 app.use(express.static('public'));
 app.use('/images', express.static('images'));
-app.use('/uploads', express.static('uploads'));
+/* app.use('/uploads', express.static('uploads')); */
 
 
 

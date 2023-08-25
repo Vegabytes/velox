@@ -35,8 +35,8 @@
                 <div v-for="item in userGroups">
                   <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToGroupDetail(item)">
                     <div class="ma-2 pa-2">
-                      <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover
-                        class="rounded-xl"></v-img>
+                      <v-img v-if="item.path" :src="`${path}/${item.path}`" alt="GroupAvatar" height="100px" width="100px"
+                        cover class="rounded-xl"></v-img>
                     </div>
                     <div class="ma-2 pa-2 d-flex flex-column">
                       <div class="d-flex flex-row align-center">
@@ -84,6 +84,8 @@ const idGroup = computed(() => $route.params.idGroup)
 //const isAdmin = computed(() => appStore.getIsAdmin);
 
 const isAdmin = ref(true);
+
+const path = ref(import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000');
 
 onBeforeMount(async () => {
   loadingStore.setLoading(true);

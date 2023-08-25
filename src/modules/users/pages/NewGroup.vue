@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    userStore.newGroup {{ userStore.newGroup }}
 
     <v-form @submit.prevent ref="form">
       <v-card elevation="8" rounded="lg" color="secondary">
@@ -39,7 +38,7 @@
             <v-row>
               <v-col cols="12">
                 <v-file-input accept="image/*" label="Elige una imagen para el grupo" v-model="userStore.newGroup.path"
-                  @update:modelValue="(file) => subirArchivo(file, id)"></v-file-input>
+                  @update:modelValue="(file) => subirArchivo(file)"></v-file-input>
               </v-col>
             </v-row>
             <v-row>
@@ -63,22 +62,24 @@
 
 <script setup>
 
-import { ref, onBeforeMount } from 'vue'
+import { ref, onBeforeMount, computed } from 'vue'
 import { useAppStore, useUsersStore, useLoginStore } from '@/store/index';
 import rules from '../../../support/rules/fieldRules'
 import axios from "axios";
 import UploadImage from '@/modules/common/components/UploadImage'
+import { useRoute, useRouter } from "vue-router";
 
 const appStore = useAppStore()
 const userStore = useUsersStore()
 const loginStore = useLoginStore()
-
-import { useRouter } from "vue-router";
 const $router = useRouter();
 
 const valid = ref(false)
 let visible = ref(false)
-
+const idGroup = computed(() => {
+  loginStore.loggedUser.groupId = ($route.params.idGroup)
+  return $route.params.idGroup
+})
 
 const file = ref();
 
@@ -90,16 +91,20 @@ const toUserPage = () => {
 const createNewGroup = async () => {
   try {
     if (valid.value) {
+      const { file } = await subirArchivo();
 
       const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
       try {
 
-        userStore.createdUser['createdBy'] = appStore.currentUser.id
+        userStore.newGroup['createdBy'] = appStore.currentUser.id;
+        userStore.newGroup['parentGroupId'] = appStore.currentGroup.id;
+        userStore.newGroup['status'] = 1;
+        userStore.newGroup['path'] = `${file.destination}/${file.filename}`;
 
         const res = await axios.post(`${url}/groups/create`, userStore.newGroup)
         const { data } = res;
-        console.log(`Data: ${data} `);
+        toUserPage();
         return data;
 
       } catch (error) {
@@ -117,17 +122,21 @@ onBeforeMount(() => {
     $router.push("error");
   }
 });
+const adjuntarArchivo = files => {
+  if (!!files.length) file.value = files[0];
+}
+
 
 const subirArchivo = async (files) => {
-  file.value = files[0];
+  if (!!files.length) file.value = files[0];
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000';
   const config = {
     headers: {
-      'X-Multipart-Size': file.size,
+      'X-Multipart-Size': file.value.size,
     },
   }
   let formData = new FormData();
-  formData.append("file", file.value,);
+  formData.append("file", file.value);
 
 
   try {
