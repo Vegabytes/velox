@@ -1,11 +1,7 @@
 <template>
     <v-container>
         <v-card variant="flat" v-if="!loadingStore.isLoading">
-            <v-img :src="currentGroup.path" class="align-end" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                height="150px" cover>
-                <v-card-title class="text-white text-h2" v-text="currentGroup.name"></v-card-title>
-                <v-card-subtitle class="text-white text-h5 mb-4" v-text="currentGroup.description"></v-card-subtitle>
-            </v-img>
+            <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description"/>
             <v-card-text>
                 <v-row>
                     <v-col cols="12">
@@ -125,8 +121,8 @@ import { computed, ref } from 'vue';
 import { onBeforeMount } from 'vue'
 import { useRoute, useRouter } from "vue-router";
 import { VDataTable } from 'vuetify/labs/VDataTable'
-
 import { useAppStore, useLoadingStore } from '@/store/index';
+import veloxHeader from '@/components/veloxHeader.vue'
 
 const $router = useRouter();
 const $route = useRoute();
