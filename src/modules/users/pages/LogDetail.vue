@@ -65,8 +65,8 @@
                                 <v-row class="my-4">
                                     <v-card class="imagenRadar rounded-l d-flex justify-center ma-4"
                                         v-for="(slide, i) in [1, 2, 3, 4, 5]" :key="i">
-                                        <v-img :src="`../../../../images/${appStore.currentDevice.id}/${i + 1}.jpg`"
-                                            cover @click="selectPhoto(i)"/>
+                                        <v-img :src="`${url}/images/${appStore.currentDevice.id}/${i + 1}.jpg`" cover
+                                            @click="selectPhoto(i)" />
                                     </v-card>
                                 </v-row>
 
@@ -75,7 +75,7 @@
                             <v-card class="pa-8">
                                 <v-carousel v-model="selectedPhoto" hide-delimiters>
                                     <v-carousel-item v-for="(slide, i) in [1, 2, 3, 4, 5]" :key="i" cover>
-                                        <v-img :src="`../../../../images/${appStore.currentDevice.id}/${i + 1}.jpg`" />
+                                        <v-img :src="`${url}/images/${appStore.currentDevice.id}/${i + 1}.jpg`" />
                                     </v-carousel-item>
                                 </v-carousel>
                             </v-card>
@@ -166,6 +166,9 @@ const strokeColor = ref("blue");
 const fillColor = ref("blue");
 
 const selectedPhoto = ref(0)
+
+
+const url = ref(import.meta.env['VITE_SERVER_BASE_URL']);
 
 onBeforeMount(async () => {
     loadingStore.setLoading(true);
