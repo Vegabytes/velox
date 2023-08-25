@@ -11,9 +11,7 @@
               </v-card-title>
             </v-card-item>
           </v-row>
-          <v-btn class="justify-end mr-2" color="primary" variant="" prepend-icon="mdi-arrow-left-thin"
-            @click="toUserPage()">
-            Volver a vista principal</v-btn>
+          <veloxBtnReturn/>
         </v-row>
 
         <v-divider></v-divider>
@@ -57,6 +55,7 @@ import { onBeforeMount } from 'vue'
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore, useLoadingStore } from '@/store/index';
 import veloxHeader from '@/components/veloxHeader.vue'
+import veloxBtnReturn from '@/components/veloxBtnReturn.vue'
 
 const $router = useRouter();
 const $route = useRoute();
@@ -117,11 +116,6 @@ const getGroupData = async () => {
     throw err;
   }
 }
-
-const toUserPage = () => {
-    $router.go(-1)
-}
-
 
 const goToLogsDevice = (item) => {
   $router.push(`/${idGroup.value}/groups/groupDetail/${idViewGroup.value}/logs/${item.id}`);
