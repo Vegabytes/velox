@@ -33,9 +33,6 @@ export const getGroupByGroupIdByUserId = async (req, res) => {
 
 
 
-    /*   console.log("gruposDevices", gruposDevices); */
-
-
     const gruposUsuariosNotNull = gruposUsuarios.filter(user => !!user);
 
     gruposUsuariosNotNull.forEach(element => {
@@ -74,7 +71,6 @@ export const getGroupByGroupIdByUserId = async (req, res) => {
               _devices[d.id] = d
             }
           })
-          console.log("_devices", Object.values(_devices)[0]);
           if (Object.values(_devices)[0]) gu.devices.push(Object.values(_devices)[0])
 
           return devices;
@@ -162,8 +158,11 @@ const getGroupInfoByParent = ({ groupId }, parentGroupId) => {
 };
 
 
+export const uploadImage = async (req, res) => {
+  console.log(req.body);
+}
 
-export const createUserGroup = async (req, res) => {
+export const createGroup = async (req, res) => {
   try {
     const { name, description, parentGroupId, status, createdBy, path } = req.body;
     connection.query('INSERT INTO UserGroups SET ?', { name, description, parentGroupId, status, createdBy, path }, (error, results) => {

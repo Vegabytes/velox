@@ -7,14 +7,16 @@ export const appStore = defineStore('app', {
     currentGroup: {},
     userGroups: [],
     currentLogs: [],
-    currentLog:{},
-    currentDevice:{},
+    currentLog: {},
+    currentDevice: {},
     devicePosition: null,
-    admin: false
+    isAdmin: false
   }),
   getters: {
-    getCurrentUser: state => state.currentUser.name ? state.currentUser : storage.getCurrentUser(),
-    getIsAdmin: () => state.isAdmin
+    getCurrentUser: state => {
+      return state.currentUser.id ? state.currentUser : storage.getCurrentUser()
+    },
+    getIsAdmin: state => state.isAdmin
   },
   actions: {
     setCurrentUser(params) {

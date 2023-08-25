@@ -1,4 +1,5 @@
 <template>
+  currentUser {{ currentUser }}
   <v-container>
     <v-card variant="flat" v-if="!loadingStore.isLoading">
       <v-img :src="currentGroup.path" class="align-end" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
@@ -16,6 +17,16 @@
               <v-card-title>
                 <span class="text-h5 font-weight-bold">Mis subgrupos de dispositivos</span>
               </v-card-title>
+              <v-card variant="flat" color="secondary">
+                <v-card-actions v-if="isAdmin">
+                  <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="newGroup()">Nuevo
+                    grupo</v-btn>
+                  <!--                   <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="toCreateUser()">Crear
+                    Usuario</v-btn>
+                  <v-btn variant="tonal" prepend-icon="mdi-link" color="primary" @click="toAsignUser()">Añadir Usuario a
+                    grupo</v-btn> -->
+                </v-card-actions>
+              </v-card>
             </v-card-item>
           </v-row>
           <!--<v-btn class="justify-end mr-2" color="primary" variant="" prepend-icon="mdi-arrow-left-thin"
@@ -61,26 +72,29 @@
 
 <script setup>
 import axios from "axios";
-import { computed } from 'vue';
-import { onBeforeMount } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue';
 import { useRoute, useRouter } from "vue-router";
 
-import { useAppStore, useLoadingStore } from '@/store/index';
+import { useAppStore, useLoadingStore, useLoginStore } from '@/store/index';
 
 const $router = useRouter();
 const $route = useRoute();
 const appStore = useAppStore()
 const loadingStore = useLoadingStore();
+const loginStore = useLoginStore()
 
 const currentGroup = computed(() => appStore.currentGroup);
 const userGroups = computed(() => appStore.userGroups);
+const currentUser = computed(() => appStore.getCurrentUser);
 
 const idGroup = computed(() => $route.params.idGroup)
+//const isAdmin = computed(() => appStore.getIsAdmin);
 
+const isAdmin = ref(true);
 
 onBeforeMount(async () => {
   loadingStore.setLoading(true);
-  if (!appStore.getCurrentUser || !appStore.getCurrentUser.name) {
+  if (!currentUser.value || !currentUser.value.id) {
     $router.push(`/${idGroup.value}/login`);
   }
   try {
@@ -124,6 +138,21 @@ const getGroupData = async () => {
   }
 }
 
+const newGroup = async () => {
+  if (currentUser.value.id) {
+    $router.push("NewGroup");
+  } else {
+    $router.push(`/${idGroup.value}/login`);
+  }
+}
+
+const toCreateUser = async () => {
+  if (loginStore.loggedUser.groupId) {
+    $router.push(`/${idGroup.value}/newGroup`);
+  } else {
+    $router.push(`/${idGroup.value}/login`);
+  }
+}
 
 const goToGroupDetail = (item) => {
   $router.push(`/${idGroup.value}/groups/groupDetail/${item.id}`);

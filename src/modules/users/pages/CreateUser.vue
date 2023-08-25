@@ -118,9 +118,8 @@ const createNewUser = async () => {
 
         userStore.createdUser['createdBy'] = appStore.currentUser.id
 
-        const res = await axios.post(`${url}/users/create`, userStore.createdUser)
+        const res = await axios.post(`${url}/users/create`, userStore.newGroup)
         const { data } = res;
-        console.log(`Data: ${data} `);
         return data;
 
       } catch (error) {

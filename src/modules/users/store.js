@@ -4,5 +4,7 @@ export const usersStore = defineStore('users', {
   state: () => ({
     createdUser: {
     },
+    newGroup: {
+    },
   }),
 })

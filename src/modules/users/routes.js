@@ -25,6 +25,11 @@ export default [
     component: async () => await import('@/modules/users/pages/CreateUser.vue')
   },
   {
+    path: "/:idGroup/newGroup",
+    name: "NewGroup",
+    component: async () => await import('@/modules/users/pages/NewGroup.vue')
+  },
+  {
     path: "/:idGroup/asignUser",
     name: "AsignUser",
     component: async () => await import('@/modules/users/pages/AsignUser.vue')
