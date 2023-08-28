@@ -10,26 +10,25 @@
                 <span class="text-h5 font-weight-bold">Mis subgrupos de dispositivos</span>
               </v-card-title>
               <v-card variant="flat" color="secondary">
-                <v-card-actions v-if="isAdmin">
+                <v-card-actions v-if="appStore.admin">
                   <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="newGroup()">Nuevo
-                    grupo</v-btn>
-                  <!--                   <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="toCreateUser()">Crear
+                    grupo
+                  </v-btn>
+                  <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="toCreateUser()">Crear
                     Usuario</v-btn>
                   <v-btn variant="tonal" prepend-icon="mdi-link" color="primary" @click="toAsignUser()">Añadir Usuario a
-                    grupo</v-btn> -->
+                    grupo</v-btn>
                 </v-card-actions>
               </v-card>
             </v-card-item>
           </v-row>
-          <!--<v-btn class="justify-end mr-2" color="primary" variant="" prepend-icon="mdi-arrow-left-thin"
-            @click="toUserPage()">
-            Volver a vista principal</v-btn>-->
         </v-row>
 
         <v-divider></v-divider>
 
         <v-row>
           <v-col cols="12">
+            <v-badge class="px-4, pt-4" v-if="appStore.admin" color="primary" content="Administrador" inline></v-badge>
             <v-card class="mb-8" variant="flat">
               <v-card-text>
                 <div v-for="item in userGroups">
@@ -109,16 +108,27 @@ onBeforeMount(async () => {
 const getUserGroups = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
-  try {
-    const res = await axios.get(`${url}/groups/${idGroup.value}/user/${appStore.getCurrentUser.id}`)
+  if (appStore.admin) {
+
+    alert('es administrador')
+
+    const res = await axios.get(`${url}/groups/${idGroup.value}/userAdmin/${appStore.getCurrentUser.id}`)
     appStore.userGroups = res.data;
-  }
-  catch (err) {
-    console.error(err);
-    throw err;
+
+  } else {
+
+    alert('NO administrador')
+
+    try {
+      const res = await axios.get(`${url}/groups/${idGroup.value}/user/${appStore.getCurrentUser.id}`)
+      appStore.userGroups = res.data;
+    }
+    catch (err) {
+      console.error(err);
+      throw err;
+    }
   }
 }
-
 
 const getGroupData = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
@@ -143,13 +153,20 @@ const newGroup = async () => {
 
 const toCreateUser = async () => {
   if (loginStore.loggedUser.groupId) {
-    $router.push(`/${idGroup.value}/newGroup`);
+    $router.push(`/${idGroup.value}/CreateUser`);
   } else {
     $router.push(`/${idGroup.value}/login`);
   }
 }
 
+const toAsignUser = ()=>{
+  $router.push(`/${idGroup.value}/asignUser`);
+}
+
 const goToGroupDetail = (item) => {
   $router.push(`/${idGroup.value}/groups/groupDetail/${item.id}`);
 }
+
+
+
 </script>

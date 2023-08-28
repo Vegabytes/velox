@@ -35,8 +35,7 @@
                                             <template v-slot:item="{ item }">
                                                 <tr>
                                                     <td>{{ item.columns.id }}</td>
-                                                    <td>{{ item.columns.data }}</td>
-                                                    <td>{{ item.columns.eventTimeStamp }}</td>
+                                                    <td>{{ item.columns.timestamp }}</td>
                                                     <td>
                                                         <v-row class="d-flex justify-center">
                                                             <v-btn class="justify-end mr-2" color="primary" variant=""
@@ -60,7 +59,10 @@
                                     <v-card class="pa-6">
                                         <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
                                             :loadTilesWhileInteracting="true">
-                                            <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom"
+                                            <ol-view ref="view" 
+                                            
+                                            v-if="currentDeviceLogs.length > 0"
+                                            :center="currentDeviceLogs[0].position.split(',')" :rotation="rotation" :zoom="zoom"
                                                 :projection="projection" />
 
                                             <ol-tile-layer>
@@ -80,7 +82,7 @@
                                                                 <ol-style-stroke :color="strokeColor"
                                                                     :width="strokeWidth"></ol-style-stroke>
                                                             </ol-style-circle>
-                                                            <ol-style-text :text="item.data">
+                                                            <ol-style-text :text="item.eventType">
                                                                 <ol-style-fill color="white"></ol-style-fill>
                                                             </ol-style-text>
                                                         </ol-style>
@@ -147,8 +149,7 @@ const page = ref(1)
 const itemsPerPage = ref(5)
 const headers = [
     { title: 'Id', align: 'start', key: 'id', },
-    { title: 'Log', align: 'start', key: 'data' },
-    { title: 'Fecha', align: 'start', key: 'eventTimeStamp' },
+    { title: 'Log', align: 'start', key: 'timestamp' },
     { title: 'Detalle', align: 'center', sortable: false, },
 ]
 
@@ -214,7 +215,13 @@ const getLogsByDevice = async () => {
 
     try {
         const res = await axios.get(`${url}/logs/device/${idCurrentDevice.value}`)
-        currentDeviceLogs.value = res.data;
+        let dataFormatted = []
+
+        res.data.forEach((e) => {
+           e.timestamp = JSON.parse(e.data).timestamp
+           dataFormatted.push(e)
+        });
+        currentDeviceLogs.value = dataFormatted;
     }
     catch (err) {
         console.error(err);

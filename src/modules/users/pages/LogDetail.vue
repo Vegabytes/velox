@@ -24,32 +24,25 @@
                 <v-card class="mt-2" variant="flat">
                     <v-row>
                         <v-col cols="12" md="6">
-                            <v-card-item class="mb-2">
-                                <v-card-title>
-                                    <span class="text-h5 font-weight-bold">{{ appStore.currentLog.data
-                                    }}</span></v-card-title>
-                                <v-card-subtitle>{{ 'Loren ipsum' }}</v-card-subtitle>
-                            </v-card-item>
-
                             <v-card variant="tonal" class="pa-8">
                                 <v-row class="mb-2">
-                                    <strong>
-                                        Fecha hora infracción:</strong> {{ }}</v-row>
+                                    <strong class="mr-4">Fecha hora infracción:</strong> 
+                                    {{ JSON.parse(appStore.currentLog.data).timestamp }}</v-row>
                                 <v-row class="mb-2">
-                                    <strong>Pos GPS: </strong>
-                                    {{ }}</v-row>
+                                    <strong class="mr-4">Pos GPS: </strong>
+                                    {{ JSON.parse(appStore.currentLog.data).gps}}</v-row>
                                 <v-row class="mb-2">
-                                    <strong>Velocidad de la vía: </strong>
-                                    {{ }}</v-row>
+                                    <strong class="mr-4">Velocidad de la vía: </strong>
+                                    {{ JSON.parse(appStore.currentLog.data).MaxVel }}</v-row>
                                 <v-row class="mb-2">
-                                    <strong>Velocidad detectada:</strong>
-                                    {{ }}</v-row>
+                                    <strong class="mr-4">Velocidad detectada:</strong>
+                                    {{ JSON.parse(appStore.currentLog.data).RealVel }}</v-row>
                                 <v-row class="mb-2">
-                                    <strong>Matrícula infracción: </strong>
-                                    {{ }}</v-row>
+                                    <strong class="mr-4">Matrícula infracción: </strong>
+                                    {{ JSON.parse(appStore.currentLog.data).plate }}</v-row>
                                 <v-row>
-                                    <strong>ID Agente: </strong>
-                                    {{ }}
+                                    <strong class="mr-4">ID Agente: </strong>
+                                    {{ JSON.parse(appStore.currentLog.data).idUser }}
                                 </v-row>
                             </v-card>
 
@@ -95,7 +88,7 @@
                                                     <ol-style-stroke :color="strokeColor"
                                                         :width="strokeWidth"></ol-style-stroke>
                                                 </ol-style-circle>
-                                                <ol-style-text :text="appStore.currentLog.data">
+                                                <ol-style-text :text="appStore.currentLog.eventType">
                                                     <ol-style-fill color="white"></ol-style-fill>
                                                 </ol-style-text>
                                             </ol-style>

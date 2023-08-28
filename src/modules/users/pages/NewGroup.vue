@@ -4,11 +4,7 @@
     <v-form @submit.prevent ref="form">
       <v-card elevation="8" rounded="lg" color="secondary">
 
-        <v-img :src="appStore.currentGroup.path" class="align-end" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-          height="150px" cover>
-          <v-card-title class="text-white text-h2" v-text="appStore.currentGroup.name"></v-card-title>
-          <v-card-subtitle class="text-white text-h5 mb-4" v-text="appStore.currentGroup.description"></v-card-subtitle>
-        </v-img>
+        <veloxHeader :path="appStore.currentGroup.path" :name="appStore.currentGroup.name" :description="appStore.currentGroup.description"/>
 
         <v-card-text class="pa-12">
           <v-form v-model="valid" @submit.prevent>
@@ -18,9 +14,7 @@
                 <h2 class="text-primary text-h2">Nuevo Grupo</h2>
               </v-col>
               <v-col cols="4" class="d-flex justify-end">
-                <v-btn class="justify-end" color="primary" variant="" prepend-icon="mdi-arrow-left-thin"
-                  @click="toUserPage()">
-                  Volver</v-btn>
+                <veloxBtnReturn/>
               </v-col>
             </v-row>
             <v-row>
@@ -44,7 +38,7 @@
             <v-row>
               <v-col cols="12">
                 <v-btn block class="mb-8" color="primary" size="large" type="submit" @click="createNewGroup">
-                  Crear nuevo usuario
+                  Crear nuevo grupo
                 </v-btn>
               </v-col>
             </v-row>
@@ -63,15 +57,18 @@
 <script setup>
 
 import { ref, onBeforeMount, computed } from 'vue'
-import { useAppStore, useUsersStore, useLoginStore } from '@/store/index';
+import { useAppStore, useUsersStore, useLoginStore, useSnackbarStore } from '@/store/index';
 import rules from '../../../support/rules/fieldRules'
 import axios from "axios";
 import UploadImage from '@/modules/common/components/UploadImage'
 import { useRoute, useRouter } from "vue-router";
+import veloxBtnReturn from '@/components/veloxBtnReturn.vue'
+import veloxHeader from '@/components/veloxHeader.vue'
 
 const appStore = useAppStore()
 const userStore = useUsersStore()
 const loginStore = useLoginStore()
+const snackbarStore = useSnackbarStore();
 const $router = useRouter();
 
 const valid = ref(false)
@@ -86,7 +83,6 @@ const file = ref();
 const toUserPage = () => {
   $router.go(-1)
 }
-
 
 const createNewGroup = async () => {
   try {
@@ -103,11 +99,14 @@ const createNewGroup = async () => {
         userStore.newGroup['path'] = `${file.destination}/${file.filename}`;
 
         const res = await axios.post(`${url}/groups/create`, userStore.newGroup)
-        const { data } = res;
+        //const { data } = res;
+        snackbarStore.activateMessage('Grupo creado correctamente', 'primary', 2500)
+        userStore.newGroup = {};
         toUserPage();
-        return data;
+        //return data;
 
       } catch (error) {
+        snackbarStore.activateMessage(Error, 'error', 2500)
         console.error(error);
       }
     }

@@ -15,7 +15,7 @@
 
         <v-row class="d-flex justify-center">
           <v-card elevation="8" min-width="448" rounded="lg" color="secondary" :loading="loading">
-            <v-img :src="appStore.currentGroup.path" class="align-end"
+            <v-img :src="`${path}/${appStore.currentGroup.path}`" class="align-end"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" height="120px" cover>
               <!--         <v-card-item>
                 <v-card-title class="text-white" v-text="appStore.currentGroup.name"></v-card-title>
@@ -82,6 +82,7 @@ const loginStore = useLoginStore()
 const snackbarStore = useSnackbarStore();
 const loadingStore = useLoadingStore();
 
+const path = ref(import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000');
 const isLoading = computed(() => loadingStore.isLoading);
 const valid = ref(false)
 let visible = ref(false)
@@ -131,7 +132,14 @@ const login = async () => {
       calling.value = true;
       const user = await loginService.login(loginStore.loggedUser);
       appStore.setCurrentUser(user.user);
-      appStore.setIsAdmin(user.admin)
+      
+      //Comprobamos que el usuario sera Administrador
+      if(user.admin){
+        appStore.admin = true
+      }else{
+        appStore.admin = false
+      }
+      //appStore.setIsAdmin(user.admin)
       $router.push({
         name: 'Groups', pathMatch: `${idGroup.value} `
       });
@@ -139,7 +147,7 @@ const login = async () => {
 
     } catch (error) {
       const mensajeError = handleError.getErrorNormalizado(error);
-      snackbarStore.activateMessage(mensajeError, 'error', 2500000)
+      snackbarStore.activateMessage(mensajeError, 'error', 2500)
     }
     finally {
       loading.value = false

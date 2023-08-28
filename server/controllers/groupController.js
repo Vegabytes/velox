@@ -3,6 +3,41 @@ import connection from '../database/db.js';
 import 'dotenv/config'
 
 
+export const getGroupsPrueba = async (req,res) => {
+
+  //const { idGroup } = req.body;
+  const { idGroup,idUser } = req.params;
+
+  //Comprobar que el usuario es el administrador del grupo
+  connection.query(`SELECT * from UserGroups where id = ${idGroup} and createdBy = ${idUser}`, (error, results) => {
+    if (error) res.status(400).send(error);
+    if (results.length > 0) {
+
+      //En caso de ser administrador ...
+      try {
+        connection.query(`SELECT * from UserGroups where parentGroupId = ${idGroup}`, (error, results) => {
+          if (error) res.status(400).send(error);
+          if (results.length === 0) res.status(200).send([]);
+          res.status(200).send(results)
+        });
+      } catch (error) {
+        res.status(500).send(error)
+      }
+    }else{
+
+      //Si no es Administrador
+      res.status(400).send('NO es Administrador')
+    }
+  });
+
+  try{
+
+  }catch(error){
+    res.status(500).send(error)
+  }
+}
+
+
 
 export const getAllGroups = async (req, res) => {
   try {
@@ -14,7 +49,6 @@ export const getAllGroups = async (req, res) => {
   } catch (error) {
     res.status(500).send(error)
   }
-
 }
 
 

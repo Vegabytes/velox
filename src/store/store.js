@@ -10,7 +10,8 @@ export const appStore = defineStore('app', {
     currentLog: {},
     currentDevice: {},
     devicePosition: null,
-    isAdmin: false
+    isAdmin: false,
+    admin:false
   }),
   getters: {
     getCurrentUser: state => {

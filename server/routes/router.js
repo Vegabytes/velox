@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 import { login, isAuthenticated, logout } from '../controllers/authController.js'
-import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createGroup, associateUserUserGroup, getGroupByGroupIdByUserId } from '../controllers/groupController.js'
+import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createGroup, associateUserUserGroup, getGroupByGroupIdByUserId,getGroupsPrueba } from '../controllers/groupController.js'
 import { getAllUsers, createUser, getGroupUsers, getNotAssignedUser } from '../controllers/usersController.js'
 import { getLogsByDeviceId, getLogDetail } from '../controllers/logsController.js'
 import { getDevicesByUserId, getDevice } from '../controllers/devicesController.js'
@@ -59,10 +59,12 @@ router.get('/auth/logout', logout)
 //Groups
 router.get('/groups', getAllGroups)
 router.get('/groups/:groupId/user/:userId', getGroupByGroupIdByUserId)
+router.get('/groups/:groupId/userAdmin/:userId', getGroupByGroupIdByUserId)
 router.get('/groups/group/:id', getGroupByGrupoId)
 router.get('/groups/user/:id', getGroupByUserId)
 router.post('/groups/create', createGroup)
 router.post('/groups/group/user', associateUserUserGroup)
+router.get('/groups/prueba/:idGroup/:idUser',getGroupsPrueba)
 
 //Users
 router.get('/users', getAllUsers)
