@@ -24,9 +24,8 @@ export const getGroupsPrueba = async (req,res) => {
         res.status(500).send(error)
       }
     }else{
-
       //Si no es Administrador
-      res.status(400).send('NO es Administrador')
+      res.status(200).send()
     }
   });
 

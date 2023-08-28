@@ -63,9 +63,9 @@ export const isAdmin = async (req,res) => {
     connection.query(`SELECT * from UserGroups where id = ${idGroup} and createdBy = ${idUser}`,(error, results) => {
       if (error) res.status(400).send(error)
       if (results.length === 0) {
-        res.status(200).send([{admin:false}]);
+        res.status(200).send({admin:false});
       }else{
-        res.status(200).send([{admin:true}])
+        res.status(200).send({admin:true})
       }
     });
   } catch (error) {

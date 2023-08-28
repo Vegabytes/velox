@@ -6,29 +6,28 @@
                 <v-row>
                     <v-col cols="12">
                         <v-card class="mb-8" variant="flat">
-
-                            <v-row class="pa-5 d-flex justify-center align-center">
+                               <v-row class="pa-5 d-flex justify-center align-center">
                                 <v-row class="py-6">
                                     <v-avatar class="ma-3" size="x-large">
-                                        <v-img cover :src="currentDevice[0].path"></v-img>
+                                        <v-img cover :src="currentDevice.path" ></v-img>
                                     </v-avatar>
-
                                     <v-card-item>
-                                        <v-card-title>{{ currentDevice[0].name }}</v-card-title>
-                                        <v-card-subtitle>{{ currentDevice[0].description }}</v-card-subtitle>
+                                        <v-card-title>{{ currentDevice.name }}</v-card-title>
+                                        <v-card-subtitle>{{ currentDevice.description }}</v-card-subtitle>
                                     </v-card-item>
                                 </v-row>
 
                                 <veloxBtnReturn/>
 
-                            </v-row>
+                            </v-row> 
+                            
+                            
 
 
                             <v-divider></v-divider>
 
                             <v-row>
                                 <v-col cols="12" md="6">
-
                                     <v-row>
                                         <v-data-table v-model:page="page" :headers="headers" :items="currentDeviceLogs" hover="true"
                                             :items-per-page="50" hide-default-footer class="elevation-1">
@@ -55,7 +54,6 @@
                                     </v-row>
                                 </v-col>
                                 <v-col cols="12" md="6">
-
                                     <v-card class="pa-6">
                                         <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
                                             :loadTilesWhileInteracting="true">
@@ -71,7 +69,6 @@
 
                                             <ol-vector-layer>
                                                 <ol-source-vector>
-
                                                     <ol-feature v-if="currentDeviceLogs.length > 0"
                                                         v-for="item in currentDeviceLogs">
                                                         <ol-geom-point
@@ -98,7 +95,6 @@
                                                                     :width="strokeWidth"></ol-style-stroke>
                                                             </ol-style-circle>
                                                         </ol-style>
-
                                                     </ol-feature>
                                                 </ol-source-vector>
 
@@ -107,8 +103,6 @@
                                     </v-card>
                                 </v-col>
                             </v-row>
-
-
                         </v-card>
                     </v-col>
                 </v-row>
@@ -126,22 +120,24 @@ import { VDataTable } from 'vuetify/labs/VDataTable'
 import { useAppStore, useLoadingStore } from '@/store/index';
 import veloxHeader from '@/components/veloxHeader.vue'
 import veloxBtnReturn from '@/components/veloxBtnReturn.vue'
+import {formatDate} from '@/support/helpers/general'
 
 const $router = useRouter();
 const $route = useRoute();
 const appStore = useAppStore()
 const loadingStore = useLoadingStore();
+const path = ref(import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000');
+
+const idGroup = computed(() => $route.params.idGroup)
+const idViewGroup = computed(() => $route.params.id)
+const idCurrentDevice = computed(() => $route.params.idDevice)
 
 const currentGroup = computed(() => appStore.currentGroup);
 const userGroups = computed(() => appStore.userGroups);
 const userGroupsCurrent = computed(() => userGroups.value.filter(({ id }) => id == idViewGroup.value))
 const listDevicesByUser = computed(() => !!userGroupsCurrent.value.length ? userGroupsCurrent.value[0].devices : []);
-const currentDevice = computed(() => listDevicesByUser.value.filter(({ id }) => id == idCurrentDevice.value));
-
-
-const idGroup = computed(() => $route.params.idGroup)
-const idViewGroup = computed(() => $route.params.id)
-const idCurrentDevice = computed(() => $route.params.idDevice)
+//const currentDevice = computed(() => listDevicesByUser.value.filter(({ id }) => id == idCurrentDevice.value));
+const currentDevice = ref()
 
 const currentDeviceLogs = ref([]);
 
@@ -152,7 +148,6 @@ const headers = [
     { title: 'Log', align: 'start', key: 'timestamp' },
     { title: 'Detalle', align: 'center', sortable: false, },
 ]
-
 
 const center = ref([-3.7025600, 40.4165000]);
 const projection = ref("EPSG:4326");
@@ -170,6 +165,8 @@ onBeforeMount(async () => {
         $router.push(`/${idGroup.value}/login`);
     }
     try {
+        await getDeviceData()
+        await getLogsByDevice()
 
         if (!appStore.currentGroup || !appStore.currentGroup.id) {
             await getGroupData();
@@ -215,13 +212,34 @@ const getLogsByDevice = async () => {
 
     try {
         const res = await axios.get(`${url}/logs/device/${idCurrentDevice.value}`)
+
+        let a = res.data
+
+        currentDeviceLogs.value = a
+
         let dataFormatted = []
 
         res.data.forEach((e) => {
-           e.timestamp = JSON.parse(e.data).timestamp
+           e.timestamp =  formatDate(Number(JSON.parse(e.data).timestamp))
            dataFormatted.push(e)
         });
         currentDeviceLogs.value = dataFormatted;
+
+
+    }
+    catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+const getDeviceData = async () => {
+    const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+
+    try {
+        const res = await axios.get(`${url}/device/${idCurrentDevice.value}`)
+        appStore.currentDevice = res.data[0];
+        currentDevice.value = res.data[0]
     }
     catch (err) {
         console.error(err);
@@ -230,7 +248,7 @@ const getLogsByDevice = async () => {
 }
 
 const toLogDetail = (id) => {
-    $router.push(`/${idGroup.value}/groups/groupDetail/${idViewGroup.value}/logs/${currentDevice.value[0].id}/log/${id}`);
+    $router.push(`/${idGroup.value}/groups/groupDetail/${idViewGroup.value}/logs/${currentDevice.value.id}/log/${id}`);
 }
 
 </script>

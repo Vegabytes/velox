@@ -10,7 +10,7 @@
                 <span class="text-h5 font-weight-bold">Mis subgrupos de dispositivos</span>
               </v-card-title>
               <v-card variant="flat" color="secondary">
-                <v-card-actions v-if="appStore.admin">
+                <v-card-actions v-if="isAdmin">
                   <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="newGroup()">Nuevo
                     grupo
                   </v-btn>
@@ -28,7 +28,7 @@
 
         <v-row>
           <v-col cols="12">
-            <v-badge class="px-4, pt-4" v-if="appStore.admin" color="primary" content="Administrador" inline></v-badge>
+            <v-badge class="px-4, pt-4" v-if="isAdmin" color="primary" content="Administrador" inline></v-badge>
             <v-card class="mb-8" variant="flat">
               <v-card-text>
                 <div v-for="item in userGroups">
@@ -40,9 +40,9 @@
                     <div class="ma-2 pa-2 d-flex flex-column">
                       <div class="d-flex flex-row align-center">
                         <p class="text-h5 ma-1">{{ item.name }}.</p>
-                        <p class="text-h7 ma-1 font-italic font-weight-bold text-primary">{{ item.devices.length }}
+                        <!--<p class="text-h7 ma-1 font-italic font-weight-bold text-primary">{{ item.devices.length }}
                           dispositivos
-                        </p>
+                        </p>-->
                       </div>
                       <div class="d-flex flex-row mb-6 ">
                         <div>
@@ -80,9 +80,7 @@ const userGroups = computed(() => appStore.userGroups);
 const currentUser = computed(() => appStore.getCurrentUser);
 
 const idGroup = computed(() => $route.params.idGroup)
-//const isAdmin = computed(() => appStore.getIsAdmin);
-
-const isAdmin = ref(true);
+const isAdmin = computed(() => appStore.getIsAdmin);
 
 const path = ref(import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000');
 
@@ -93,10 +91,21 @@ onBeforeMount(async () => {
   }
   try {
 
+    await checkIsAdmin()
+
     if (!appStore.currentGroup || !appStore.currentGroup.id) {
       await getGroupData();
     }
-    await getUserGroups()
+
+
+    if(isAdmin.value){
+      await getUserGroups()
+    }else{
+      await getGroupData()
+      goToGroupDetail(appStore.currentGroup)
+    }
+
+    
   } catch (error) {
     console.error(error);
   } finally {
@@ -104,30 +113,29 @@ onBeforeMount(async () => {
   }
 });
 
+const checkIsAdmin = async()=>{
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+  try{
+    const res = await axios.get(`${url}/user/admin/${idGroup.value}/${appStore.getCurrentUser.id}`)
+    appStore.setIsAdmin(res.data.admin)
+  }catch(error){
+    console.error(err);
+    throw err;
+  }
+}
 
 const getUserGroups = async () => {
+
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
-
-  if (appStore.admin) {
-
-    alert('es administrador')
-
-    const res = await axios.get(`${url}/groups/${idGroup.value}/userAdmin/${appStore.getCurrentUser.id}`)
-    appStore.userGroups = res.data;
-
-  } else {
-
-    alert('NO administrador')
-
-    try {
-      const res = await axios.get(`${url}/groups/${idGroup.value}/user/${appStore.getCurrentUser.id}`)
+  try {
+      const res = await axios.get(`${url}/groups/prueba/${idGroup.value}/${appStore.getCurrentUser.id}`)
       appStore.userGroups = res.data;
     }
     catch (err) {
       console.error(err);
       throw err;
     }
-  }
+
 }
 
 const getGroupData = async () => {

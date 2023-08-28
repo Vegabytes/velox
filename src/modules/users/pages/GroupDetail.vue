@@ -19,9 +19,11 @@
         <v-row>
           <v-col cols="12">
             <v-card class="mb-8" variant="flat">
-              
               <v-card-text>
-                <div v-for="item in listDevicesByUser">
+
+                <h2 v-if="listDevicesByUser.length === 0" class="text-primary text-h5">No hay dispositivos asignados al grupo</h2>
+
+                <div v-if="listDevicesByUser.length > 0" v-for="item in listDevicesByUser">
                   <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToLogsDevice(item)">
                     <div class="ma-2 pa-2">
                       <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover
@@ -50,7 +52,7 @@
 
 <script setup>
 import axios from "axios";
-import { computed } from 'vue';
+import { computed,ref } from 'vue';
 import { onBeforeMount } from 'vue'
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore, useLoadingStore } from '@/store/index';
@@ -64,11 +66,22 @@ const loadingStore = useLoadingStore();
 
 const currentGroup = computed(() => appStore.currentGroup);
 const userGroups = computed(() => appStore.userGroups);
-const userGroupsCurrent = computed(() => userGroups.value.filter(({ id }) => id == idViewGroup.value))
-const listDevicesByUser = computed(() => !!userGroupsCurrent.value.length ? userGroupsCurrent.value[0].devices : []);
-
 const idGroup = computed(() => $route.params.idGroup)
 const idViewGroup = computed(() => $route.params.id)
+
+console.log("currentGroup --> " , currentGroup.value)
+console.log("userGroups --> " , userGroups.value)
+
+const userGroupsCurrent = computed(() => 
+  (userGroups.value.length > 1)
+    ?userGroups.value.filter(({ id }) => id == idViewGroup.value)
+    :[currentGroup.value]
+  )  
+//const listDevicesByUser = computed(() => !!userGroupsCurrent.value.length ? userGroupsCurrent.value[0].devices : []);
+
+console.log("userGroupsCurrent --> " , userGroupsCurrent.value)
+
+const listDevicesByUser = ref([]);
 
 
 onBeforeMount(async () => {
@@ -82,6 +95,7 @@ onBeforeMount(async () => {
       await getGroupData();
     }
     await getUserGroups()
+    await getDevicesGroups()
   } catch (error) {
     console.error(error);
   } finally {
@@ -94,8 +108,8 @@ const getUserGroups = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
   try {
-    const res = await axios.get(`${url}/groups/${idGroup.value}/user/${appStore.getCurrentUser.id}`)
-    appStore.userGroups = res.data;
+    const res = await axios.get(`${url}/groups/prueba/${idGroup.value}/${appStore.getCurrentUser.id}`)
+      appStore.userGroups = res.data;
   }
   catch (err) {
     console.error(err);
@@ -103,6 +117,18 @@ const getUserGroups = async () => {
   }
 }
 
+const getDevicesGroups = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+
+  try {
+    const res = await axios.get(`${url}/devices/${userGroupsCurrent.value[0].id}`)
+    listDevicesByUser.value = res.data;
+  }
+  catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
 
 const getGroupData = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'

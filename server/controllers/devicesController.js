@@ -108,6 +108,23 @@ const getDevicesGroupsByUserGroupId = ({ id }) => {
   });
 };
 
+
+export const getDeviceIdByGroup = async (req,res) => {
+  const { idGroup } = req.params;
+  try {
+    connection.query(`SELECT * FROM DeviceGroupMembers INNER JOIN Devices WHERE groupId = ${idGroup} and Devices.id = DeviceGroupMembers.deviceId`,(error, results) => {
+      if (error) res.status(400).send(error)
+      if (results.length === 0) {
+        res.status(200).send([]);
+      }else{
+        res.status(200).send(results)
+      }
+    });
+  } catch (error) {
+    res.status(500).send(error)
+  }
+}
+
 const getDeviceIdBygroupId = ({ deviceGroupId }) => {
   return new Promise((resolve, reject) => {
     connection.query('SELECT * FROM DeviceGroupMembers INNER JOIN Devices WHERE deviceId = ? and Devices.id = DeviceGroupMembers.deviceId', [deviceGroupId], (error, elements) => {
