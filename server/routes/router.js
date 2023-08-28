@@ -6,13 +6,11 @@ import fs from 'fs'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid';
 
-
 import { login, isAuthenticated, logout } from '../controllers/authController.js'
 import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createGroup, associateUserUserGroup, getGroupByGroupIdByUserId,getGroupsPrueba } from '../controllers/groupController.js'
-import { getAllUsers, createUser, getGroupUsers, getNotAssignedUser,isAdmin } from '../controllers/usersController.js'
+import { getAllUsers, createUser, getGroupUsers, getNotAssignedUser,getNotAssignedUserByEmail,isAdmin } from '../controllers/usersController.js'
 import { getLogsByDeviceId, getLogDetail } from '../controllers/logsController.js'
 import { getDevicesByUserId, getDevice,getDeviceIdByGroup } from '../controllers/devicesController.js'
-
 
 const MAX_SIZE = 10000000;
 
@@ -51,7 +49,6 @@ router.get('/', (req, res) => {
   res.status(200).send('Hola desde server')
 })
 
-
 //Authorization
 router.post('/auth/login', login)
 router.get('/auth/logout', logout)
@@ -71,6 +68,7 @@ router.get('/users', getAllUsers)
 router.get('/users/groupUsers/:id', getGroupUsers)
 router.post('/users/create', createUser)
 router.get('/users/notAssignedUser/:id', getNotAssignedUser)
+router.post('/users/notAssignedUserByEmail/:id', getNotAssignedUserByEmail)
 router.get('/user/admin/:idGroup/:idUser',isAdmin)
 
 //Logs

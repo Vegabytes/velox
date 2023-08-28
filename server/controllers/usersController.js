@@ -56,6 +56,22 @@ export const getNotAssignedUser = async (req,res) => {
   }
 }
 
+export const getNotAssignedUserByEmail = async (req,res) => {
+
+  const { id } = req.params;
+  const { email } = req.body;
+
+  try {
+    connection.query(`select * from Users WHERE id NOT IN (SELECT DISTINCT userId FROM UserGroupMembers where groupId = ${id}) and email like "%${email}%" or name like "%${email}%" or lastName like "%${email}%"`, (error, results) => {
+      if (error) res.status(400).send(error)
+      if (res.length === 0) res.status(200).send([]);
+      res.status(200).send(results)
+    });
+  } catch (error) {
+    res.status(500).send(error)
+  }
+}
+
 //SELECT * from UserGroups where id = ${idGroup} and createdBy = ${idUser}
 export const isAdmin = async (req,res) => {
   const { idGroup,idUser } = req.params;

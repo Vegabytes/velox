@@ -77,7 +77,6 @@ const userGroupsCurrent = computed(() =>
     ?userGroups.value.filter(({ id }) => id == idViewGroup.value)
     :[currentGroup.value]
   )  
-//const listDevicesByUser = computed(() => !!userGroupsCurrent.value.length ? userGroupsCurrent.value[0].devices : []);
 
 console.log("userGroupsCurrent --> " , userGroupsCurrent.value)
 
