@@ -56,6 +56,23 @@ export const getNotAssignedUser = async (req,res) => {
   }
 }
 
+//SELECT * from UserGroups where id = ${idGroup} and createdBy = ${idUser}
+export const isAdmin = async (req,res) => {
+  const { idGroup,idUser } = req.params;
+  try {
+    connection.query(`SELECT * from UserGroups where id = ${idGroup} and createdBy = ${idUser}`,(error, results) => {
+      if (error) res.status(400).send(error)
+      if (results.length === 0) {
+        res.status(200).send([{admin:false}]);
+      }else{
+        res.status(200).send([{admin:true}])
+      }
+    });
+  } catch (error) {
+    res.status(500).send(error)
+  }
+}
+
 
 
 

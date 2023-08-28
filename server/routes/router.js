@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { login, isAuthenticated, logout } from '../controllers/authController.js'
 import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createGroup, associateUserUserGroup, getGroupByGroupIdByUserId,getGroupsPrueba } from '../controllers/groupController.js'
-import { getAllUsers, createUser, getGroupUsers, getNotAssignedUser } from '../controllers/usersController.js'
+import { getAllUsers, createUser, getGroupUsers, getNotAssignedUser,isAdmin } from '../controllers/usersController.js'
 import { getLogsByDeviceId, getLogDetail } from '../controllers/logsController.js'
 import { getDevicesByUserId, getDevice } from '../controllers/devicesController.js'
 
@@ -71,6 +71,7 @@ router.get('/users', getAllUsers)
 router.get('/users/groupUsers/:id', getGroupUsers)
 router.post('/users/create', createUser)
 router.get('/users/notAssignedUser/:id', getNotAssignedUser)
+router.get('/user/admin/:idGroup/:idUser',isAdmin)
 
 //Logs
 router.get('/logs/device/:id', getLogsByDeviceId)
