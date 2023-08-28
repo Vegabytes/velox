@@ -61,7 +61,7 @@
                 density="comfortable" variant="outlined" 
                 :loading="loadingUsers"
                 append-inner-icon="mdi-account-search"
-                label="Buscar usuario por nombre,apellido o email"
+                label="Buscar usuario por nombre o apellido"
               ></v-text-field>
             </v-row>
             <v-row v-if="groupSelected && searchText">
@@ -89,13 +89,6 @@
               </template>
             </v-data-table>
 
-            </v-row>
-            <v-row v-if="groupSelected && searchText">
-              <v-col cols="12">
-                <v-btn block class="mb-8" color="primary" size="large" type="submit" @click="asignUsers">
-                  Asignar usuarios
-                </v-btn>
-              </v-col>
             </v-row>
           </v-col>
 
@@ -262,7 +255,7 @@ watch(searchText, (v) => {
     try{
       getNotAssignedUsersByEmail(groupSelected.value)
     }catch(err){
-
+      console.error(err)
     }
     
   }
