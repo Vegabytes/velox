@@ -27,7 +27,10 @@
                             <v-card variant="tonal" class="pa-8">
                                 <v-row class="mb-2">
                                     <strong class="mr-4">Fecha hora infracción:</strong> 
-                                    {{ formatDate(new Date(Number(JSON.parse(appStore.currentLog.data).timestamp))) }}
+                                    {{ formatDate(
+                                        new Date(Number(JSON.parse(appStore.currentLog.data).timestamp))
+                                        ) 
+                                    }}
                                 </v-row>
                                 <v-row class="mb-2">
                                     <strong class="mr-4">Pos GPS: </strong>
@@ -46,23 +49,20 @@
                                     {{ JSON.parse(appStore.currentLog.data).idUser }}
                                 </v-row>
                             </v-card>
-
                             <v-card>
-
                                 <v-row class="my-4">
                                     <v-card class="imagenRadar rounded-l d-flex justify-center ma-4"
-                                        v-for="(slide, i) in [1, 2, 3, 4, 5]" :key="i">
-                                        <v-img :src="`${url}/images/${appStore.currentDevice.id}/${i + 1}.jpg`" cover
+                                        v-for="(slide, i) in appStore.currentLog.images" :key="i">
+                                        <v-img :src="`${url}/${appStore.currentLog.imagePath}/${slide}`" cover
                                             @click="selectPhoto(i)" />
                                     </v-card>
                                 </v-row>
-
                             </v-card>
 
                             <v-card class="pa-8">
                                 <v-carousel v-model="selectedPhoto" hide-delimiters>
-                                    <v-carousel-item v-for="(slide, i) in [1, 2, 3, 4, 5]" :key="i" cover>
-                                        <v-img :src="`${url}/images/${appStore.currentDevice.id}/${i + 1}.jpg`" />
+                                    <v-carousel-item v-for="(slide, i) in appStore.currentLog.images" :key="i" cover>
+                                        <v-img :src="`${url}/${appStore.currentLog.imagePath}/${slide}`"  />
                                     </v-carousel-item>
                                 </v-carousel>
                             </v-card>
