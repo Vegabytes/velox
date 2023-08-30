@@ -27,7 +27,8 @@
                             <v-card variant="tonal" class="pa-8">
                                 <v-row class="mb-2">
                                     <strong class="mr-4">Fecha hora infracción:</strong> 
-                                    {{ JSON.parse(appStore.currentLog.data).timestamp }}</v-row>
+                                    {{ formatDate(new Date(Number(JSON.parse(appStore.currentLog.data).timestamp))) }}
+                                </v-row>
                                 <v-row class="mb-2">
                                     <strong class="mr-4">Pos GPS: </strong>
                                     {{ JSON.parse(appStore.currentLog.data).gps}}</v-row>
@@ -130,6 +131,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useAppStore, useLoadingStore } from '@/store/index';
 import veloxHeader from '@/components/veloxHeader.vue'
 import veloxBtnReturn from '@/components/veloxBtnReturn.vue'
+import { formatDate } from '@/support/helpers/general';
 
 const $router = useRouter();
 const $route = useRoute();

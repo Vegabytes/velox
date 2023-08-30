@@ -56,10 +56,11 @@
     </v-col>
 
   </v-container>
-  <v-snackbar v-model="snackbarStore.activate" :color="snackbarStore.color" :location="snackbarStore.location"
+
+  <!--<v-snackbar v-model="snackbarStore.activate" :color="snackbarStore.color" :location="snackbarStore.location"
     :timeout="snackbarStore.timeout">
     <div class="text-subtitle-1 pb-2"> {{ snackbarStore.text }}</div>
-  </v-snackbar>
+  </v-snackbar>-->
 </template>
 
 
