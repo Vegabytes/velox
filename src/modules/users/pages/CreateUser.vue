@@ -8,7 +8,8 @@
 
     <v-card elevation="8" rounded="lg" color="secondary" min-width="70%">
 
-      <veloxHeader :path="appStore.currentGroup.path" :name="appStore.currentGroup.name" :description="appStore.currentGroup.description"/>
+      <veloxHeader :path="appStore.currentGroup.path" :name="appStore.currentGroup.name"
+        :description="appStore.currentGroup.description" />
 
 
       <v-card-text class="pa-12">
@@ -18,7 +19,7 @@
               <h2 class="text-primary text-h2">Nuevo Usuario</h2>
             </v-col>
             <v-col cols="4" class="d-flex justify-end">
-              <veloxBtnReturn/>
+              <veloxBtnReturn />
             </v-col>
           </v-row>
 
@@ -45,6 +46,15 @@
                 :type="visible ? 'text' : 'password'" density="compact" placeholder="Contraseña"
                 prepend-inner-icon="mdi-lock-outline" variant="outlined" @click:append-inner="visible = !visible"
                 :rules="[rules.required]"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-text-field v-model="userStore.createdUser.confirmPass"
+                :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'" :type="visible ? 'text' : 'password'"
+                density="compact" placeholder="Repetir contraseña" prepend-inner-icon="mdi-lock-outline"
+                variant="outlined" @click:append-inner="visible = !visible"
+                :rules="[val => rules.pwdConfirm(val, password)]"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
@@ -100,7 +110,7 @@
 
 <script setup>
 
-import { ref, onBeforeMount } from 'vue'
+import { ref, onBeforeMount, computed } from 'vue'
 import { useAppStore, useUsersStore, useLoginStore, useSnackbarStore } from '@/store/index';
 import rules from '../../../support/rules/fieldRules'
 import axios from "axios";
@@ -117,6 +127,7 @@ const $router = useRouter();
 
 const valid = ref(false)
 let visible = ref(false)
+const password = computed(() => userStore.createdUser.pass);
 
 const toUserPage = () => {
   $router.go(-1)

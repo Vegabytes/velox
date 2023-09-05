@@ -16,6 +16,10 @@ const rules = {
     const regex = new RegExp(reg, "g");
     return regex.test(value[0].name) || `Error . El nombre del fichero no cumple los requisitos de formato`;
     //TODO: Personalizar mensaje de error con la expresión regular
+  },
+  pwdConfirm: (value, password) => {
+    if (!value) return "Campo obligatorio";
+    return value === password || "Las contraseñas no coinciden"
   }
 
 }
