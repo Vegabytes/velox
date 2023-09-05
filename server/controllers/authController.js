@@ -7,13 +7,14 @@ import { promisify } from 'util';
 
 
 export const login = async (req, res) => {
+  console.log("login");
   const { email, pass, groupId } = req.body;
 
   try {
     const userByEmail = await getUserByEmail(email);
 
     if (!userByEmail || !(await bcryptjs.compare(pass, userByEmail.pass))) {
-      res.status(403).send({ msg: 'Usuario incorrecto' })
+      res.status(401).send({ msg: 'Usuario incorrecto' })
     } else {
       const groupCreatedBy = await getUserGroupCreatedBy(groupId);
 
@@ -21,7 +22,14 @@ export const login = async (req, res) => {
 
         res.status(200).send({ user: userByEmail, msg: 'Usuario autorizado', admin: true })
       } else {
-        res.status(200).send({ user: userByEmail, msg: 'Usuario autorizado', admin: false })
+        //check if user is linked to group
+        const groupsByUser = await getGroupsByUserId(userByEmail.id);
+        const currentGroup = groupsByUser.find(group => group.groupId == groupId);
+        if (!currentGroup) {
+          res.status(403).send({ msg: 'Usuario sin permisos para este grupo' })
+        } else {
+          res.status(200).send({ user: userByEmail, msg: 'Usuario autorizado', admin: false })
+        }
       }
     }
   }
@@ -54,6 +62,16 @@ const getUserGroupCreatedBy = (groupId) => {
   });
 };
 
+const getGroupsByUserId = (id) => {
+  return new Promise((resolve, reject) => {
+    connection.query('SELECT * FROM  UserGroupMembers WHERE userId = ?', [id], (error, elements) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(elements);
+    });
+  });
+};
 
 
 

@@ -11,7 +11,7 @@
               </v-card-title>
             </v-card-item>
           </v-row>
-          <veloxBtnReturn/>
+          <veloxBtnReturn />
         </v-row>
 
         <v-divider></v-divider>
@@ -21,7 +21,8 @@
             <v-card class="mb-8" variant="flat">
               <v-card-text>
 
-                <h2 v-if="listDevicesByUser.length === 0" class="text-primary text-h5">No hay dispositivos asignados al grupo</h2>
+                <h2 v-if="listDevicesByUser.length === 0" class="text-primary text-h5">No hay dispositivos asignados al
+                  grupo</h2>
 
                 <div v-if="listDevicesByUser.length > 0" v-for="item in listDevicesByUser">
                   <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToLogsDevice(item)">
@@ -52,7 +53,7 @@
 
 <script setup>
 import axios from "axios";
-import { computed,ref } from 'vue';
+import { computed, ref } from 'vue';
 import { onBeforeMount } from 'vue'
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore, useLoadingStore } from '@/store/index';
@@ -69,16 +70,12 @@ const userGroups = computed(() => appStore.userGroups);
 const idGroup = computed(() => $route.params.idGroup)
 const idViewGroup = computed(() => $route.params.id)
 
-console.log("currentGroup --> " , currentGroup.value)
-console.log("userGroups --> " , userGroups.value)
-
-const userGroupsCurrent = computed(() => 
+const userGroupsCurrent = computed(() =>
   (userGroups.value.length > 1)
-    ?userGroups.value.filter(({ id }) => id == idViewGroup.value)
-    :[currentGroup.value]
-  )  
+    ? userGroups.value.filter(({ id }) => id == idViewGroup.value)
+    : [currentGroup.value]
+)
 
-console.log("userGroupsCurrent --> " , userGroupsCurrent.value)
 
 const listDevicesByUser = ref([]);
 
@@ -108,7 +105,7 @@ const getUserGroups = async () => {
 
   try {
     const res = await axios.get(`${url}/groups/prueba/${idGroup.value}/${appStore.getCurrentUser.id}`)
-      appStore.userGroups = res.data;
+    appStore.userGroups = res.data;
   }
   catch (err) {
     console.error(err);

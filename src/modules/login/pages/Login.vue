@@ -6,12 +6,8 @@
     <v-col v-if="!isLoading">
       <v-form v-model="valid" @submit.prevent>
 
-    <v-img
-      class="mx-auto my-6"
-      max-width="80"
-      src="@/assets/logo.png"
-    >
-  </v-img>
+        <v-img class="mx-auto my-6" max-width="80" src="@/assets/logo.png">
+        </v-img>
 
         <v-row class="d-flex justify-center">
           <v-card elevation="8" min-width="448" rounded="lg" color="secondary" :loading="loading">
@@ -133,11 +129,11 @@ const login = async () => {
       calling.value = true;
       const user = await loginService.login(loginStore.loggedUser);
       appStore.setCurrentUser(user.user);
-      
+
       //Comprobamos que el usuario sera Administrador
-      if(user.admin){
+      if (user.admin) {
         appStore.admin = true
-      }else{
+      } else {
         appStore.admin = false
       }
       //appStore.setIsAdmin(user.admin)
@@ -147,6 +143,7 @@ const login = async () => {
 
 
     } catch (error) {
+      console.log("error", error);
       const mensajeError = handleError.getErrorNormalizado(error);
       snackbarStore.activateMessage(mensajeError, 'error', 2500)
     }

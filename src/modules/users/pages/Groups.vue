@@ -98,14 +98,14 @@ onBeforeMount(async () => {
     }
 
 
-    if(isAdmin.value){
+    if (isAdmin.value) {
       await getUserGroups()
-    }else{
+    } else {
       await getGroupData()
       goToGroupDetail(appStore.currentGroup)
     }
 
-    
+
   } catch (error) {
     console.error(error);
   } finally {
@@ -113,28 +113,27 @@ onBeforeMount(async () => {
   }
 });
 
-const checkIsAdmin = async()=>{
+const checkIsAdmin = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
-  try{
+  try {
     const res = await axios.get(`${url}/user/admin/${idGroup.value}/${appStore.getCurrentUser.id}`)
     appStore.setIsAdmin(res.data.admin)
-  }catch(error){
+  } catch (error) {
     console.error(err);
     throw err;
   }
 }
 
 const getUserGroups = async () => {
-
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
   try {
-      const res = await axios.get(`${url}/groups/prueba/${idGroup.value}/${appStore.getCurrentUser.id}`)
-      appStore.userGroups = res.data;
-    }
-    catch (err) {
-      console.error(err);
-      throw err;
-    }
+    const res = await axios.get(`${url}/groups/prueba/${idGroup.value}/${appStore.getCurrentUser.id}`)
+    appStore.userGroups = res.data;
+  }
+  catch (err) {
+    console.error(err);
+    throw err;
+  }
 
 }
 
@@ -167,7 +166,7 @@ const toCreateUser = async () => {
   }
 }
 
-const toAsignUser = ()=>{
+const toAsignUser = () => {
   $router.push(`/${idGroup.value}/asignUser`);
 }
 

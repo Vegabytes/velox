@@ -2,7 +2,7 @@ export default [
   {
     path: "/:idGroup/groups",
     name: "Groups",
-    component: async () => await import('@/modules/users/pages/groups.vue')
+    component: async () => await import('@/modules/users/pages/Groups.vue')
   },
   {
     path: "/:idGroup/groups/groupDetail/:id",
