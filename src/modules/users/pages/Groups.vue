@@ -40,9 +40,9 @@
                     <div class="ma-2 pa-2 d-flex flex-column">
                       <div class="d-flex flex-row align-center">
                         <p class="text-h5 ma-1">{{ item.name }}.</p>
-                        <!--<p class="text-h7 ma-1 font-italic font-weight-bold text-primary">{{ item.devices.length }}
+                        <p class="text-h7 ma-1 font-italic font-weight-bold text-primary">{{ item.devices.length }}
                           dispositivos
-                        </p>-->
+                        </p>
                       </div>
                       <div class="d-flex flex-row mb-6 ">
                         <div>
@@ -127,7 +127,8 @@ const checkIsAdmin = async () => {
 const getUserGroups = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
   try {
-    const res = await axios.get(`${url}/groups/prueba/${idGroup.value}/${appStore.getCurrentUser.id}`)
+    //const res = await axios.get(`${url}/groups/prueba/${idGroup.value}/${appStore.getCurrentUser.id}`)
+    const res = await axios.get(`${url}/groups/${idGroup.value}/user/${appStore.getCurrentUser.id}`)
     appStore.userGroups = res.data;
   }
   catch (err) {

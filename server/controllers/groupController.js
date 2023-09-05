@@ -3,10 +3,10 @@ import connection from '../database/db.js';
 import 'dotenv/config'
 
 
-export const getGroupsPrueba = async (req,res) => {
+export const getGroupsPrueba = async (req, res) => {
 
   //const { idGroup } = req.body;
-  const { idGroup,idUser } = req.params;
+  const { idGroup, idUser } = req.params;
 
   //Comprobar que el usuario es el administrador del grupo
   connection.query(`SELECT * from UserGroups where id = ${idGroup} and createdBy = ${idUser}`, (error, results) => {
@@ -23,15 +23,15 @@ export const getGroupsPrueba = async (req,res) => {
       } catch (error) {
         res.status(500).send(error)
       }
-    }else{
+    } else {
       //Si no es Administrador
       res.status(200).send()
     }
   });
 
-  try{
+  try {
 
-  }catch(error){
+  } catch (error) {
     res.status(500).send(error)
   }
 }
@@ -51,30 +51,56 @@ export const getAllGroups = async (req, res) => {
 }
 
 
+
+
 export const getGroupByGroupIdByUserId = async (req, res) => {
   const { groupId, userId } = req.params;
 
   try {
-    const gruposByUserId = await getGroupsByUserId(userId);
 
-    let gruposUsuarios = await Promise.all(
-      gruposByUserId.map(async (element) => {
-        return await getGroupInfoByParent(element, groupId);
-      })
-    );
-
+    const admin = await checkGroupAdmin(groupId, userId);
+    if (admin.length === 0) {
+      if (error) res.status(400).send(error);
+      return;
+    }
 
 
 
-    const gruposUsuariosNotNull = gruposUsuarios.filter(user => !!user);
+    const gruposByParentGroupId
+      = await getGroupsByParentGroupId(groupId);
 
-    gruposUsuariosNotNull.forEach(element => {
+    console.log("gruposByParentGroupId", gruposByParentGroupId);
+
+
+    /*     const gruposByUserId = await getGroupsByUserId(userId);
+    
+        console.log("gruposByUserId", gruposByUserId); */
+
+    /*    let gruposUsuarios = await Promise.all(
+         gruposByUserId.map(async (element) => {
+           return await getGroupInfoByParent(element, groupId);
+         })
+       ); */
+
+
+
+
+    /*     const gruposUsuariosNotNull = gruposUsuarios.filter(user => !!user);
+    
+        gruposUsuariosNotNull.forEach(element => {
+          element['devicesGroups'] = [], element['devices'] = []
+        }
+        );
+     */
+    const gruposByParentGroupIdNotNull = gruposByParentGroupId.filter(user => !!user);
+
+    gruposByParentGroupIdNotNull.forEach(element => {
       element['devicesGroups'] = [], element['devices'] = []
     }
     );
     //Obtenemos grupos de dispositivo por cada grupo de usuario
     let gruposDevices = await Promise.all(
-      gruposUsuariosNotNull.map(async (element) => {
+      gruposByParentGroupIdNotNull.map(async (element) => {
         return await getDevicesGroupsByUserGroupId(element);
       })
     )
@@ -84,7 +110,7 @@ export const getGroupByGroupIdByUserId = async (req, res) => {
     gruposDevices = flattenDeep(gruposDevices);
 
 
-    gruposUsuariosNotNull.forEach(gu => {
+    gruposByParentGroupIdNotNull.forEach(gu => {
       gruposDevices.map(gd => {
         if (gd.userGroupId === gu.id) gu.devicesGroups.push(gd);
       })
@@ -93,7 +119,7 @@ export const getGroupByGroupIdByUserId = async (req, res) => {
 
 
     await Promise.all(
-      gruposUsuariosNotNull.map(async gu => {
+      gruposByParentGroupIdNotNull.map(async gu => {
         return await Promise.all(gu.devicesGroups.map(async gd => {
           const devices = await getDeviceIdBygroupId(gd);
 
@@ -111,7 +137,7 @@ export const getGroupByGroupIdByUserId = async (req, res) => {
         )
       })
     )
-    res.status(200).send(gruposUsuariosNotNull)
+    res.status(200).send(gruposByParentGroupIdNotNull)
 
 
   } catch (error) {
@@ -156,6 +182,26 @@ export const getGroupByUserId = async (req, res) => {
 }
 
 
+export const getGroupsByParentGroupId = async (idGroup) => {
+  return new Promise((resolve, reject) => {
+    connection.query('SELECT * FROM UserGroups WHERE parentGroupId = ?', [idGroup], (error, elements) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(elements);
+    });
+  });
+}
+export const checkGroupAdmin = async (idGroup, idUser) => {
+  return new Promise((resolve, reject) => {
+    connection.query('SELECT * FROM UserGroups WHERE id = ? and createdBy = ?', [idGroup, idUser], (error, elements) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(elements);
+    });
+  });
+}
 
 const getGroupsByUserId = (id) => {
   return new Promise((resolve, reject) => {
