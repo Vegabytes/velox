@@ -1,15 +1,15 @@
 <template>
     <v-container class="pa-0">
         <v-card variant="flat" v-if="!loadingStore.isLoading">
-            <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description"/>
+            <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
             <v-card-text>
                 <v-row>
                     <v-col cols="12">
                         <v-card class="mb-8" variant="flat">
-                               <v-row class="pa-5 d-flex justify-center align-center">
+                            <v-row class="pa-5 d-flex justify-center align-center">
                                 <v-row class="py-6">
                                     <v-avatar class="ma-3" size="x-large">
-                                        <v-img cover :src="currentDevice.path" ></v-img>
+                                        <v-img cover :src="currentDevice.path"></v-img>
                                     </v-avatar>
                                     <v-card-item>
                                         <v-card-title>{{ currentDevice.name }}</v-card-title>
@@ -17,11 +17,11 @@
                                     </v-card-item>
                                 </v-row>
 
-                                <veloxBtnReturn/>
+                                <veloxBtnReturn />
 
-                            </v-row> 
-                            
-                            
+                            </v-row>
+
+
 
 
                             <v-divider></v-divider>
@@ -29,8 +29,8 @@
                             <v-row>
                                 <v-col cols="12" md="6">
                                     <v-row>
-                                        <v-data-table v-model:page="page" :headers="headers" :items="currentDeviceLogs" hover="true"
-                                            :items-per-page="50" hide-default-footer class="elevation-1">
+                                        <v-data-table v-model:page="page" :headers="headers" :items="currentDeviceLogs"
+                                            hover="true" :items-per-page="50" hide-default-footer class="elevation-1">
                                             <template v-slot:item="{ item }">
                                                 <tr>
                                                     <td>{{ item.columns.id }}</td>
@@ -57,11 +57,9 @@
                                     <v-card class="pa-6">
                                         <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
                                             :loadTilesWhileInteracting="true">
-                                            <ol-view ref="view" 
-                                            
-                                            v-if="currentDeviceLogs.length > 0"
-                                            :center="currentDeviceLogs[0].position.split(',')" :rotation="rotation" :zoom="zoom"
-                                                :projection="projection" />
+                                            <ol-view ref="view" v-if="currentDeviceLogs.length > 0"
+                                                :center="currentDeviceLogs[0].position.split(',').reverse()"
+                                                :rotation="rotation" :zoom="zoom" :projection="projection" />
 
                                             <ol-tile-layer>
                                                 <ol-source-osm />
@@ -72,7 +70,7 @@
                                                     <ol-feature v-if="currentDeviceLogs.length > 0"
                                                         v-for="item in currentDeviceLogs">
                                                         <ol-geom-point
-                                                            :coordinates="item.position.split(',')"></ol-geom-point>
+                                                            :coordinates="item.position.split(',').reverse()"></ol-geom-point>
                                                         <ol-style>
                                                             <ol-style-circle :radius="radius">
                                                                 <ol-style-fill :color="fillColor"></ol-style-fill>
@@ -120,7 +118,7 @@ import { VDataTable } from 'vuetify/labs/VDataTable'
 import { useAppStore, useLoadingStore } from '@/store/index';
 import veloxHeader from '@/components/veloxHeader.vue'
 import veloxBtnReturn from '@/components/veloxBtnReturn.vue'
-import {formatDate} from '@/support/helpers/general'
+import { formatDate } from '@/support/helpers/general'
 
 const $router = useRouter();
 const $route = useRoute();
@@ -220,8 +218,8 @@ const getLogsByDevice = async () => {
         let dataFormatted = []
 
         res.data.forEach((e) => {
-           e.timestamp =  formatDate(Number(JSON.parse(e.data).timestamp))
-           dataFormatted.push(e)
+            e.timestamp = formatDate(Number(JSON.parse(e.data).timestamp))
+            dataFormatted.push(e)
         });
         currentDeviceLogs.value = dataFormatted;
 

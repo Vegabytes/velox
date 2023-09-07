@@ -1,7 +1,7 @@
 <template>
     <v-container class="pa-0">
         <v-card variant="flat" v-if="!loadingStore.isLoading">
-            <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description"/>
+            <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
             <v-card-text>
                 <v-row class="pa-5 d-flex justify-center align-center">
                     <v-row class="py-6">
@@ -15,7 +15,7 @@
                         </v-card-item>
                     </v-row>
 
-                    <veloxBtnReturn/>
+                    <veloxBtnReturn />
 
                 </v-row>
 
@@ -26,15 +26,15 @@
                         <v-col cols="12" md="6">
                             <v-card variant="tonal" class="pa-8">
                                 <v-row class="mb-2">
-                                    <strong class="mr-4">Fecha hora infracción:</strong> 
+                                    <strong class="mr-4">Fecha hora infracción:</strong>
                                     {{ formatDate(
                                         new Date(Number(JSON.parse(appStore.currentLog.data).timestamp))
-                                        ) 
+                                    )
                                     }}
                                 </v-row>
                                 <v-row class="mb-2">
                                     <strong class="mr-4">Pos GPS: </strong>
-                                    {{ JSON.parse(appStore.currentLog.data).gps}}</v-row>
+                                    {{ JSON.parse(appStore.currentLog.data).gps }}</v-row>
                                 <v-row class="mb-2">
                                     <strong class="mr-4">Velocidad de la vía: </strong>
                                     {{ JSON.parse(appStore.currentLog.data).MaxVel }}</v-row>
@@ -62,7 +62,7 @@
                             <v-card class="pa-8">
                                 <v-carousel v-model="selectedPhoto" hide-delimiters>
                                     <v-carousel-item v-for="(slide, i) in appStore.currentLog.images" :key="i" cover>
-                                        <v-img :src="`${url}/${appStore.currentLog.imagePath}/${slide}`"  />
+                                        <v-img :src="`${url}/${appStore.currentLog.imagePath}/${slide}`" />
                                     </v-carousel-item>
                                 </v-carousel>
                             </v-card>
@@ -70,8 +70,8 @@
                         <v-col cols="12" md="6">
                             <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
                                 :loadTilesWhileInteracting="true">
-                                <ol-view ref="view" :center="appStore.currentLog.position.split(',')" :rotation="rotation"
-                                    :zoom="zoom" :projection="projection" />
+                                <ol-view ref="view" :center="appStore.currentLog.position.split(',').reverse()"
+                                    :rotation="rotation" :zoom="zoom" :projection="projection" />
 
                                 <ol-tile-layer>
                                     <ol-source-osm />
@@ -82,7 +82,7 @@
 
                                         <ol-feature>
                                             <ol-geom-point
-                                                :coordinates="appStore.currentLog.position.split(',')"></ol-geom-point>
+                                                :coordinates="appStore.currentLog.position.split(',').reverse()"></ol-geom-point>
                                             <ol-style>
                                                 <ol-style-circle :radius="radius">
                                                     <ol-style-fill :color="fillColor"></ol-style-fill>
@@ -97,7 +97,7 @@
 
                                         <ol-feature>
                                             <ol-geom-point
-                                                :coordinates="appStore.currentLog.position.split(',')"></ol-geom-point>
+                                                :coordinates="appStore.currentLog.position.split(',').reverse()"></ol-geom-point>
                                             <ol-style>
                                                 <ol-style-circle :radius="radius">
                                                     <ol-style-fill :color="fillColor"></ol-style-fill>

@@ -2,17 +2,12 @@
   <v-container>
     <v-card variant="flat">
 
-      <v-img
-              :src="appStore.currentGroup.path"
-              class="align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-              height="150px"
-              cover
-            >
-            
-              <v-card-title class="text-white text-h2" v-text="appStore.currentGroup.name"></v-card-title>
-              <v-card-subtitle class="text-white text-h5 mb-4" v-text="appStore.currentGroup.description"></v-card-subtitle>
-            
+      <v-img :src="appStore.currentGroup.path" class="align-end" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+        height="150px" cover>
+
+        <v-card-title class="text-white text-h2" v-text="appStore.currentGroup.name"></v-card-title>
+        <v-card-subtitle class="text-white text-h5 mb-4" v-text="appStore.currentGroup.description"></v-card-subtitle>
+
       </v-img>
 
       <v-card-text>
@@ -67,10 +62,12 @@
           <v-col cols="12" md="8">
 
             <v-card variant="flat" v-if="appStore.admin">
-               <v-card-actions>
-                  <v-btn variant="tonal" prepend-icon="mdi-account-plus" color="primary" @click="toCreateUser()">Crear Usuario</v-btn>
-                  <v-btn variant="tonal" prepend-icon="mdi-account-arrow-up" color="primary" @click="toAsignUser()">Añadir Usuario a grupo</v-btn>
-               </v-card-actions> 
+              <v-card-actions>
+                <v-btn variant="tonal" prepend-icon="mdi-account-plus" color="primary" @click="toCreateUser()">Crear
+                  Usuario</v-btn>
+                <v-btn variant="tonal" prepend-icon="mdi-account-arrow-up" color="primary" @click="toAsignUser()">Añadir
+                  Usuario a grupo</v-btn>
+              </v-card-actions>
             </v-card>
 
             <v-card class="mb-8" variant="flat">
@@ -97,11 +94,13 @@
                     </v-expansion-panel-title>
 
 
-                    <v-expansion-panel-text v-if="appStore.admin && ( loginStore.loggedUser.groupId == item.id)">
+                    <v-expansion-panel-text v-if="appStore.admin && (loginStore.loggedUser.groupId == item.id)">
 
                       <v-row bg-color="white" class="py-4">
-                        <v-btn variant="tonal" color="primary" prepend-icon="mdi-account" @click="toUsersList">Usuarios</v-btn>
-                        <v-btn variant="tonal" color="primary" prepend-icon="mdi-tablet-cellphone" class="ml-2">Dispositivos</v-btn>
+                        <v-btn variant="tonal" color="primary" prepend-icon="mdi-account"
+                          @click="toUsersList">Usuarios</v-btn>
+                        <v-btn variant="tonal" color="primary" prepend-icon="mdi-tablet-cellphone"
+                          class="ml-2">Dispositivos</v-btn>
                       </v-row>
 
                     </v-expansion-panel-text>
@@ -199,12 +198,12 @@ import { ref, onBeforeMount } from 'vue'
 import mapa from '../mapa.vue'
 import { formatDate } from '@/support/helpers/general';
 
-import { useAppStore,useLoginStore } from '@/store/index';
+import { useAppStore, useLoginStore } from '@/store/index';
 const loginStore = useLoginStore()
 const appStore = useAppStore()
 appStore.showMenu = true
 
-import {useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 const $router = useRouter();
 
 let dispositivoSelected = ref(null)
@@ -217,7 +216,7 @@ const logsList = computed(() => {
 })
 
 const openDialog = (position) => {
-  appStore.devicePosition = position.split(',')
+  appStore.devicePosition = position.split(',').reverse()
   dialog.value = true;
 }
 
@@ -248,25 +247,25 @@ const getUserGroups = async () => {
 }
 
 const toCreateUser = async () => {
-  if(loginStore.loggedUser.groupId){
+  if (loginStore.loggedUser.groupId) {
     $router.push("CreateUser");
-  }else{
+  } else {
     $router.push("login")
   }
 }
 
 const toAsignUser = async () => {
-  if(loginStore.loggedUser.groupId){
+  if (loginStore.loggedUser.groupId) {
     $router.push("AsignUser");
-  }else{
+  } else {
     $router.push("login")
   }
 }
 
 const toUsersList = async () => {
-  if(loginStore.loggedUser.groupId){
+  if (loginStore.loggedUser.groupId) {
     $router.push("Users");
-  }else{
+  } else {
     $router.push("login")
   }
 }
