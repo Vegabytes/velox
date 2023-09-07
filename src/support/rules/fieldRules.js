@@ -20,7 +20,12 @@ const rules = {
   pwdConfirm: (value, password) => {
     if (!value) return "Campo obligatorio";
     return value === password || "Las contraseñas no coinciden"
-  }
+  },
+  telephone: (value) => {
+    if (!value) return true;
+    return /^(([\+]?[0-9]{2,3})?[0-9]{9}){1}([\,]([+]?[0-9]{2,3})?[0-9]{9}){0,}?$/.test(value) ||
+      "Formato de telefono incorrecto"
+  },
 
 }
 

@@ -34,22 +34,26 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="12">
+            <v-col cols="12" md="6">
               <v-text-field v-model="userStore.createdUser.email" density="compact" placeholder="Correo electrónico"
                 type="email" label="Correo electrónico" variant="outlined"
                 :rules="[rules.required, rules.email]"></v-text-field>
             </v-col>
+            <v-col cols="12" md="6">
+              <Datepicker v-model="userStore.createdUser.birth" locale="es" :format="format" :format-locale="es"
+                cancelText="Cancelar" selectText="Aceptar" required placeholder="Fecha de nacimiento" />
+
+            </v-col>
           </v-row>
           <v-row>
-            <v-col cols="12">
+            <v-col cols="12" md="6">
               <v-text-field v-model="userStore.createdUser.pass" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
                 :type="visible ? 'text' : 'password'" density="compact" placeholder="Contraseña"
                 prepend-inner-icon="mdi-lock-outline" variant="outlined" @click:append-inner="visible = !visible"
                 :rules="[rules.required]"></v-text-field>
             </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12">
+
+            <v-col cols="12" md="6">
               <v-text-field v-model="userStore.createdUser.confirmPass"
                 :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'" :type="visible ? 'text' : 'password'"
                 density="compact" placeholder="Repetir contraseña" prepend-inner-icon="mdi-lock-outline"
@@ -58,32 +62,22 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="12">
+            <v-col cols="6">
               <v-text-field label="Dirección (Opcional)" v-model="userStore.createdUser.address" density="compact"
                 placeholder="Dirección" variant="outlined"></v-text-field>
             </v-col>
+            <v-col cols="6">
+              <v-text-field label="Teléfono (Opcional)" v-model="userStore.createdUser.phone" density="compact"
+                placeholder="Teléfono" variant="outlined" :rules="[rules.telephone]"></v-text-field>
+            </v-col>
           </v-row>
           <v-row>
-            <v-col cols="12" md="6">
-              <v-text-field label="Teléfono (Opcional)" v-model="userStore.createdUser.phone" density="compact"
-                placeholder="Teléfono" variant="outlined"></v-text-field>
+            <v-col cols="12">
+              <v-file-input accept="image/*" label="Elige una imagen para el nuevo usuario" v-model="files"
+                :rules="[rules.requiredFile]"></v-file-input>
             </v-col>
-
-            <!--
-              <v-col cols="12" md="6">
-              <v-autocomplete
-                density="compact"
-                item-title="name"
-                item-value="id"
-                variant="outlined"
-                label="Grupo (Opcional)"
-                v-model="userStore.createdUser.group"
-                :items="appStore.userGroups"
-              ></v-autocomplete>
-            </v-col>
-            -->
-
-
+          </v-row>
+          <v-row>
           </v-row>
           <v-row>
             <v-col cols="12">
@@ -110,45 +104,58 @@
 
 <script setup>
 
-import { ref, onBeforeMount, computed } from 'vue'
-import { useAppStore, useUsersStore, useLoginStore, useSnackbarStore } from '@/store/index';
+import { ref, computed } from 'vue'
+import { useAppStore, useUsersStore, useSnackbarStore } from '@/store/index';
 import rules from '../../../support/rules/fieldRules'
 import axios from "axios";
 import veloxHeader from '@/components/veloxHeader.vue'
 import veloxBtnReturn from '@/components/veloxBtnReturn.vue'
+import { es } from 'date-fns/locale';
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+import { useRoute, useRouter } from "vue-router";
 
 const appStore = useAppStore()
 const userStore = useUsersStore()
-const loginStore = useLoginStore()
 const snackbarStore = useSnackbarStore();
 
-import { useRouter } from "vue-router";
-const $router = useRouter();
 
+const $router = useRouter();
+const $route = useRoute();
+const idGroup = computed(() => $route.params.idGroup)
 const valid = ref(false)
 let visible = ref(false)
 const password = computed(() => userStore.createdUser.pass);
+const files = ref([]);
 
-const toUserPage = () => {
-  $router.go(-1)
+// In case of a range picker, you'll receive [Date, Date]
+const format = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
 }
 
 
 const createNewUser = async () => {
   try {
     if (valid.value) {
-
+      const { file } = await subirArchivo();
       const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
       try {
 
-        userStore.createdUser['createdBy'] = appStore.currentUser.id
+        if (userStore.createdUser.birth) userStore.createdUser.birth = userStore.createdUser.birth.toISOString().split('T')[0];
+        userStore.createdUser['createdBy'] = appStore.currentUser.id;
+        userStore.createdUser['status'] = 1;
+        userStore.createdUser['path'] = `${file.destination}/${file.filename}`;
+
 
         const res = await axios.post(`${url}/users/create`, userStore.createdUser)
         const { data } = res;
         snackbarStore.activateMessage('Usuario creado correctamente', 'primary', 2500)
-        userStore.createdUser = {}
-        return data;
+        $router.push(`/${idGroup.value}/groups`);
 
       } catch (error) {
         snackbarStore.activateMessage(error, 'error', 2500)
@@ -160,11 +167,27 @@ const createNewUser = async () => {
   }
 }
 
-onBeforeMount(() => {
-  if (!loginStore.loggedUser.groupId) {
-    $router.push("error");
+const subirArchivo = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000';
+  const config = {
+    headers: {
+      'X-Multipart-Size': files.value[0].size,
+    },
   }
-});
+  let formData = new FormData();
+  formData.append("file", files.value[0]);
+
+
+  try {
+    const res = await axios.post(`${url}/users/upload`, formData, config)
+    const { data } = res;
+    return data;
+  }
+  catch (err) {
+    console.log("err", err);
+    throw err;
+  }
+}
 
 
 </script>

@@ -16,7 +16,11 @@
 
 // Styles
 import '@mdi/font/css/materialdesignicons.css'
+import { VDatePicker } from 'vuetify/labs/VDatePicker'
 import 'vuetify/styles'
+import { es } from 'vuetify/locale'
+/* import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'; */
 
 
 // Composables
@@ -62,6 +66,14 @@ const customDarkTheme = {
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
+  components: {
+    /*     VueDatePicker, */
+  },
+  /*   locale: {
+      locale: 'es',
+      fallback: 'es',
+      messages: { es },
+    }, */
   theme: {
     defaultTheme: 'customLightTheme',
     themes: {

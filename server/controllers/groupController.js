@@ -64,34 +64,12 @@ export const getGroupByGroupIdByUserId = async (req, res) => {
       return;
     }
 
-
-
     const gruposByParentGroupId
       = await getGroupsByParentGroupId(groupId);
 
     console.log("gruposByParentGroupId", gruposByParentGroupId);
 
 
-    /*     const gruposByUserId = await getGroupsByUserId(userId);
-    
-        console.log("gruposByUserId", gruposByUserId); */
-
-    /*    let gruposUsuarios = await Promise.all(
-         gruposByUserId.map(async (element) => {
-           return await getGroupInfoByParent(element, groupId);
-         })
-       ); */
-
-
-
-
-    /*     const gruposUsuariosNotNull = gruposUsuarios.filter(user => !!user);
-    
-        gruposUsuariosNotNull.forEach(element => {
-          element['devicesGroups'] = [], element['devices'] = []
-        }
-        );
-     */
     const gruposByParentGroupIdNotNull = gruposByParentGroupId.filter(user => !!user);
 
     gruposByParentGroupIdNotNull.forEach(element => {

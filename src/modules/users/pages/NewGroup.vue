@@ -1,10 +1,10 @@
 <template>
   <v-container>
-
     <v-form @submit.prevent ref="form">
       <v-card elevation="8" rounded="lg" color="secondary">
 
-        <veloxHeader :path="appStore.currentGroup.path" :name="appStore.currentGroup.name" :description="appStore.currentGroup.description"/>
+        <veloxHeader :path="appStore.currentGroup.path" :name="appStore.currentGroup.name"
+          :description="appStore.currentGroup.description" />
 
         <v-card-text class="pa-12">
           <v-form v-model="valid" @submit.prevent>
@@ -14,7 +14,7 @@
                 <h2 class="text-primary text-h2">Nuevo Grupo</h2>
               </v-col>
               <v-col cols="4" class="d-flex justify-end">
-                <veloxBtnReturn/>
+                <veloxBtnReturn />
               </v-col>
             </v-row>
             <v-row>
@@ -31,8 +31,8 @@
             </v-row>
             <v-row>
               <v-col cols="12">
-                <v-file-input accept="image/*" label="Elige una imagen para el grupo" v-model="userStore.newGroup.path"
-                  @update:modelValue="(file) => adjuntarArchivo(file)"></v-file-input>
+                <v-file-input accept="image/*" label="Elige una imagen para el nuevo grupo" v-model="files"
+                  :rules="[rules.requiredFile]"></v-file-input>
               </v-col>
             </v-row>
             <v-row>
@@ -42,8 +42,6 @@
                 </v-btn>
               </v-col>
             </v-row>
-
-            <!--       <UploadImage /> -->
           </v-form>
         </v-card-text>
       </v-card>
@@ -56,33 +54,23 @@
 
 <script setup>
 
-import { ref, onBeforeMount, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useAppStore, useUsersStore, useLoginStore, useSnackbarStore } from '@/store/index';
 import rules from '../../../support/rules/fieldRules'
 import axios from "axios";
-import UploadImage from '@/modules/common/components/UploadImage'
 import { useRoute, useRouter } from "vue-router";
 import veloxBtnReturn from '@/components/veloxBtnReturn.vue'
 import veloxHeader from '@/components/veloxHeader.vue'
 
 const appStore = useAppStore()
 const userStore = useUsersStore()
-const loginStore = useLoginStore()
 const snackbarStore = useSnackbarStore();
 const $router = useRouter();
+const $route = useRoute();
 
 const valid = ref(false)
-let visible = ref(false)
-const idGroup = computed(() => {
-  loginStore.loggedUser.groupId = ($route.params.idGroup)
-  return $route.params.idGroup
-})
-
-const file = ref();
-
-const toUserPage = () => {
-  $router.go(-1)
-}
+const idGroup = computed(() => $route.params.idGroup)
+const files = ref([]);
 
 const createNewGroup = async () => {
   try {
@@ -92,18 +80,14 @@ const createNewGroup = async () => {
       const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
       try {
-
         userStore.newGroup['createdBy'] = appStore.currentUser.id;
         userStore.newGroup['parentGroupId'] = appStore.currentGroup.id;
         userStore.newGroup['status'] = 1;
         userStore.newGroup['path'] = `${file.destination}/${file.filename}`;
 
         const res = await axios.post(`${url}/groups/create`, userStore.newGroup)
-        //const { data } = res;
         snackbarStore.activateMessage('Grupo creado correctamente', 'primary', 2500)
-        userStore.newGroup = {};
-        toUserPage();
-        //return data;
+        $router.push(`/${idGroup.value}/groups`);
 
       } catch (error) {
         snackbarStore.activateMessage(Error, 'error', 2500)
@@ -116,29 +100,20 @@ const createNewGroup = async () => {
   }
 }
 
-onBeforeMount(() => {
-  if (!loginStore.loggedUser.groupId) {
-    $router.push("error");
-  }
-});
-const adjuntarArchivo = files => {
-  if (!!files.length) file.value = files[0];
-}
 
-
-const subirArchivo = async (files) => {
+const subirArchivo = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000';
   const config = {
     headers: {
-      'X-Multipart-Size': file.value.size,
+      'X-Multipart-Size': files.value[0].size,
     },
   }
   let formData = new FormData();
-  formData.append("file", file.value);
+  formData.append("file", files.value[0]);
 
 
   try {
-    const res = await axios.post(`${url}/groups/upload`, formData, config)
+    const res = await axios.post(`${url}/users/upload`, formData, config)
     const { data } = res;
     return data;
   }
