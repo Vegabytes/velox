@@ -20,7 +20,7 @@
             </v-col>
             <v-col cols="6" class="pa-1">
               <v-avatar size="50">
-                <v-img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" v-bind="props"></v-img>
+                <v-img :src="appStore.currentUser.path" alt="John" v-bind="props"></v-img>
               </v-avatar>
             </v-col>
 
