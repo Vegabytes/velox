@@ -104,7 +104,7 @@
 
 <script setup>
 
-import { ref, computed } from 'vue'
+import { ref, computed, onBeforeMount } from 'vue'
 import { useAppStore, useUsersStore, useSnackbarStore } from '@/store/index';
 import rules from '../../../support/rules/fieldRules'
 import axios from "axios";
@@ -127,6 +127,12 @@ const valid = ref(false)
 let visible = ref(false)
 const password = computed(() => userStore.createdUser.pass);
 const files = ref([]);
+
+
+onBeforeMount(async () => {
+  userStore.createdUser = {};
+});
+
 
 // In case of a range picker, you'll receive [Date, Date]
 const format = (date) => {

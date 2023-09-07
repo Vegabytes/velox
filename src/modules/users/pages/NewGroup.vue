@@ -54,7 +54,7 @@
 
 <script setup>
 
-import { ref, computed } from 'vue'
+import { ref, computed, onBeforeMount } from 'vue'
 import { useAppStore, useUsersStore, useLoginStore, useSnackbarStore } from '@/store/index';
 import rules from '../../../support/rules/fieldRules'
 import axios from "axios";
@@ -71,6 +71,12 @@ const $route = useRoute();
 const valid = ref(false)
 const idGroup = computed(() => $route.params.idGroup)
 const files = ref([]);
+
+
+onBeforeMount(async () => {
+  userStore.createdUser = {};
+});
+
 
 const createNewGroup = async () => {
   try {
