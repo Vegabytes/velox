@@ -12,14 +12,21 @@
         :description="appStore.currentGroup.description" />
 
       <v-card-text class="pa-12">
-        <v-row class="d-flex justify-center align-center mb-6">
-          <v-col cols="8">
-            <h2 class="text-primary text-h4">Asignar usuario a grupo</h2>
+
+
+        <v-row class="my-4">
+          <v-col ols="12" lg="6" class="d-flex align-center justify-lg-start justify-center">
+            <h2 class="text-primary text-h5 text-lg-h2 text-md-h4">Asignar usuario a grupo</h2>
           </v-col>
-          <v-col cols="4" class="d-flex justify-end">
-            <veloxBtnReturn />
+          <v-col cols="12" lg="6" class="d-flex justify-lg-end justify-md-center justify-sm-center justify-center pt-0">
+            <v-breadcrumbs :items="breadcrumbsItems">
+              <template v-slot:prepend>
+                <v-icon size="small" icon="mdi-home"></v-icon>
+              </template>
+            </v-breadcrumbs>
           </v-col>
         </v-row>
+
 
         <v-row>
           <v-autocomplete density="comfortable" variant="outlined" item-title="name" item-value="id"
@@ -28,7 +35,7 @@
 
         <v-row v-if="groupSelected">
 
-          <!-- Usuarios pertenecientes al grupo 
+          <!-- Usuarios pertenecientes al grupo
           <v-col cols="12" lg="6">
             <v-row>
               <h4 class="text-primary text-h5 ma-4">Usuarios pertenecientes al grupo</h4>
@@ -171,6 +178,14 @@ const snackbarActivate = ref(false);
 const snackbarText = ref('');
 const snackbarColor = ref('primary')
 
+const breadcrumbsItems= [
+  {
+    title: 'Inicio',
+    disabled: false,
+    to:{name: 'Groups'},
+  },
+]
+
 const searchUsers = async () => {
   try {
       await getNotAssignedUsersByEmail(groupSelected.value)
@@ -251,7 +266,7 @@ watch(groupSelected, (v) => {
     if(groupSelected.value){
       getUsersGroup(v)
       userListNotAsign.value = []
-    }  
+    }
   }
 })
 

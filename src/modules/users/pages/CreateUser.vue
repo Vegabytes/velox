@@ -14,12 +14,17 @@
 
       <v-card-text class="pa-12">
         <v-form v-model="valid" @submit.prevent>
-          <v-row class="d-flex justify-center align-center mb-6">
-            <v-col cols="8">
-              <h2 class="text-primary text-h2">Nuevo Usuario</h2>
+
+          <v-row class="my-4">
+            <v-col ols="12" lg="6" class="d-flex align-center justify-lg-start justify-center">
+              <h2 class="text-primary text-h5 text-lg-h2 text-md-h4">Nuevo Usuario</h2>
             </v-col>
-            <v-col cols="4" class="d-flex justify-end">
-              <veloxBtnReturn />
+            <v-col cols="12" lg="6" class="d-flex justify-lg-end justify-md-center justify-sm-center justify-center pt-0">
+              <v-breadcrumbs :items="breadcrumbsItems">
+                <template v-slot:prepend>
+                  <v-icon size="small" icon="mdi-home"></v-icon>
+                </template>
+              </v-breadcrumbs>
             </v-col>
           </v-row>
 
@@ -127,6 +132,14 @@ const valid = ref(false)
 let visible = ref(false)
 const password = computed(() => userStore.createdUser.pass);
 const files = ref([]);
+
+const breadcrumbsItems= [
+  {
+    title: 'Inicio',
+    disabled: false,
+    to:{name: 'Groups'},
+  },
+]
 
 
 onBeforeMount(async () => {
