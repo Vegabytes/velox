@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col md="1" cols="12" class="d-flex justify-center align-center">
-      <v-img class="" max-width="80" src="@/assets/logo.png" />
+      <v-img class="" max-width="80" src="@/assets/logo.png" style="cursor: pointer" @click="irHome()"/>
     </v-col>
     <v-col md="11" cols="12" class="d-flex justify-center py-0">
 
@@ -80,6 +80,9 @@ const items = [
 ];
 
 const logout = () => $router.push(`/${idGroup.value}/login`);
+
+const irHome = () => $router.push(`/${idGroup.value}/groups`);
+
 </script>
 
 
