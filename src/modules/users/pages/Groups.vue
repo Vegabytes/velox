@@ -1,6 +1,6 @@
 <template>
-  <v-container class="pa-0">
-    <v-card variant="flat" v-if="!loadingStore.isLoading">
+  <v-container class="pa-0 my-2">
+    <v-card v-if="!loadingStore.isLoading" elevation="8" rounded="lg" color="secondary" min-width="70%">
       <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
       <v-card-text>
 
@@ -15,9 +15,9 @@
                       <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="newGroup()" class="mb-lg-0 mb-md-0 mb-4">Nuevo
                         grupo
                       </v-btn>
-                      <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="toCreateUser()" class="mb-lg-0 mb-md-0 mb-4">Crear
+                      <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="toCreateUser()" class="mb-lg-0 mb-md-0 mb-4 ml-0 ml-md-2 ml-lg-2">Crear
                         Usuario</v-btn>
-                      <v-btn variant="tonal" prepend-icon="mdi-link" color="primary" @click="toAsignUser()" class="mb-lg-0 mb-md-0 mb-4">Añadir Usuario a
+                      <v-btn variant="tonal" prepend-icon="mdi-link" color="primary" @click="toAsignUser()" class="mb-lg-0 mb-md-0 mb-4 ml-0 ml-md-2 ml-lg-2">Añadir Usuario a
                         grupo</v-btn>
                     </v-card-actions>
                   </v-col>
@@ -39,17 +39,19 @@
                         cover class="rounded-xl"></v-img>
                     </div>
                     <div class="ma-2 pa-2 d-flex flex-column">
-                      <div class="d-flex flex-row align-center">
-                        <p class="text-h5 ma-1">{{ item.name }}.</p>
-                        <p class="text-h7 ma-1 font-italic font-weight-bold text-primary">{{ item.devices.length }}
-                          dispositivos
+                      <v-row class="flex-lg-row flex-column align-center">
+                        <p class="text-h7 ma-1">
+                          <strong>{{ item.name }}.</strong>
+                          <span class="text-sm-caption ma-1 font-italic font-weight-bold text-primary">{{ item.devices.length }}
+                        dispositivos
+                          </span>
                         </p>
-                      </div>
-                      <div class="d-flex flex-row mb-6 ">
+                      </v-row>
+                      <v-row class="d-flex flex-row mb-6 ">
                         <div>
                           <p class="text-h7 mx-1"> {{ item.description }}</p>
                         </div>
-                      </div>
+                      </v-row>
                     </div>
                   </div>
                 </div>
