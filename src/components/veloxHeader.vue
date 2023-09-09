@@ -1,18 +1,18 @@
 <template>
   <v-row>
-    <v-col md="1" cols="12" class="d-flex justify-center align-center">
+    <v-col md="1" cols="12" class="d-none d-sm-flex justify-center align-center">
       <v-img class="" max-width="80" src="@/assets/logo.png" style="cursor: pointer" @click="irHome()"/>
     </v-col>
     <v-col md="11" cols="12" class="d-flex justify-center py-0">
 
       <v-img :src="`${path}/${props.path}`" class="align-end rounded-bs-xl"
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" height="150px" cover>
-        <v-card-title class="text-white text-h2" v-text="props.name"></v-card-title>
-        <v-card-subtitle class="text-white text-h5 mb-4" v-text="props.description"></v-card-subtitle>
+        <v-card-title class="text-white text-lg-h2 text-md-3 text-h5" v-text="props.name"></v-card-title>
+        <v-card-subtitle class="text-white text-h7 text-lg-h5 text-md-h6 mb-4" v-text="props.description"></v-card-subtitle>
       </v-img>
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-row class="align-center avatar-user">
+          <v-row class="align-center justify-end avatar-user">
             <v-col cols="6" class="pa-0">
               <div class="text-secondary"> {{ appStore.getCurrentUser.name }}</div>
               <div class="text-secondary">Salir<v-icon @click="logout" icon="mdi-exit-to-app pl-3 icono-salir"></v-icon>
