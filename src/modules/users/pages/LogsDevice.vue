@@ -36,17 +36,9 @@
                                         <v-data-table v-model:page="page" :headers="headers" :items="currentDeviceLogs"
                                             hover="true" :items-per-page="50" hide-default-footer class="elevation-1">
                                             <template v-slot:item="{ item }">
-                                                <tr>
+                                                <tr @click="toLogDetail(item.columns.id)" style="cursor:pointer">
                                                     <td>{{ item.columns.id }}</td>
                                                     <td>{{ item.columns.timestamp }}</td>
-                                                    <td>
-                                                        <v-row class="d-flex justify-center">
-                                                            <v-btn class="justify-end mr-2" color="primary" variant=""
-                                                                @click="toLogDetail(item.columns.id)"
-                                                                prepend-icon="mdi-arrow-right-thin">
-                                                            </v-btn>
-                                                        </v-row>
-                                                    </td>
                                                 </tr>
                                             </template>
                                             <template v-slot:bottom>
@@ -166,8 +158,7 @@ const page = ref(1)
 const itemsPerPage = ref(5)
 const headers = [
     { title: 'Id', align: 'start', key: 'id', },
-    { title: 'Log', align: 'start', key: 'timestamp' },
-    { title: 'Detalle', align: 'center', sortable: false, },
+    { title: 'Log', align: 'start', key: 'timestamp' }
 ]
 
 const center = ref([-3.7025600, 40.4165000]);
