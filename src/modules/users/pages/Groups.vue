@@ -3,26 +3,27 @@
     <v-card variant="flat" v-if="!loadingStore.isLoading">
       <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
       <v-card-text>
-        <v-row class="pa-5 d-flex justify-center align-center">
-          <v-row class="py-6">
-            <v-card-item>
-              <v-card-title>
-                <span class="text-h5 font-weight-bold">Mis subgrupos de dispositivos</span>
-              </v-card-title>
-              <v-card variant="flat" color="secondary">
-                <v-card-actions v-if="isAdmin">
-                  <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="newGroup()">Nuevo
-                    grupo
-                  </v-btn>
-                  <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="toCreateUser()">Crear
-                    Usuario</v-btn>
-                  <v-btn variant="tonal" prepend-icon="mdi-link" color="primary" @click="toAsignUser()">Añadir Usuario a
-                    grupo</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-card-item>
+
+          <v-row class="pt-8 pb-4 ml-2">
+            <span class="text-h5 font-weight-bold">Mis subgrupos de dispositivos</span>
           </v-row>
-        </v-row>
+
+              <v-card variant="flat" color="secondary">
+                <v-row>
+                  <v-col cols="12" md="12" lg="6">
+                    <v-card-actions v-if="isAdmin" class="d-lg-flex d-md-flex d-block d-sm-block justify-md-center">
+                      <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="newGroup()" class="mb-lg-0 mb-md-0 mb-4">Nuevo
+                        grupo
+                      </v-btn>
+                      <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="toCreateUser()" class="mb-lg-0 mb-md-0 mb-4">Crear
+                        Usuario</v-btn>
+                      <v-btn variant="tonal" prepend-icon="mdi-link" color="primary" @click="toAsignUser()" class="mb-lg-0 mb-md-0 mb-4">Añadir Usuario a
+                        grupo</v-btn>
+                    </v-card-actions>
+                  </v-col>
+                </v-row>
+              </v-card>
+
 
         <v-divider></v-divider>
 
@@ -68,6 +69,7 @@ import { useRoute, useRouter } from "vue-router";
 
 import { useAppStore, useLoadingStore, useLoginStore } from '@/store/index';
 import veloxHeader from '@/components/veloxHeader.vue'
+import VeloxSectionHeader from "@/components/veloxSectionHeader";
 
 const $router = useRouter();
 const $route = useRoute();
@@ -83,6 +85,14 @@ const idGroup = computed(() => $route.params.idGroup)
 const isAdmin = computed(() => appStore.getIsAdmin);
 
 const path = ref(import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000');
+
+const items= [
+  {
+    title: 'Inicio',
+    disabled: true,
+    href: 'breadcrumbs_dashboard',
+  }
+]
 
 onBeforeMount(async () => {
   loadingStore.setLoading(true);

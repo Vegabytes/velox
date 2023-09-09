@@ -3,15 +3,18 @@
     <v-card variant="flat" v-if="!loadingStore.isLoading">
       <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
       <v-card-text>
-        <v-row class="pa-5 d-flex justify-center align-center">
-          <v-row class="py-6">
-            <v-card-item>
-              <v-card-title>
-                <span class="text-h5 font-weight-bold">{{ userGroupsCurrent[0].name }}</span>
-              </v-card-title>
-            </v-card-item>
-          </v-row>
-          <veloxBtnReturn />
+
+        <v-row class="my-4">
+          <v-col ols="12" lg="6" class="d-flex align-center justify-lg-start justify-center">
+            <span class="text-h5 font-weight-bold">{{ userGroupsCurrent[0].name }}</span>
+          </v-col>
+          <v-col cols="12" lg="6" class="d-flex justify-lg-end justify-md-center justify-sm-center justify-center pt-0">
+            <v-breadcrumbs :items="breadcrumbsItems">
+              <template v-slot:prepend>
+                <v-icon size="small" icon="mdi-home"></v-icon>
+              </template>
+            </v-breadcrumbs>
+          </v-col>
         </v-row>
 
         <v-divider></v-divider>
@@ -77,7 +80,20 @@ const userGroupsCurrent = computed(() =>
 )
 
 
-const listDevicesByUser = ref([]);
+const listDevicesByUser = ref([])
+
+const breadcrumbsItems= [
+  {
+    title: 'Inicio',
+    disabled: false,
+    to:{name: 'Groups'},
+  },
+  {
+    title: 'Listado de dispositivos',
+    disabled: true,
+    href: 'breadcrumbs_link_1',
+  },
+]
 
 
 onBeforeMount(async () => {
