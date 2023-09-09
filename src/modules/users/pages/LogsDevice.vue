@@ -1,6 +1,6 @@
 <template>
-    <v-container class="pa-0">
-        <v-card variant="flat" v-if="!loadingStore.isLoading">
+    <v-container class="pa-0 my-2">
+        <v-card elevation="8" rounded="lg" color="secondary" min-width="70%" v-if="!loadingStore.isLoading">
             <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
             <v-card-text>
                 <v-row>

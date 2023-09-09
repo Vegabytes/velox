@@ -1,6 +1,6 @@
 <template>
-  <v-container class="pa-0">
-    <v-card variant="flat" v-if="!loadingStore.isLoading">
+  <v-container class="pa-0 my-2">
+    <v-card elevation="8" rounded="lg" color="secondary" min-width="70%" v-if="!loadingStore.isLoading">
       <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
       <v-card-text>
 
@@ -28,22 +28,62 @@
                   grupo</h2>
 
                 <div v-if="listDevicesByUser.length > 0" v-for="item in listDevicesByUser">
-                  <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToLogsDevice(item)">
-                    <div class="ma-2 pa-2">
-                      <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover
-                        class="rounded-xl"></v-img>
-                    </div>
-                    <div class="ma-2 pa-2 d-flex flex-column">
-                      <div class="d-flex flex-row align-center">
-                        <p class="text-h5 ma-1">{{ item.name }}.</p>
-                      </div>
-                      <div class="d-flex flex-row mb-6 ">
-                        <div>
-                          <p class="text-h7 mx-1"> {{ item.description }}</p>
+
+
+
+
+
+
+
+                  <v-row class="d-flex flex-row align-center justify-lg-space-between" style="cursor: pointer;">
+
+
+                    <v-col class="d-flex align-center" style="cursor: pointer;">
+                      <v-col cols="auto" @click="goToLogsDevice(item)">
+                        <div class="ma-0 pa-0 ma-md-2 ma-lg-2 pa-md-2 pa-lg-2">
+                          <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover class="rounded-xl"></v-img>
                         </div>
-                      </div>
-                    </div>
-                  </div>
+                      </v-col>
+                      <v-col cols="6" class="d-block">
+                        <p class="text-h7 text-md-h5 ma-1" @click="goToLogsDevice(item)"><strong>{{ item.name }}</strong></p>
+                        <p class="text-h7 text-md-h7 mx-1" @click="goToLogsDevice(item)"> {{ item.description }}</p>
+                          <v-btn class="justify-end pl-0" color="primary" variant="" append-icon="mdi-eye" @click="dialogLastPosition = true">
+                            Última posición</v-btn>
+                      </v-col>
+                    </v-col>
+                  </v-row>
+
+
+
+
+
+
+
+
+
+<!--
+
+                  <v-row class="d-flex flex-row align-center" style="cursor: pointer;">
+                    <v-col cols="8" @click="goToLogsDevice(item)">
+                      <v-row class="d-block d-lg-flex d-md-flex align-center">
+                        <div class="ma-0 pa-0 ma-md-2 ma-lg-2 pa-md-2 pa-lg-2">
+                          <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover class="rounded-xl"></v-img>
+                        </div>
+                        <v-col>
+                          <p class="text-h7 text-md-h5 ma-1"><strong>{{ item.name }}</strong></p>
+                          <p class="text-h7 text-md-h7 mx-1"> {{ item.description }}</p>
+                        </v-col>
+                      </v-row>
+                    </v-col >
+                    <v-col cols="4" class="d-flex justify-end">
+                      <v-btn class="justify-end mr-2" color="primary" variant="" prepend-icon="mdi-eye" @click="dialogLastPosition = true">
+                        Ver última posición</v-btn>
+                    </v-col>
+                  </v-row>
+
+-->
+
+
                 </div>
               </v-card-text>
             </v-card>
@@ -51,6 +91,64 @@
         </v-row>
       </v-card-text>
     </v-card>
+
+
+
+    <!-- Diálogo última posición-->
+    <v-dialog v-model="dialogLastPosition">
+      <v-card>
+        <v-card-text class="pa-8">
+          <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
+                  :loadTilesWhileInteracting="true">
+            <ol-view ref="view" :center="[0,0].reverse()"
+                     :rotation="rotation" :zoom="zoom" :projection="projection" />
+
+            <ol-tile-layer>
+              <ol-source-osm />
+            </ol-tile-layer>
+
+            <ol-vector-layer>
+              <ol-source-vector>
+
+                <ol-feature>
+                  <ol-geom-point
+                    :coordinates="[0,0].reverse()"></ol-geom-point>
+                  <ol-style>
+                    <ol-style-circle :radius="radius">
+                      <ol-style-fill :color="fillColor"></ol-style-fill>
+                      <ol-style-stroke :color="strokeColor"
+                                       :width="strokeWidth"></ol-style-stroke>
+                    </ol-style-circle>
+                    <ol-style-text :text="  'Colocar texto'  ">
+                      <ol-style-fill color="white"></ol-style-fill>
+                    </ol-style-text>
+                  </ol-style>
+                </ol-feature>
+
+                <ol-feature>
+                  <ol-geom-point
+                    :coordinates="[0,0].reverse()"></ol-geom-point>
+                  <ol-style>
+                    <ol-style-circle :radius="radius">
+                      <ol-style-fill :color="fillColor"></ol-style-fill>
+                      <ol-style-stroke :color="strokeColor"
+                                       :width="strokeWidth"></ol-style-stroke>
+                    </ol-style-circle>
+                  </ol-style>
+
+                </ol-feature>
+              </ol-source-vector>
+
+            </ol-vector-layer>
+          </ol-map>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" @click="dialogLastPosition = false">Cancelar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
   </v-container>
 </template>
 
@@ -79,6 +177,7 @@ const userGroupsCurrent = computed(() =>
     : [currentGroup.value]
 )
 
+const dialogLastPosition = ref(false)
 
 const listDevicesByUser = ref([])
 
@@ -94,6 +193,14 @@ const breadcrumbsItems= [
     href: 'breadcrumbs_link_1',
   },
 ]
+
+const projection = ref("EPSG:4326");
+const zoom = ref(10);
+const rotation = ref(0);
+const radius = ref(10);
+const strokeWidth = ref(4);
+const strokeColor = ref("blue");
+const fillColor = ref("blue");
 
 
 onBeforeMount(async () => {
@@ -127,6 +234,10 @@ const getUserGroups = async () => {
     console.error(err);
     throw err;
   }
+}
+
+const openDialogLastPosition = ()=>{
+
 }
 
 const getDevicesGroups = async () => {
