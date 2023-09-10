@@ -202,20 +202,6 @@ const getGroupInfo = ({ groupId }) => {
   });
 };
 
-const getGroupInfoByParent = ({ groupId }, parentGroupId) => {
-  return new Promise((resolve, reject) => {
-    connection.query('SELECT * FROM UserGroups WHERE id = ? and parentGroupId = ?', [groupId, parentGroupId], (error, elements) => {
-      if (error) {
-        return reject(error);
-      }
-
-      return resolve(elements[0]);
-    });
-  });
-};
-
-
-
 export const createGroup = async (req, res) => {
   const { name, description, parentGroupId, status, createdBy, path } = req.body;
 

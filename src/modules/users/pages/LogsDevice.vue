@@ -128,7 +128,6 @@ const idGroup = computed(() => $route.params.idGroup)
 const idViewGroup = computed(() => $route.params.id)
 const idCurrentDevice = computed(() => $route.params.idDevice)
 const currentGroup = computed(() => appStore.currentGroup);
-const userGroups = computed(() => appStore.userGroups);
 const currentDevice = ref()
 const currentDeviceLogs = ref([]);
 
@@ -160,8 +159,6 @@ onBeforeMount(async () => {
         if (!appStore.currentGroup || !appStore.currentGroup.id) {
             await getGroupData();
         }
-        await getUserGroups();
-        await getLogsByDevice();
     } catch (error) {
         console.error(error);
     } finally {
@@ -187,20 +184,6 @@ const breadcrumbsItems = [
         href: 'breadcrumbs_link_1',
     },
 ]
-
-
-const getUserGroups = async () => {
-    const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
-
-    try {
-        const res = await axios.get(`${url}/groups/${idGroup.value}/user/${appStore.getCurrentUser.id}`)
-        appStore.userGroups = res.data;
-    }
-    catch (err) {
-        console.error(err);
-        throw err;
-    }
-}
 
 const getGroupData = async () => {
     const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'

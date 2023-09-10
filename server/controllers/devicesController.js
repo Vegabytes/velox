@@ -1,14 +1,14 @@
 import connection from '../database/db.js';
 import 'dotenv/config'
 
-export const getDevice = async (req,res)=>{
-  try{
+export const getDevice = async (req, res) => {
+  try {
     const { id } = req.params;
     connection.query('SELECT * FROM Devices where id = ?', [id], (error, results) => {
       if (error) res.status(400).send(error)
       res.status(200).send(results)
     });
-  }catch(error){
+  } catch (error) {
     res.status(500).send(error)
   }
 }
@@ -109,14 +109,14 @@ const getDevicesGroupsByUserGroupId = ({ id }) => {
 };
 
 
-export const getDeviceIdByGroup = async (req,res) => {
+export const getDevicesIdByGroup = async (req, res) => {
   const { idGroup } = req.params;
   try {
-    connection.query(`SELECT * FROM DeviceGroupMembers INNER JOIN Devices WHERE groupId = ${idGroup} and Devices.id = DeviceGroupMembers.deviceId`,(error, results) => {
+    connection.query(`SELECT * FROM DeviceGroupMembers INNER JOIN Devices WHERE groupId = ${idGroup} and Devices.id = DeviceGroupMembers.deviceId`, (error, results) => {
       if (error) res.status(400).send(error)
       if (results.length === 0) {
         res.status(200).send([]);
-      }else{
+      } else {
         res.status(200).send(results)
       }
     });
@@ -134,4 +134,34 @@ const getDeviceIdBygroupId = ({ deviceGroupId }) => {
       return resolve(elements);
     });
   });
+};
+
+
+export const getPositionDevice = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const device = await getPositionDeviceService(id);
+    if (device.length === 0) {
+      res.status(200).send(null)
+    } else {
+      res.status(200).send(device[0])
+    }
+
+  } catch (error) {
+    res.status(500).send(error)
+  }
+}
+
+
+const getPositionDeviceService = (deviceId) => {
+  return new Promise((resolve, reject) => {
+    connection.query('select * from DeviceHistory  where deviceId = ? order by createdAt desc limit 1 ', [deviceId], (error, elements) => {
+      console.log("Elements", elements);
+      if (error) {
+        return reject(error);
+      }
+      return resolve(elements);
+    });
+  });
+
 };

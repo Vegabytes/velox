@@ -1,9 +1,5 @@
 <template>
   <v-app>
-    <v-snackbar v-model="snackbarStore.activate" :color="snackbarStore.color" :location="snackbarStore.location"
-    :timeout="snackbarStore.timeout">
-    <div class="text-subtitle-1 pb-2"> {{ snackbarStore.text }}</div>
-  </v-snackbar>
     <v-main class="main">
       <router-view />
     </v-main>
@@ -11,10 +7,6 @@
 </template>
 
 <script setup>
-
-import { useSnackbarStore } from '@/store/index';
-const snackbarStore = useSnackbarStore();
-
 </script>
 
 <style>
