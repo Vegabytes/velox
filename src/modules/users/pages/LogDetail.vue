@@ -17,7 +17,7 @@
                                 </v-card-item>
                             </v-row>
                         </v-col>
-                        <v-breadcrumbs :items="breadcrumbsItems">
+                        <v-breadcrumbs :items="breadcrumbsItems" class="px-0">
                             <template v-slot:prepend>
                                 <v-icon size="small" icon="mdi-home"></v-icon>
                             </template>

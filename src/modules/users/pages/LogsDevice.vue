@@ -18,7 +18,7 @@
                                 </v-card-item>
                             </v-row>
                         </v-col>
-                        <v-breadcrumbs :items="breadcrumbsItems">
+                        <v-breadcrumbs :items="breadcrumbsItems" class="px-0">
                             <template v-slot:prepend>
                                 <v-icon size="small" icon="mdi-home"></v-icon>
                             </template>
@@ -27,7 +27,7 @@
 
                     <v-divider></v-divider>
 
-                    <v-row>
+                    <v-row class="pa-8">
                         <v-col cols="12" md="6">
                             <v-row>
                                 <v-data-table v-model:page="page" :headers="headers" :items="currentDeviceLogs" hover="true"
@@ -47,51 +47,49 @@
                             </v-row>
                         </v-col>
                         <v-col cols="12" md="6">
-                            <v-card class="pa-6">
-                                <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
-                                    :loadTilesWhileInteracting="true">
-                                    <ol-view ref="view" v-if="currentDeviceLogs.length > 0"
-                                        :center="currentDeviceLogs[0].position.split(',').reverse()" :rotation="rotation"
-                                        :zoom="zoom" :projection="projection" />
+                            <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
+                                :loadTilesWhileInteracting="true">
+                                <ol-view ref="view" v-if="currentDeviceLogs.length > 0"
+                                    :center="currentDeviceLogs[0].position.split(',').reverse()" :rotation="rotation"
+                                    :zoom="zoom" :projection="projection" />
 
-                                    <ol-tile-layer>
-                                        <ol-source-osm />
-                                    </ol-tile-layer>
+                                <ol-tile-layer>
+                                    <ol-source-osm />
+                                </ol-tile-layer>
 
-                                    <ol-vector-layer>
-                                        <ol-source-vector>
-                                            <ol-feature v-if="currentDeviceLogs.length > 0"
-                                                v-for="item in currentDeviceLogs">
-                                                <ol-geom-point
-                                                    :coordinates="item.position.split(',').reverse()"></ol-geom-point>
-                                                <ol-style>
-                                                    <ol-style-circle :radius="radius">
-                                                        <ol-style-fill :color="fillColor"></ol-style-fill>
-                                                        <ol-style-stroke :color="strokeColor"
-                                                            :width="strokeWidth"></ol-style-stroke>
-                                                    </ol-style-circle>
-                                                    <ol-style-text :text="item.eventType">
-                                                        <ol-style-fill color="white"></ol-style-fill>
-                                                    </ol-style-text>
-                                                </ol-style>
-                                            </ol-feature>
+                                <ol-vector-layer>
+                                    <ol-source-vector>
+                                        <ol-feature v-if="currentDeviceLogs.length > 0" v-for="item in currentDeviceLogs">
+                                            <ol-geom-point
+                                                :coordinates="item.position.split(',').reverse()"></ol-geom-point>
+                                            <ol-style>
+                                                <ol-style-circle :radius="radius">
+                                                    <ol-style-fill :color="fillColor"></ol-style-fill>
+                                                    <ol-style-stroke :color="strokeColor"
+                                                        :width="strokeWidth"></ol-style-stroke>
+                                                </ol-style-circle>
+                                                <ol-style-text :text="item.eventType">
+                                                    <ol-style-fill color="white"></ol-style-fill>
+                                                </ol-style-text>
+                                            </ol-style>
+                                        </ol-feature>
 
 
-                                            <ol-feature v-for="item in currentDeviceLogs">
-                                                <ol-geom-point :coordinates="[item.position]"></ol-geom-point>
-                                                <ol-style>
-                                                    <ol-style-circle :radius="radius">
-                                                        <ol-style-fill :color="fillColor"></ol-style-fill>
-                                                        <ol-style-stroke :color="strokeColor"
-                                                            :width="strokeWidth"></ol-style-stroke>
-                                                    </ol-style-circle>
-                                                </ol-style>
-                                            </ol-feature>
-                                        </ol-source-vector>
+                                        <ol-feature v-for="item in currentDeviceLogs">
+                                            <ol-geom-point :coordinates="[item.position]"></ol-geom-point>
+                                            <ol-style>
+                                                <ol-style-circle :radius="radius">
+                                                    <ol-style-fill :color="fillColor"></ol-style-fill>
+                                                    <ol-style-stroke :color="strokeColor"
+                                                        :width="strokeWidth"></ol-style-stroke>
+                                                </ol-style-circle>
+                                            </ol-style>
+                                        </ol-feature>
+                                    </ol-source-vector>
 
-                                    </ol-vector-layer>
-                                </ol-map>
-                            </v-card>
+                                </ol-vector-layer>
+                            </ol-map>
+
 
                         </v-col>
                     </v-row>

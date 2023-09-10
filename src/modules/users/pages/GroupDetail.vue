@@ -8,7 +8,7 @@
             <v-col>
               <span class="text-h5 text-md-h4 font-weight-bold">{{ userGroupsCurrent[0].name }}</span>
             </v-col>
-            <v-breadcrumbs :items="breadcrumbsItems">
+            <v-breadcrumbs :items="breadcrumbsItems" class="px-0">
               <template v-slot:prepend>
                 <v-icon size="small" icon="mdi-home"></v-icon>
               </template>
@@ -86,7 +86,7 @@
                       <ol-style-fill :color="fillColor"></ol-style-fill>
                       <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
                     </ol-style-circle>
-                    <ol-style-text :text="'Colocar texto'">
+                    <ol-style-text :text="''">
                       <ol-style-fill color="white"></ol-style-fill>
                     </ol-style-text>
                   </ol-style>

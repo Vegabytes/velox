@@ -9,7 +9,7 @@
             <v-col>
               <span class="text-h5 text-md-h4 font-weight-bold">Mis subgrupos de dispositivos</span>
             </v-col>
-            <v-breadcrumbs :items="items">
+            <v-breadcrumbs :items="items" class="px-0">
               <template v-slot:prepend>
                 <v-icon size="small" icon="mdi-home"></v-icon>
               </template>

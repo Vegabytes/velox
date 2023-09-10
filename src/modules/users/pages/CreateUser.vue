@@ -8,7 +8,7 @@
           <v-col ols="12" lg="6" class="d-flex">
             <h2 class="text-primary text-h5 text-lg-h3 text-md-h4">Nuevo Usuario</h2>
           </v-col>
-          <v-breadcrumbs :items="breadcrumbsItems">
+          <v-breadcrumbs :items="breadcrumbsItems" class="px-0">
             <template v-slot:prepend>
               <v-icon size="small" icon="mdi-home"></v-icon>
             </template>
