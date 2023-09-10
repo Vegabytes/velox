@@ -6,7 +6,7 @@
                 <v-card-text>
                     <v-row class="mt-2">
                         <v-col>
-                            <v-row class="py-6">
+                            <v-row c>
                                 <v-avatar class="ma-3" size="x-large">
                                     <v-img v-if="appStore.currentDevice" cover :src="appStore.currentDevice.path"></v-img>
                                 </v-avatar>

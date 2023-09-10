@@ -7,7 +7,7 @@
                     <v-row class="mt-2">
                         <v-col>
 
-                            <v-row class="py-6">
+                            <v-row>
                                 <v-avatar class="ma-3" size="x-large">
                                     <v-img cover :src="currentDevice.path"></v-img>
                                 </v-avatar>

@@ -38,7 +38,7 @@
 
 
             <div class="text-right">Cerrar sesión
-              <v-btn class="ma-2" variant="text" icon="mdi-logout" color="black"></v-btn>
+              <v-btn class="ma-2" variant="text" icon="mdi-logout" color="black" @click="logout"></v-btn>
             </div>
           </v-card-text>
         </v-card>
