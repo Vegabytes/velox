@@ -5,7 +5,7 @@
       <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
         <v-card-text>
 
-          <v-row class="mt-2 pa-4">
+          <v-row class="mt-2">
             <v-col>
               <span class="text-h5 text-md-h4 font-weight-bold">Mis subgrupos de dispositivos</span>
             </v-col>

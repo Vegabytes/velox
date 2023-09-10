@@ -4,7 +4,7 @@
             <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
             <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
                 <v-card-text>
-                    <v-row class="mt-2 pa-4">
+                    <v-row class="mt-2">
                         <v-col>
 
                             <v-row class="py-6">
@@ -18,33 +18,31 @@
                                 </v-card-item>
                             </v-row>
                         </v-col>
-                        <v-breadcrumbs :items="breadcrumbsItems" class="px-0">
+                        <v-breadcrumbs :items="breadcrumbsItems">
                             <template v-slot:prepend>
                                 <v-icon size="small" icon="mdi-home"></v-icon>
                             </template>
                         </v-breadcrumbs>
                     </v-row>
 
-                    <v-divider></v-divider>
+                    <v-divider thickness="3" class="mb-4"></v-divider>
 
-                    <v-row class="pa-8">
+                    <v-row class="mt-3">
                         <v-col cols="12" md="6">
-                            <v-row>
-                                <v-data-table v-model:page="page" :headers="headers" :items="currentDeviceLogs" hover="true"
-                                    :items-per-page="50" hide-default-footer class="elevation-1">
-                                    <template v-slot:item="{ item }">
-                                        <tr @click="toLogDetail(item.columns.id)" style="cursor:pointer">
-                                            <td>{{ item.columns.id }}</td>
-                                            <td>{{ item.columns.timestamp }}</td>
-                                        </tr>
-                                    </template>
-                                    <template v-slot:bottom>
-                                        <div class="text-center pt-2">
-                                            <v-pagination v-model="page" :length="pageCount"></v-pagination>
-                                        </div>
-                                    </template>
-                                </v-data-table>
-                            </v-row>
+                            <v-data-table v-model:page="page" :headers="headers" :items="currentDeviceLogs" hover="true"
+                                :items-per-page="50" hide-default-footer class="elevation-1">
+                                <template v-slot:item="{ item }">
+                                    <tr @click="toLogDetail(item.columns.id)" style="cursor:pointer">
+                                        <td>{{ item.columns.id }}</td>
+                                        <td>{{ item.columns.timestamp }}</td>
+                                    </tr>
+                                </template>
+                                <template v-slot:bottom>
+                                    <div class="text-center pt-2">
+                                        <v-pagination v-model="page" :length="pageCount"></v-pagination>
+                                    </div>
+                                </template>
+                            </v-data-table>
                         </v-col>
                         <v-col cols="12" md="6">
                             <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"

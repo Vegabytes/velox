@@ -13,18 +13,14 @@
       </v-img>
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-row class="align-center justify-end avatar-user">
-            <v-col cols="6" class="pa-0">
-              <div class="text-secondary text-subtitle-2"> {{ appStore.getCurrentUser.name }}</div>
-              <div @click="logout" style="cursor: pointer" class="text-secondary font-italic text-subtitle-2">Salir<v-icon
-                  icon="mdi-logout pl-3 icono-salir"></v-icon>
-              </div>
-            </v-col>
-            <v-col cols="6" class="pa-3 text-start">
+          <v-row class="align-center justify-center avatar-user">
+            <v-col class="pa-0">
               <v-avatar :size="mobile ? 35 : 45">
                 <v-img :src="appStore.getCurrentUser.path" :alt="appStore.getCurrentUser.path" v-bind="props"></v-img>
               </v-avatar>
+              <!--               <div class="text-secondary text-subtitle-2"> {{ appStore.getCurrentUser.name }}</div> -->
             </v-col>
+
 
           </v-row>
 
@@ -32,12 +28,17 @@
         <v-card class="mx-auto" max-width="344">
           <v-card-text>
             <div>{{ appStore.getCurrentUser.name }} {{ appStore.getCurrentUser.lastName }}</div>
-            <p class="text-h4 text--primary mt-4">
-              {{ isAdmin ? 'Admin' : 'Usuario' }}
+            <p class="text-h6 text--primary mt-4">
+              Rol: {{ isAdmin ? 'Admin' : 'Usuario' }}
             </p>
             <p>{{ appStore.getCurrentUser.email }}</p>
             <div class="text--primary">
               {{ appStore.getCurrentUser.description }}
+            </div>
+
+
+            <div class="text-right">Cerrar sesión
+              <v-btn class="ma-2" variant="text" icon="mdi-logout" color="black"></v-btn>
             </div>
           </v-card-text>
         </v-card>
@@ -72,7 +73,7 @@ const irHome = () => $router.push(`/${idGroup.value}/groups`);
   width: 12rem;
   position: absolute;
   top: 2rem;
-  right: 1rem;
+  right: 2rem;
   text-align: right;
 }
 

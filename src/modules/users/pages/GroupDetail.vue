@@ -4,7 +4,7 @@
       <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
       <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
         <v-card-text>
-          <v-row class="mt-2 pa-4">
+          <v-row class="mt-2">
             <v-col>
               <span class="text-h5 text-md-h4 font-weight-bold">{{ userGroupsCurrent[0].name }}</span>
             </v-col>
@@ -21,7 +21,7 @@
               <v-badge class="px-4 pt-4" v-if="isAdmin" color="primary" content="Administrador" inline></v-badge>
 
               <v-card class="mb-8" variant="flat">
-                <v-card-text>
+                <v-card-text class="pa-0 mt-4">
 
                   <h2 v-if="listDevicesByUser.length === 0" class="text-primary text-h5">No hay dispositivos asignados al
                     grupo</h2>

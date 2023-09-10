@@ -2,9 +2,9 @@
     <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
         <v-card elevation="8" rounded="lg" color="secondary" v-if="!loadingStore.isLoading">
             <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
-            <v-container fluid:class="mobile ? 'pa-1' : 'pa-10'">
+            <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
                 <v-card-text>
-                    <v-row class="mt-2 pa-4">
+                    <v-row class="mt-2">
                         <v-col>
                             <v-row class="py-6">
                                 <v-avatar class="ma-3" size="x-large">
@@ -24,7 +24,7 @@
                         </v-breadcrumbs>
                     </v-row>
 
-                    <v-divider></v-divider>
+                    <v-divider thickness="3" class="mb-4"></v-divider>
 
                     <v-card class="mt-2" variant="flat">
                         <v-row>
@@ -63,8 +63,9 @@
                                         </v-card>
                                     </v-row>
                                 </v-card>
-                                <v-card class="pa-8">
-                                    <v-carousel v-model="selectedPhoto" hide-delimiters>
+                                <v-card class="mt-6">
+                                    <v-carousel v-model="selectedPhoto" hide-delimiters
+                                        :style='{ height: mobile ? "300px" : "400px" }'>
                                         <v-carousel-item v-for="(slide, i) in appStore.currentLog.images" :key="i" cover>
                                             <v-img :src="`${url}/${appStore.currentLog.imagePath}/${slide}`" />
                                         </v-carousel-item>
