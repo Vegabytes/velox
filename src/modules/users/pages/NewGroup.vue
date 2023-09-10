@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-10">
+  <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
     <v-card elevation="8" rounded="lg" color="secondary">
       <veloxHeader :path="appStore.currentGroup.path" :name="appStore.currentGroup.name"
         :description="appStore.currentGroup.description" />

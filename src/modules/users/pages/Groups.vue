@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-10">
+  <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
     <v-card v-if="!loadingStore.isLoading" elevation="8" rounded="lg" color="secondary">
       <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
       <v-container :class="mobile ? 'pa-1' : 'pa-10'">
