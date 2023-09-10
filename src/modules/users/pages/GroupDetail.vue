@@ -1,57 +1,60 @@
 <template>
-  <v-container class="pa-0 my-2">
-    <v-card elevation="8" rounded="lg" color="secondary" min-width="70%" v-if="!loadingStore.isLoading">
+  <v-container fluid class="pa-10">
+    <v-card elevation="8" rounded="lg" color="secondary" v-if="!loadingStore.isLoading">
       <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
-      <v-card-text>
+      <v-container :class="mobile ? 'pa-1' : 'pa-10'">
+        <v-card-text>
+          <v-row class="mt-2 pa-4">
+            <v-col>
+              <span class="text-h5 text-md-h4 font-weight-bold">{{ userGroupsCurrent[0].name }}</span>
+            </v-col>
+            <v-col cols="12" lg="6" class="d-flex justify-lg-end justify-md-center justify-sm-center justify-center pt-0">
+              <v-breadcrumbs :items="breadcrumbsItems">
+                <template v-slot:prepend>
+                  <v-icon size="small" icon="mdi-home"></v-icon>
+                </template>
+              </v-breadcrumbs>
+            </v-col>
+          </v-row>
+          <v-divider></v-divider>
 
-        <v-row class="my-4">
-          <v-col ols="12" lg="6" class="d-flex align-center justify-lg-start justify-center">
-            <span class="text-h5 font-weight-bold">{{ userGroupsCurrent[0].name }}</span>
-          </v-col>
-          <v-col cols="12" lg="6" class="d-flex justify-lg-end justify-md-center justify-sm-center justify-center pt-0">
-            <v-breadcrumbs :items="breadcrumbsItems">
-              <template v-slot:prepend>
-                <v-icon size="small" icon="mdi-home"></v-icon>
-              </template>
-            </v-breadcrumbs>
-          </v-col>
-        </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-card class="mb-8" variant="flat">
+                <v-card-text>
 
-        <v-divider></v-divider>
+                  <h2 v-if="listDevicesByUser.length === 0" class="text-primary text-h5">No hay dispositivos asignados al
+                    grupo</h2>
 
-        <v-row>
-          <v-col cols="12">
-            <v-card class="mb-8" variant="flat">
-              <v-card-text>
-
-                <h2 v-if="listDevicesByUser.length === 0" class="text-primary text-h5">No hay dispositivos asignados al
-                  grupo</h2>
-
-                <div v-if="listDevicesByUser.length > 0" v-for="item in listDevicesByUser">
-
+                  <div v-if="listDevicesByUser.length > 0" v-for="item in listDevicesByUser">
 
 
 
 
 
 
-                  <v-row class="d-flex flex-row align-center justify-lg-space-between" style="cursor: pointer;">
+
+                    <v-row class="d-flex flex-row align-center justify-lg-space-between" style="cursor: pointer;">
 
 
-                    <v-col class="d-flex align-center" style="cursor: pointer;">
-                      <v-col cols="auto" @click="goToLogsDevice(item)">
-                        <div class="ma-0 pa-0 ma-md-2 ma-lg-2 pa-md-2 pa-lg-2">
-                          <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover class="rounded-xl"></v-img>
-                        </div>
-                      </v-col>
-                      <v-col cols="6" class="d-block">
-                        <p class="text-h7 text-md-h5 ma-1" @click="goToLogsDevice(item)"><strong>{{ item.name }}</strong></p>
-                        <p class="text-h7 text-md-h7 mx-1" @click="goToLogsDevice(item)"> {{ item.description }}</p>
-                          <v-btn class="justify-end pl-0" color="primary" variant="" append-icon="mdi-eye" @click="dialogLastPosition = true">
+                      <v-col class="d-flex align-center" style="cursor: pointer;">
+                        <v-col cols="auto" @click="goToLogsDevice(item)">
+                          <div class="ma-0 pa-0 ma-md-2 ma-lg-2 pa-md-2 pa-lg-2">
+                            <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover
+                              class="rounded-xl"></v-img>
+                          </div>
+                        </v-col>
+                        <v-col cols="6" class="d-block">
+                          <p class="text-h7 text-md-h5 ma-1" @click="goToLogsDevice(item)"><strong>{{ item.name
+                          }}</strong>
+                          </p>
+                          <p class="text-h7 text-md-h7 mx-1" @click="goToLogsDevice(item)"> {{ item.description }}</p>
+                          <v-btn class="justify-end pl-0" color="primary" variant="" append-icon="mdi-eye"
+                            @click="dialogLastPosition = true">
                             Última posición</v-btn>
+                        </v-col>
                       </v-col>
-                    </v-col>
-                  </v-row>
+                    </v-row>
 
 
 
@@ -61,7 +64,7 @@
 
 
 
-<!--
+                    <!--
 
                   <v-row class="d-flex flex-row align-center" style="cursor: pointer;">
                     <v-col cols="8" @click="goToLogsDevice(item)">
@@ -84,12 +87,13 @@
 -->
 
 
-                </div>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-card-text>
+                  </div>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-container>
     </v-card>
 
 
@@ -98,10 +102,8 @@
     <v-dialog v-model="dialogLastPosition">
       <v-card>
         <v-card-text class="pa-8">
-          <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
-                  :loadTilesWhileInteracting="true">
-            <ol-view ref="view" :center="[0,0].reverse()"
-                     :rotation="rotation" :zoom="zoom" :projection="projection" />
+          <ol-map style="height: 500px;" :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true">
+            <ol-view ref="view" :center="[0, 0].reverse()" :rotation="rotation" :zoom="zoom" :projection="projection" />
 
             <ol-tile-layer>
               <ol-source-osm />
@@ -111,28 +113,24 @@
               <ol-source-vector>
 
                 <ol-feature>
-                  <ol-geom-point
-                    :coordinates="[0,0].reverse()"></ol-geom-point>
+                  <ol-geom-point :coordinates="[0, 0].reverse()"></ol-geom-point>
                   <ol-style>
                     <ol-style-circle :radius="radius">
                       <ol-style-fill :color="fillColor"></ol-style-fill>
-                      <ol-style-stroke :color="strokeColor"
-                                       :width="strokeWidth"></ol-style-stroke>
+                      <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
                     </ol-style-circle>
-                    <ol-style-text :text="  'Colocar texto'  ">
+                    <ol-style-text :text="'Colocar texto'">
                       <ol-style-fill color="white"></ol-style-fill>
                     </ol-style-text>
                   </ol-style>
                 </ol-feature>
 
                 <ol-feature>
-                  <ol-geom-point
-                    :coordinates="[0,0].reverse()"></ol-geom-point>
+                  <ol-geom-point :coordinates="[0, 0].reverse()"></ol-geom-point>
                   <ol-style>
                     <ol-style-circle :radius="radius">
                       <ol-style-fill :color="fillColor"></ol-style-fill>
-                      <ol-style-stroke :color="strokeColor"
-                                       :width="strokeWidth"></ol-style-stroke>
+                      <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
                     </ol-style-circle>
                   </ol-style>
 
@@ -159,8 +157,9 @@ import { onBeforeMount } from 'vue'
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore, useLoadingStore } from '@/store/index';
 import veloxHeader from '@/components/veloxHeader.vue'
-import veloxBtnReturn from '@/components/veloxBtnReturn.vue'
+import { useDisplay } from 'vuetify';
 
+const { mobile } = useDisplay()
 const $router = useRouter();
 const $route = useRoute();
 const appStore = useAppStore()
@@ -181,11 +180,11 @@ const dialogLastPosition = ref(false)
 
 const listDevicesByUser = ref([])
 
-const breadcrumbsItems= [
+const breadcrumbsItems = [
   {
     title: 'Inicio',
     disabled: false,
-    to:{name: 'Groups'},
+    to: { name: 'Groups' },
   },
   {
     title: 'Listado de dispositivos',
@@ -236,7 +235,7 @@ const getUserGroups = async () => {
   }
 }
 
-const openDialogLastPosition = ()=>{
+const openDialogLastPosition = () => {
 
 }
 

@@ -1,29 +1,30 @@
 <template>
     <v-container class="pa-0 my-2">
-        <v-card elevation="8" rounded="lg" color="secondary" min-width="70%" v-if="!loadingStore.isLoading">
+        <v-card elevation="8" rounded="lg" color="secondary" v-if="!loadingStore.isLoading">
             <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
             <v-card-text>
 
-              <v-row class="my-4">
-                <v-col ols="12" lg="6" class="d-flex align-center justify-lg-start justify-center">
-                  <v-row class="py-6">
-                    <v-avatar class="ma-3" size="x-large">
-                      <v-img v-if="appStore.currentDevice" cover :src="appStore.currentDevice.path"></v-img>
-                    </v-avatar>
-                    <v-card-item>
-                      <v-card-title>{{ appStore.currentDevice.name }}</v-card-title>
-                      <v-card-subtitle>{{ appStore.currentDevice.description }}</v-card-subtitle>
-                    </v-card-item>
-                  </v-row>
-                </v-col>
-                <v-col cols="12" lg="6" class="d-flex justify-lg-end justify-md-center justify-sm-center justify-center pt-0">
-                  <v-breadcrumbs :items="breadcrumbsItems">
-                    <template v-slot:prepend>
-                      <v-icon size="small" icon="mdi-home"></v-icon>
-                    </template>
-                  </v-breadcrumbs>
-                </v-col>
-              </v-row>
+                <v-row class="my-4">
+                    <v-col ols="12" lg="6" class="d-flex align-center justify-lg-start justify-center">
+                        <v-row class="py-6">
+                            <v-avatar class="ma-3" size="x-large">
+                                <v-img v-if="appStore.currentDevice" cover :src="appStore.currentDevice.path"></v-img>
+                            </v-avatar>
+                            <v-card-item>
+                                <v-card-title>{{ appStore.currentDevice.name }}</v-card-title>
+                                <v-card-subtitle>{{ appStore.currentDevice.description }}</v-card-subtitle>
+                            </v-card-item>
+                        </v-row>
+                    </v-col>
+                    <v-col cols="12" lg="6"
+                        class="d-flex justify-lg-end justify-md-center justify-sm-center justify-center pt-0">
+                        <v-breadcrumbs :items="breadcrumbsItems">
+                            <template v-slot:prepend>
+                                <v-icon size="small" icon="mdi-home"></v-icon>
+                            </template>
+                        </v-breadcrumbs>
+                    </v-col>
+                </v-row>
 
                 <v-divider></v-divider>
 
@@ -162,28 +163,28 @@ const fillColor = ref("blue");
 
 const selectedPhoto = ref(0)
 
-const breadcrumbsItems= [
-  {
-    title: 'Inicio',
-    disabled: false,
-    to:{name: 'Groups'},
-  },
-  {
-    title: 'Listado de dispositivos',
-    disabled: false,
-    exact: true,
-    to:{name: 'GroupDetail'},
-  },
-  {
-    title: 'Detalles del dispositivo',
-    disabled: false,
-    to:{name: 'Logs'},
-  },
-  {
-    title: 'Logs',
-    disabled: true,
-    href: 'breadcrumbs_link_1',
-  },
+const breadcrumbsItems = [
+    {
+        title: 'Inicio',
+        disabled: false,
+        to: { name: 'Groups' },
+    },
+    {
+        title: 'Listado de dispositivos',
+        disabled: false,
+        exact: true,
+        to: { name: 'GroupDetail' },
+    },
+    {
+        title: 'Detalles del dispositivo',
+        disabled: false,
+        to: { name: 'Logs' },
+    },
+    {
+        title: 'Logs',
+        disabled: true,
+        href: 'breadcrumbs_link_1',
+    },
 ]
 
 

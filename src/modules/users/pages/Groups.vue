@@ -1,65 +1,70 @@
 <template>
-  <v-container class="pa-0 my-2">
-    <v-card v-if="!loadingStore.isLoading" elevation="8" rounded="lg" color="secondary" min-width="70%">
+  <v-container fluid class="pa-10">
+    <v-card v-if="!loadingStore.isLoading" elevation="8" rounded="lg" color="secondary">
       <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
-      <v-card-text>
+      <v-container :class="mobile ? 'pa-1' : 'pa-10'">
+        <v-card-text>
 
-          <v-row class="pt-8 pb-4 ml-2">
-            <span class="text-h5 font-weight-bold">Mis subgrupos de dispositivos</span>
+          <v-row class="mt-2 pa-4">
+            <v-col>
+              <span class="text-h5 text-md-h4 font-weight-bold">Mis subgrupos de dispositivos</span>
+            </v-col>
           </v-row>
 
-              <v-card variant="flat" color="secondary">
-                <v-row>
-                  <v-col cols="12" md="12" lg="6">
-                    <v-card-actions v-if="isAdmin" class="d-lg-flex d-md-flex d-block d-sm-block justify-md-center">
-                      <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="newGroup()" class="mb-lg-0 mb-md-0 mb-4">Nuevo
-                        grupo
-                      </v-btn>
-                      <v-btn variant="tonal" prepend-icon="mdi-plus" color="primary" @click="toCreateUser()" class="mb-lg-0 mb-md-0 mb-4 ml-0 ml-md-2 ml-lg-2">Crear
-                        Usuario</v-btn>
-                      <v-btn variant="tonal" prepend-icon="mdi-link" color="primary" @click="toAsignUser()" class="mb-lg-0 mb-md-0 mb-4 ml-0 ml-md-2 ml-lg-2">Añadir Usuario a
-                        grupo</v-btn>
-                    </v-card-actions>
-                  </v-col>
-                </v-row>
-              </v-card>
+          <v-card variant="flat" color="secondary">
+            <v-row>
+              <v-col cols="12" md="12" lg="6">
+                <v-card-actions v-if="isAdmin">
+                  <v-btn variant="tonal" color="primary" prepend-icon="mdi-account-multiple-plus"
+                    @click="newGroup()">Grupo
+                  </v-btn>
+                  <v-btn variant="tonal" color="primary" @click="toCreateUser()" prepend-icon="mdi-account-plus"
+                    class="">Usuario</v-btn>
+                  <v-btn variant="tonal" color="primary" @click="toAsignUser()"
+                    prepend-icon="mdi-link-box-outline">Asociar</v-btn>
+                </v-card-actions>
+              </v-col>
+            </v-row>
+          </v-card>
 
 
-        <v-divider></v-divider>
+          <v-divider thickness="3" class="mb-4"></v-divider>
 
-        <v-row>
-          <v-col cols="12">
-            <v-badge class="px-4, pt-4" v-if="isAdmin" color="primary" content="Administrador" inline></v-badge>
-            <v-card class="mb-8" variant="flat">
-              <v-card-text>
-                <div v-for="item in userGroups">
-                  <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToGroupDetail(item)">
-                    <div class="ma-2 pa-2">
-                      <v-img v-if="item.path" :src="`${path}/${item.path}`" alt="GroupAvatar" height="100px" width="100px"
-                        cover class="rounded-xl"></v-img>
-                    </div>
-                    <div class="ma-2 pa-2 d-flex flex-column">
-                      <v-row class="flex-lg-row flex-column align-center">
-                        <p class="text-h7 ma-1">
-                          <strong>{{ item.name }}.</strong>
-                          <span class="text-sm-caption ma-1 font-italic font-weight-bold text-primary">{{ item.devices.length }}
-                        dispositivos
-                          </span>
-                        </p>
-                      </v-row>
-                      <v-row class="d-flex flex-row mb-6 ">
-                        <div>
-                          <p class="text-h7 mx-1"> {{ item.description }}</p>
-                        </div>
-                      </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-badge class="px-4, pt-4" v-if="isAdmin" color="primary" content="Administrador" inline></v-badge>
+              <v-card class="mb-8" variant="flat">
+                <v-card-text class="pa-0 mt-4">
+                  <div v-for="item in userGroups">
+                    <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToGroupDetail(item)">
+                      <div class="py-4">
+                        <v-img v-if="item.path" :src="`${path}/${item.path}`" alt="GroupAvatar" height="100px"
+                          width="100px" cover class="rounded-xl"></v-img>
+                      </div>
+                      <div class="ma-2 pa-2 d-flex flex-column">
+                        <v-row class="flex-lg-row flex-column px-4">
+                          <p class="text-h4 font-weight-regular">
+                            {{ item.name }}.
+                            <span class="text-h6 ma-1 font-italic font-weight-bold text-primary">{{
+                              item.devices.length }}
+                              dispositivos
+                            </span>
+                          </p>
+                        </v-row>
+                        <v-row class="flex-lg-row flex-column  px-4 ">
+                          <div>
+                            <p class="text-h6 mx-1 text-grey"> {{ item.description }}</p>
+                          </div>
+                        </v-row>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-card-text>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-container>
     </v-card>
   </v-container>
 </template>
@@ -71,8 +76,9 @@ import { useRoute, useRouter } from "vue-router";
 
 import { useAppStore, useLoadingStore, useLoginStore } from '@/store/index';
 import veloxHeader from '@/components/veloxHeader.vue'
-import VeloxSectionHeader from "@/components/veloxSectionHeader";
+import { useDisplay } from 'vuetify';
 
+const { mobile } = useDisplay()
 const $router = useRouter();
 const $route = useRoute();
 const appStore = useAppStore()
@@ -88,7 +94,7 @@ const isAdmin = computed(() => appStore.getIsAdmin);
 
 const path = ref(import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000');
 
-const items= [
+const items = [
   {
     title: 'Inicio',
     disabled: true,
@@ -172,7 +178,7 @@ const newGroup = async () => {
 }
 
 const toCreateUser = async () => {
-  if (loginStore.loggedUser.groupId) {
+  if (currentUser.value.id) {
     $router.push(`/${idGroup.value}/CreateUser`);
   } else {
     $router.push(`/${idGroup.value}/login`);

@@ -1,22 +1,25 @@
 <template>
-  <v-container class="h-screen d-flex align-center justify-center">
+  <v-container class="h-screen d-flex align-md-center justify-center">
     <v-col>
-      <v-row class="d-flex justify-center">
+      <v-row class="d-flex justify-center align-center">
         <v-card elevation="8" min-width="448" rounded="lg" class="pa-12">
           <v-card-item class="pt-8">
             <v-card-title>
-              <span class="text-h3"> Información </span>
+              <div class="text-h3"> Error 404</div>
             </v-card-title>
-            <v-card-subtitle>
-              <span class="text-h5">
+            <v-card-title class="mt-1">
+              <div> Página no encontrada</div>
+            </v-card-title>
+            <v-card-subtitle class="mt-9">
+              <div class="text-h5">
                 Para continuar es necesario iniciar sesión en uno de los grupos predetermiados.
                 Gracias.
-              </span>
+              </div>
             </v-card-subtitle>
           </v-card-item>
           <v-card-item class="text-right">
-            <v-btn class="rounded-lg" color="primary" type="submit" @click="goToLogin" :disabled="calling">
-              iniciar sesión
+            <v-btn class="rounded-lg" color="error" type="submit" @click="goToLogin" :disabled="calling">
+              Ir a login
             </v-btn>
           </v-card-item>
         </v-card>
@@ -37,3 +40,10 @@ const goToLogin = () => {
 }
 
 </script>
+<style scoped>
+.v-card-subtitle {
+  white-space: inherit;
+}
+</style>
+
+

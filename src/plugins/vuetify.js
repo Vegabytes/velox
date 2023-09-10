@@ -60,7 +60,7 @@ const customDarkTheme = {
     primary: 'd7e4ed',
     onPrimary: MaastrichtBlue,
     secondary: MaastrichtBlue,
-    error: 'd7e4ed'
+    error: 'd7e4ed',
   }
 }
 

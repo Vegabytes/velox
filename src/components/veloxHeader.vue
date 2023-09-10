@@ -1,38 +1,33 @@
 <template>
-  <v-row>
-    <v-col md="1" cols="12" class="d-none d-sm-flex justify-center align-center">
-      <v-img class="" max-width="80" src="@/assets/logo.png" style="cursor: pointer" @click="irHome()"/>
+  <v-row style="cursor: pointer" @click="irHome()">
+    <v-col :cols="mobile ? 2 : 1" class="d-flex justify-center align-center pa-0">
+      <v-img class="mt-3" :max-width="mobile ? '40' : '70'" src="@/assets/logo.png" />
     </v-col>
-    <v-col md="11" cols="12" class="d-flex justify-center py-0">
+    <v-col :cols="mobile ? 10 : 11" class="d-flex justify-center pa-0">
 
       <v-img :src="`${path}/${props.path}`" class="align-end rounded-bs-xl"
-        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" height="150px" cover>
-        <v-card-title class="text-white text-lg-h2 text-md-3 text-h5" v-text="props.name"></v-card-title>
-        <v-card-subtitle class="text-white text-h7 text-lg-h5 text-md-h6 mb-4" v-text="props.description"></v-card-subtitle>
+        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" :height="mobile ? '100px' : '200px'" cover>
+        <v-card-title class="text-white text-lg-h3 text-h5 mb-1" v-text="props.name"></v-card-title>
+        <v-card-subtitle class="text-white text-h7   mb-4" v-text="props.description"></v-card-subtitle>
       </v-img>
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-row class="align-center justify-end avatar-user">
             <v-col cols="6" class="pa-0">
-              <div class="text-secondary"> {{ appStore.getCurrentUser.name }}</div>
-              <div class="text-secondary">Salir<v-icon @click="logout" icon="mdi-exit-to-app pl-3 icono-salir"></v-icon>
+              <div class="text-secondary text-subtitle-2"> {{ appStore.getCurrentUser.name }}</div>
+              <div class="text-secondary font-italic text-subtitle-2">Salir<v-icon @click="logout"
+                  icon="mdi-logout pl-3 icono-salir"></v-icon>
               </div>
             </v-col>
-            <v-col cols="6" class="pa-1">
-              <v-avatar size="50">
-                <v-img :src="appStore.currentUser.path" alt="John" v-bind="props"></v-img>
+            <v-col cols="6" class="pa-1 text-start">
+              <v-avatar :size="mobile ? 35 : 45">
+                <v-img :src="appStore.currentUser.path" :alt="appStore.currentUser.path" v-bind="props"></v-img>
               </v-avatar>
             </v-col>
 
           </v-row>
 
         </template>
-
-        <!--         <v-list>
-          <v-list-item v-for="(item, i) in items" :key="i">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list> -->
         <v-card class="mx-auto" max-width="344">
           <v-card-text>
             <div>{{ appStore.getCurrentUser.name }} {{ appStore.getCurrentUser.lastName }}</div>
@@ -44,16 +39,8 @@
               {{ appStore.getCurrentUser.description }}
             </div>
           </v-card-text>
-          <!--           <v-card-actions>
-            <v-btn variant="text" color="deep-purple-accent-4">
-              Hacer algo
-            </v-btn>
-          </v-card-actions> -->
         </v-card>
-
-
       </v-menu>
-
     </v-col>
   </v-row>
 </template>
@@ -62,8 +49,9 @@
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore } from '@/store/index';
+import { useDisplay } from 'vuetify';
 
-
+const { mobile } = useDisplay()
 const $router = useRouter();
 const $route = useRoute();
 const appStore = useAppStore()
@@ -72,15 +60,7 @@ const idGroup = computed(() => $route.params.idGroup)
 const props = defineProps(['path', 'name', 'description'])
 const path = ref(import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000');
 
-const items = [
-  { title: 'Click Me' },
-  { title: 'Click Me' },
-  { title: 'Click Me' },
-  { title: 'Click Me 2' },
-];
-
 const logout = () => $router.push(`/${idGroup.value}/login`);
-
 const irHome = () => $router.push(`/${idGroup.value}/groups`);
 
 </script>
@@ -88,10 +68,11 @@ const irHome = () => $router.push(`/${idGroup.value}/groups`);
 
 <style scope>
 .avatar-user {
-  width: 10rem;
+  width: 12rem;
   position: absolute;
-  top: 1rem;
-  right: 2rem;
+  top: 2rem;
+  right: 1rem;
+  text-align: right;
 }
 
 .avatar-user img {
