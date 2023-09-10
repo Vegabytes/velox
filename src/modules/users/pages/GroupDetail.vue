@@ -8,85 +8,52 @@
             <v-col>
               <span class="text-h5 text-md-h4 font-weight-bold">{{ userGroupsCurrent[0].name }}</span>
             </v-col>
-            <v-col cols="12" lg="6" class="d-flex justify-lg-end justify-md-center justify-sm-center justify-center pt-0">
-              <v-breadcrumbs :items="breadcrumbsItems">
-                <template v-slot:prepend>
-                  <v-icon size="small" icon="mdi-home"></v-icon>
-                </template>
-              </v-breadcrumbs>
-            </v-col>
+            <v-breadcrumbs :items="breadcrumbsItems">
+              <template v-slot:prepend>
+                <v-icon size="small" icon="mdi-home"></v-icon>
+              </template>
+            </v-breadcrumbs>
           </v-row>
-          <v-divider></v-divider>
+          <v-divider thickness="3" class="mb-4"></v-divider>
 
           <v-row>
             <v-col cols="12">
+              <v-badge class="px-4 pt-4" v-if="isAdmin" color="primary" content="Administrador" inline></v-badge>
+
               <v-card class="mb-8" variant="flat">
                 <v-card-text>
 
                   <h2 v-if="listDevicesByUser.length === 0" class="text-primary text-h5">No hay dispositivos asignados al
                     grupo</h2>
-
                   <div v-if="listDevicesByUser.length > 0" v-for="item in listDevicesByUser">
+                    <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToLogsDevice(item)">
+                      <div class="py-5">
+                        <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover
+                          class="rounded-xl"></v-img>
+                      </div>
+                      <div class="ma-2 pa-2 d-flex flex-column">
+                        <v-row class="flex-lg-row flex-column px-4">
+                          <p class="text-h5 text-md-h4 font-weight-regular">
+                            {{ item.name }}
 
-
-
-
-
-
-
-                    <v-row class="d-flex flex-row align-center justify-lg-space-between" style="cursor: pointer;">
-
-
-                      <v-col class="d-flex align-center" style="cursor: pointer;">
-                        <v-col cols="auto" @click="goToLogsDevice(item)">
-                          <div class="ma-0 pa-0 ma-md-2 ma-lg-2 pa-md-2 pa-lg-2">
-                            <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover
-                              class="rounded-xl"></v-img>
-                          </div>
-                        </v-col>
-                        <v-col cols="6" class="d-block">
-                          <p class="text-h7 text-md-h5 ma-1" @click="goToLogsDevice(item)"><strong>{{ item.name
-                          }}</strong>
                           </p>
-                          <p class="text-h7 text-md-h7 mx-1" @click="goToLogsDevice(item)"> {{ item.description }}</p>
-                          <v-btn class="justify-end pl-0" color="primary" variant="" append-icon="mdi-eye"
-                            @click="dialogLastPosition = true">
-                            Última posición</v-btn>
-                        </v-col>
-                      </v-col>
-                    </v-row>
+                        </v-row>
+                        <v-row class="flex-lg-row flex-column px-4">
+                          <div>
+                            <p class="text-body-1 text-md-h5 mx-1 text-grey"> {{ item.description }}</p>
+                          </div>
+                        </v-row>
+                        <v-row class="flex-lg-row flex-column px-4 ">
+                          <div>
+                            <v-btn class="justify-end pl-0 text-grey" variant="" append-icon="mdi-eye"
+                              @click="dialogLastPosition = true">
+                              Última posición</v-btn>
+                          </div>
+                        </v-row>
 
 
-
-
-
-
-
-
-
-                    <!--
-
-                  <v-row class="d-flex flex-row align-center" style="cursor: pointer;">
-                    <v-col cols="8" @click="goToLogsDevice(item)">
-                      <v-row class="d-block d-lg-flex d-md-flex align-center">
-                        <div class="ma-0 pa-0 ma-md-2 ma-lg-2 pa-md-2 pa-lg-2">
-                          <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover class="rounded-xl"></v-img>
-                        </div>
-                        <v-col>
-                          <p class="text-h7 text-md-h5 ma-1"><strong>{{ item.name }}</strong></p>
-                          <p class="text-h7 text-md-h7 mx-1"> {{ item.description }}</p>
-                        </v-col>
-                      </v-row>
-                    </v-col >
-                    <v-col cols="4" class="d-flex justify-end">
-                      <v-btn class="justify-end mr-2" color="primary" variant="" prepend-icon="mdi-eye" @click="dialogLastPosition = true">
-                        Ver última posición</v-btn>
-                    </v-col>
-                  </v-row>
-
--->
-
-
+                      </div>
+                    </div>
                   </div>
                 </v-card-text>
               </v-card>
@@ -95,8 +62,6 @@
         </v-card-text>
       </v-container>
     </v-card>
-
-
 
     <!-- Diálogo última posición-->
     <v-dialog v-model="dialogLastPosition">
@@ -169,6 +134,7 @@ const currentGroup = computed(() => appStore.currentGroup);
 const userGroups = computed(() => appStore.userGroups);
 const idGroup = computed(() => $route.params.idGroup)
 const idViewGroup = computed(() => $route.params.id)
+const isAdmin = computed(() => appStore.getIsAdmin);
 
 const userGroupsCurrent = computed(() =>
   (userGroups.value.length > 1)

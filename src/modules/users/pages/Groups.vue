@@ -9,6 +9,11 @@
             <v-col>
               <span class="text-h5 text-md-h4 font-weight-bold">Mis subgrupos de dispositivos</span>
             </v-col>
+            <v-breadcrumbs :items="items">
+              <template v-slot:prepend>
+                <v-icon size="small" icon="mdi-home"></v-icon>
+              </template>
+            </v-breadcrumbs>
           </v-row>
 
           <v-card variant="flat" color="secondary">
@@ -32,28 +37,28 @@
 
           <v-row>
             <v-col cols="12">
-              <v-badge class="px-4, pt-4" v-if="isAdmin" color="primary" content="Administrador" inline></v-badge>
+              <v-badge class="px-4 pt-4" v-if="isAdmin" color="primary" content="Administrador" inline></v-badge>
               <v-card class="mb-8" variant="flat">
                 <v-card-text class="pa-0 mt-4">
                   <div v-for="item in userGroups">
                     <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToGroupDetail(item)">
-                      <div class="py-4">
+                      <div class="py-5">
                         <v-img v-if="item.path" :src="`${path}/${item.path}`" alt="GroupAvatar" height="100px"
                           width="100px" cover class="rounded-xl"></v-img>
                       </div>
                       <div class="ma-2 pa-2 d-flex flex-column">
                         <v-row class="flex-lg-row flex-column px-4">
-                          <p class="text-h4 font-weight-regular">
+                          <p class="text-h5 text-md-h4 font-weight-regular">
                             {{ item.name }}.
-                            <span class="text-h6 ma-1 font-italic font-weight-bold text-primary">{{
+                            <span class="text-body-1 text-md-h5 ma-1 font-italic font-weight-bold text-primary">{{
                               item.devices.length }}
                               dispositivos
                             </span>
                           </p>
                         </v-row>
-                        <v-row class="flex-lg-row flex-column  px-4 ">
+                        <v-row class="flex-lg-row flex-column px-4">
                           <div>
-                            <p class="text-h6 mx-1 text-grey"> {{ item.description }}</p>
+                            <p class="text-body-1 text-md-h5 mx-1 text-grey"> {{ item.description }}</p>
                           </div>
                         </v-row>
                       </div>
@@ -74,7 +79,7 @@ import axios from "axios";
 import { computed, onBeforeMount, ref } from 'vue';
 import { useRoute, useRouter } from "vue-router";
 
-import { useAppStore, useLoadingStore, useLoginStore } from '@/store/index';
+import { useAppStore, useLoadingStore } from '@/store/index';
 import veloxHeader from '@/components/veloxHeader.vue'
 import { useDisplay } from 'vuetify';
 
@@ -83,7 +88,6 @@ const $router = useRouter();
 const $route = useRoute();
 const appStore = useAppStore()
 const loadingStore = useLoadingStore();
-const loginStore = useLoginStore()
 
 const currentGroup = computed(() => appStore.currentGroup);
 const userGroups = computed(() => appStore.userGroups);
@@ -145,7 +149,6 @@ const checkIsAdmin = async () => {
 const getUserGroups = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
   try {
-    //const res = await axios.get(`${url}/groups/prueba/${idGroup.value}/${appStore.getCurrentUser.id}`)
     const res = await axios.get(`${url}/groups/${idGroup.value}/user/${appStore.getCurrentUser.id}`)
     appStore.userGroups = res.data;
   }
