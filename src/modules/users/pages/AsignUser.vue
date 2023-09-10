@@ -160,7 +160,7 @@ const asignUser = async () => {
     return res;
   } catch (error) {
     console.error(error)
-    snackbarText.value = 'Error al asignar usuario a grupo'
+    snackbarText.value = 'Esta asociación ya existe'
     snackbarActivate.value = true;
     snackbarColor.value = 'error'
   } finally {

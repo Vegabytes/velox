@@ -10,7 +10,7 @@ export const setUserIntoGroup = async (req, res) => {
   try {
     connection.query(`INSERT INTO UserGroupMembers (userId, groupId)VALUES(${userId},${groupId})`, (error, results) => {
       if (error) {
-        res.status(400).end()
+        res.status(401).send({ msg: 'Esta asociación ya existe' })
         return;
       } else {
         res.status(200).send('Usuario asignado a grupo correctamente')
