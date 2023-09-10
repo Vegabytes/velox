@@ -23,4 +23,5 @@ pnpm-debug.log*
 server/package-lock.json
 package-lock.json
 server/.env
+server/images
 .env
