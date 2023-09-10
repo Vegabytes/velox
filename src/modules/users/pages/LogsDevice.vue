@@ -2,104 +2,97 @@
     <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
         <v-card elevation="8" rounded="lg" color="secondary" v-if="!loadingStore.isLoading">
             <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
-            <v-container :class="mobile ? 'pa-1' : 'pa-10'">
+            <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
                 <v-card-text>
                     <v-row class="mt-2 pa-4">
                         <v-col>
-                            <v-card class="mb-8" variant="flat">
-                                <v-row class="my-4">
-                                    <v-col ols="12" lg="6" class="d-flex align-center justify-lg-start justify-center">
-                                        <v-row class="py-6">
-                                            <v-avatar class="ma-3" size="x-large">
-                                                <v-img cover :src="currentDevice.path"></v-img>
-                                            </v-avatar>
-                                            <v-card-item>
-                                                <v-card-title class="text-h5 text-md-h4 font-weight-bold">{{
-                                                    currentDevice.name }}</v-card-title>
-                                                <v-card-subtitle class="">{{ currentDevice.description }}</v-card-subtitle>
-                                            </v-card-item>
-                                        </v-row>
-                                    </v-col>
-                                    <v-col cols="12" lg="6"
-                                        class="d-flex justify-lg-end justify-md-center justify-sm-center justify-center pt-0">
-                                        <v-breadcrumbs :items="breadcrumbsItems">
-                                            <template v-slot:prepend>
-                                                <v-icon size="small" icon="mdi-home"></v-icon>
-                                            </template>
-                                        </v-breadcrumbs>
-                                    </v-col>
-                                </v-row>
 
-                                <v-divider></v-divider>
+                            <v-row class="py-6">
+                                <v-avatar class="ma-3" size="x-large">
+                                    <v-img cover :src="currentDevice.path"></v-img>
+                                </v-avatar>
+                                <v-card-item>
+                                    <v-card-title class="text-h5 text-md-h4 font-weight-bold">{{
+                                        currentDevice.name }}</v-card-title>
+                                    <v-card-subtitle class="">{{ currentDevice.description }}</v-card-subtitle>
+                                </v-card-item>
+                            </v-row>
+                        </v-col>
+                        <v-breadcrumbs :items="breadcrumbsItems">
+                            <template v-slot:prepend>
+                                <v-icon size="small" icon="mdi-home"></v-icon>
+                            </template>
+                        </v-breadcrumbs>
+                    </v-row>
 
-                                <v-row>
-                                    <v-col cols="12" md="6">
-                                        <v-row>
-                                            <v-data-table v-model:page="page" :headers="headers" :items="currentDeviceLogs"
-                                                hover="true" :items-per-page="50" hide-default-footer class="elevation-1">
-                                                <template v-slot:item="{ item }">
-                                                    <tr @click="toLogDetail(item.columns.id)" style="cursor:pointer">
-                                                        <td>{{ item.columns.id }}</td>
-                                                        <td>{{ item.columns.timestamp }}</td>
-                                                    </tr>
-                                                </template>
-                                                <template v-slot:bottom>
-                                                    <div class="text-center pt-2">
-                                                        <v-pagination v-model="page" :length="pageCount"></v-pagination>
-                                                    </div>
-                                                </template>
-                                            </v-data-table>
-                                        </v-row>
-                                    </v-col>
-                                    <v-col cols="12" md="6">
-                                        <v-card class="pa-6">
-                                            <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
-                                                :loadTilesWhileInteracting="true">
-                                                <ol-view ref="view" v-if="currentDeviceLogs.length > 0"
-                                                    :center="currentDeviceLogs[0].position.split(',').reverse()"
-                                                    :rotation="rotation" :zoom="zoom" :projection="projection" />
+                    <v-divider></v-divider>
 
-                                                <ol-tile-layer>
-                                                    <ol-source-osm />
-                                                </ol-tile-layer>
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <v-row>
+                                <v-data-table v-model:page="page" :headers="headers" :items="currentDeviceLogs" hover="true"
+                                    :items-per-page="50" hide-default-footer class="elevation-1">
+                                    <template v-slot:item="{ item }">
+                                        <tr @click="toLogDetail(item.columns.id)" style="cursor:pointer">
+                                            <td>{{ item.columns.id }}</td>
+                                            <td>{{ item.columns.timestamp }}</td>
+                                        </tr>
+                                    </template>
+                                    <template v-slot:bottom>
+                                        <div class="text-center pt-2">
+                                            <v-pagination v-model="page" :length="pageCount"></v-pagination>
+                                        </div>
+                                    </template>
+                                </v-data-table>
+                            </v-row>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-card class="pa-6">
+                                <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
+                                    :loadTilesWhileInteracting="true">
+                                    <ol-view ref="view" v-if="currentDeviceLogs.length > 0"
+                                        :center="currentDeviceLogs[0].position.split(',').reverse()" :rotation="rotation"
+                                        :zoom="zoom" :projection="projection" />
 
-                                                <ol-vector-layer>
-                                                    <ol-source-vector>
-                                                        <ol-feature v-if="currentDeviceLogs.length > 0"
-                                                            v-for="item in currentDeviceLogs">
-                                                            <ol-geom-point
-                                                                :coordinates="item.position.split(',').reverse()"></ol-geom-point>
-                                                            <ol-style>
-                                                                <ol-style-circle :radius="radius">
-                                                                    <ol-style-fill :color="fillColor"></ol-style-fill>
-                                                                    <ol-style-stroke :color="strokeColor"
-                                                                        :width="strokeWidth"></ol-style-stroke>
-                                                                </ol-style-circle>
-                                                                <ol-style-text :text="item.eventType">
-                                                                    <ol-style-fill color="white"></ol-style-fill>
-                                                                </ol-style-text>
-                                                            </ol-style>
-                                                        </ol-feature>
+                                    <ol-tile-layer>
+                                        <ol-source-osm />
+                                    </ol-tile-layer>
+
+                                    <ol-vector-layer>
+                                        <ol-source-vector>
+                                            <ol-feature v-if="currentDeviceLogs.length > 0"
+                                                v-for="item in currentDeviceLogs">
+                                                <ol-geom-point
+                                                    :coordinates="item.position.split(',').reverse()"></ol-geom-point>
+                                                <ol-style>
+                                                    <ol-style-circle :radius="radius">
+                                                        <ol-style-fill :color="fillColor"></ol-style-fill>
+                                                        <ol-style-stroke :color="strokeColor"
+                                                            :width="strokeWidth"></ol-style-stroke>
+                                                    </ol-style-circle>
+                                                    <ol-style-text :text="item.eventType">
+                                                        <ol-style-fill color="white"></ol-style-fill>
+                                                    </ol-style-text>
+                                                </ol-style>
+                                            </ol-feature>
 
 
-                                                        <ol-feature v-for="item in currentDeviceLogs">
-                                                            <ol-geom-point :coordinates="[item.position]"></ol-geom-point>
-                                                            <ol-style>
-                                                                <ol-style-circle :radius="radius">
-                                                                    <ol-style-fill :color="fillColor"></ol-style-fill>
-                                                                    <ol-style-stroke :color="strokeColor"
-                                                                        :width="strokeWidth"></ol-style-stroke>
-                                                                </ol-style-circle>
-                                                            </ol-style>
-                                                        </ol-feature>
-                                                    </ol-source-vector>
+                                            <ol-feature v-for="item in currentDeviceLogs">
+                                                <ol-geom-point :coordinates="[item.position]"></ol-geom-point>
+                                                <ol-style>
+                                                    <ol-style-circle :radius="radius">
+                                                        <ol-style-fill :color="fillColor"></ol-style-fill>
+                                                        <ol-style-stroke :color="strokeColor"
+                                                            :width="strokeWidth"></ol-style-stroke>
+                                                    </ol-style-circle>
+                                                </ol-style>
+                                            </ol-feature>
+                                        </ol-source-vector>
 
-                                                </ol-vector-layer>
-                                            </ol-map>
-                                        </v-card>
-                                    </v-col>
-                                </v-row>
+                                    </ol-vector-layer>
+                                </ol-map>
                             </v-card>
+
                         </v-col>
                     </v-row>
                 </v-card-text>

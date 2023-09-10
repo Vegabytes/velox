@@ -20,9 +20,9 @@
                   icon="mdi-logout pl-3 icono-salir"></v-icon>
               </div>
             </v-col>
-            <v-col cols="6" class="pa-1 text-start">
+            <v-col cols="6" class="pa-3 text-start">
               <v-avatar :size="mobile ? 35 : 45">
-                <v-img :src="appStore.currentUser.path" :alt="appStore.currentUser.path" v-bind="props"></v-img>
+                <v-img :src="appStore.getCurrentUser.path" :alt="appStore.getCurrentUser.path" v-bind="props"></v-img>
               </v-avatar>
             </v-col>
 

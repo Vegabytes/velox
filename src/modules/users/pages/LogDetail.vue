@@ -2,7 +2,7 @@
     <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
         <v-card elevation="8" rounded="lg" color="secondary" v-if="!loadingStore.isLoading">
             <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
-            <v-container :class="mobile ? 'pa-1' : 'pa-10'">
+            <v-container fluid:class="mobile ? 'pa-1' : 'pa-10'">
                 <v-card-text>
                     <v-row class="mt-2 pa-4">
                         <v-col>
