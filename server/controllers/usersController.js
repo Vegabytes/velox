@@ -85,7 +85,7 @@ export const getNotAssignedUserByEmail = async (req, res) => {
   const { email } = req.body;
 
   try {
-    connection.query(`select * from Users WHERE id NOT IN (SELECT DISTINCT userId FROM UserGroupMembers where groupId = ${id})and name like "%${email}%" or lastName like "%${email}%"`, (error, results) => {
+    connection.query(`select * from Users WHERE id NOT IN (SELECT DISTINCT userId FROM UserGroupMembers where groupId = ${id}) and (name like "%${email}%" or lastName like "%${email}%")`, (error, results) => {
       if (res.length === 0) {
         res.status(200).send([]);
       } else {
