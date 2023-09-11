@@ -139,7 +139,6 @@ const login = async () => {
 
 
     } catch (error) {
-      console.log("error", error);
       const mensajeError = handleError.getErrorNormalizado(error);
       snackbarStore.activateMessage(mensajeError, 'error', 2500)
     }

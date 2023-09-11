@@ -37,11 +37,18 @@ export const getAllUsers = async (req, res) => {
 export const createUser = async (req, res) => {
   try {
     const { name, lastName, email, address, description, phone, birth, createdBy, path, pass, status } = req.body;
-    let passHash = await bcryptjs.hash(pass, 8);
-    connection.query('INSERT INTO Users SET ?', { name, lastName, email, address, description, phone, birth, createdBy, path, pass: passHash, status }, (error, results) => {
-      if (error) res.status(400).send(error)
-      res.status(200).send(req.body)
-    });
+    const userExist = await checkEmailExist(email);
+    if (userExist.length > 0) {
+      res.status(409).send({ msg: 'El usuario ya existe' })
+    } else {
+      let passHash = await bcryptjs.hash(pass, 8);
+      connection.query('INSERT INTO Users SET ?', { name, lastName, email, address, description, phone, birth, createdBy, path, pass: passHash, status }, (error, results) => {
+        if (error) res.status(400).send(error)
+        res.status(200).send(req.body)
+      });
+    }
+
+
   } catch (error) {
     res.status(500).send(error)
   }
@@ -114,6 +121,17 @@ export const isAdmin = async (req, res) => {
   }
 }
 
+
+const checkEmailExist = (email) => {
+  return new Promise((resolve, reject) => {
+    connection.query('SELECT email FROM  Users WHERE email = ?', [email], (error, elements) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(elements);
+    });
+  });
+};
 
 
 

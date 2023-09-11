@@ -156,7 +156,6 @@ export const getPositionDevice = async (req, res) => {
 const getPositionDeviceService = (deviceId) => {
   return new Promise((resolve, reject) => {
     connection.query('select * from DeviceHistory  where deviceId = ? order by createdAt desc limit 1 ', [deviceId], (error, elements) => {
-      console.log("Elements", elements);
       if (error) {
         return reject(error);
       }

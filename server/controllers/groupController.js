@@ -67,9 +67,6 @@ export const getGroupByGroupIdByUserId = async (req, res) => {
     const gruposByParentGroupId
       = await getGroupsByParentGroupId(groupId);
 
-    console.log("gruposByParentGroupId", gruposByParentGroupId);
-
-
     const gruposByParentGroupIdNotNull = gruposByParentGroupId.filter(user => !!user);
 
     gruposByParentGroupIdNotNull.forEach(element => {

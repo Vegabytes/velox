@@ -81,7 +81,7 @@
 
 <script setup>
 
-import { ref, onBeforeMount, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useAppStore, useLoginStore } from '@/store/index';
 import axios from "axios";
 import { VDataTable } from 'vuetify/labs/VDataTable'
@@ -177,11 +177,6 @@ const openDialogAsignUser = (id) => {
   dialogAsignUser.value = true;
 }
 
-onBeforeMount(() => {
-  if (!loginStore.loggedUser.groupId) {
-    $router.push("error");
-  }
-});
 
 watch(groupSelected, (v) => {
   if (!loginStore.loggedUser.groupId) {
@@ -189,7 +184,8 @@ watch(groupSelected, (v) => {
   } else {
     if (groupSelected.value) {
       getUsersGroup(v)
-      userListNotAsign.value = []
+      userListNotAsign.value = [];
+      searchText.value = '';
     }
   }
 })

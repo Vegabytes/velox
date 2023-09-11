@@ -117,6 +117,7 @@ import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import { useRoute, useRouter } from "vue-router";
 import { useDisplay } from 'vuetify';
+import handleError from "@/support/errors/handleError";
 
 const { mobile } = useDisplay()
 const appStore = useAppStore()
@@ -172,7 +173,8 @@ const createNewUser = async () => {
       $router.push(`/${idGroup.value}/groups`);
 
     } catch (error) {
-      snackbarStore.activateMessage(error, 'error', 2500)
+      const mensajeError = handleError.getErrorNormalizado(error);
+      snackbarStore.activateMessage(mensajeError, 'error', 2500)
     }
   }
   else {
