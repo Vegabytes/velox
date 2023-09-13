@@ -112,7 +112,9 @@ const getDevicesGroupsByUserGroupId = ({ id }) => {
 export const getDevicesIdByGroup = async (req, res) => {
   const { idGroup } = req.params;
   try {
-    connection.query(`SELECT * FROM DeviceGroupMembers INNER JOIN Devices WHERE groupId = ${idGroup} and Devices.id = DeviceGroupMembers.deviceId`, (error, results) => {
+    connection.query(`
+
+    select * from Devices INNER JOIN  DeviceGroupMembers ON DeviceGroupMembers.deviceId = Devices.id where DeviceGroupMembers.groupId in (select deviceGroupId from DeviceGroupUserGroup where userGroupId = ${idGroup})`, (error, results) => {
       if (error) res.status(400).send(error)
       if (results.length === 0) {
         res.status(200).send([]);

@@ -37,9 +37,11 @@
 
           <v-row>
             <v-col cols="12">
-              <v-badge class="px-4 pt-4" v-if="isAdmin" color="primary" content="Administrador" inline></v-badge>
+              <v-badge class="pt-4" v-if="isAdmin" color="primary" content="Administrador" inline></v-badge>
               <v-card class="mb-8" variant="flat">
                 <v-card-text class="pa-0 mt-4">
+                  <h2 v-if="userGroups.length === 0" class="text-primary text-h5">El grupo actual no tiene subgrupos
+                    asignados</h2>
                   <div v-for="item in userGroups">
                     <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToGroupDetail(item)">
                       <div class="py-5">

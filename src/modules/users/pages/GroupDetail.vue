@@ -18,7 +18,7 @@
 
           <v-row>
             <v-col cols="12">
-              <v-badge class="px-4 pt-4" v-if="isAdmin" color="primary" content="Administrador" inline></v-badge>
+              <v-badge class="pt-4" v-if="isAdmin" color="primary" content="Administrador" inline></v-badge>
 
               <v-card class="mb-8" variant="flat">
                 <v-card-text class="pa-0 mt-4">
