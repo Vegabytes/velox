@@ -16,7 +16,8 @@
           <v-row class="align-center justify-center avatar-user">
             <v-col class="pa-0">
               <v-avatar :size="mobile ? 35 : 45">
-                <v-img :src="appStore.getCurrentUser.path" :alt="appStore.getCurrentUser.path" v-bind="props"></v-img>
+                <v-img :src="`${path}/${appStore.getCurrentUser.path}`" :alt="appStore.getCurrentUser.path"
+                  v-bind="props"></v-img>
               </v-avatar>
               <!--               <div class="text-secondary text-subtitle-2"> {{ appStore.getCurrentUser.name }}</div> -->
             </v-col>
