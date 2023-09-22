@@ -20,15 +20,44 @@
             <v-row>
               <v-col cols="12" md="12" lg="6">
                 <v-card-actions v-if="isAdmin">
-                  <v-btn variant="tonal" color="primary" prepend-icon="mdi-account-multiple-plus"
-                    @click="newGroup()">Grupo
-                  </v-btn>
-                  <v-btn variant="tonal" color="primary" @click="toCreateUser()" prepend-icon="mdi-account-plus"
-                    class="">Usuario</v-btn>
-                  <v-btn variant="tonal" color="primary" @click="toAsignUser()"
-                    prepend-icon="mdi-link-box-outline">Asociar</v-btn>
-                  <v-btn variant="tonal" color="primary" @click="toAssociateDeviceGroup()"
-                    prepend-icon="mdi-link-box-outline">Asociar Dispositivos</v-btn>
+
+                  <v-menu location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        variant="tonal" color="primary"
+                        prepend-icon="mdi-menu"
+                        v-bind="props"
+                      >
+                        Opciones
+                      </v-btn>
+                    </template>
+
+                    <v-list>
+
+                      <v-list-item>
+                        <v-btn variant="tonal" color="primary" size="x-small" prepend-icon="mdi-account-multiple-plus"
+                          @click="newGroup()">Crear nuevo grupo
+                        </v-btn>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-btn variant="tonal" color="primary" size="x-small" @click="toCreateUser()" prepend-icon="mdi-account-plus"
+                        class="">Crear nuevo usuario</v-btn>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-btn variant="tonal" color="primary" size="x-small" @click="toAsignUser()"
+                          prepend-icon="mdi-link-box-outline">Asignar usuario a grupo de usuarios</v-btn>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-btn variant="tonal" color="primary" size="x-small" @click="toAssociateDeviceGroup()"
+                        prepend-icon="mdi-devices">Asociar Dispositivos a grupo de usuarios</v-btn>
+                      </v-list-item>
+                        
+                    </v-list>
+                  </v-menu>
+
                 </v-card-actions>
               </v-col>
             </v-row>
