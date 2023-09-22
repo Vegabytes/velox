@@ -27,6 +27,8 @@
                     class="">Usuario</v-btn>
                   <v-btn variant="tonal" color="primary" @click="toAsignUser()"
                     prepend-icon="mdi-link-box-outline">Asociar</v-btn>
+                  <v-btn variant="tonal" color="primary" @click="toAssociateDeviceGroup()"
+                    prepend-icon="mdi-link-box-outline">Asociar Dispositivos</v-btn>
                 </v-card-actions>
               </v-col>
             </v-row>
@@ -198,6 +200,8 @@ const goToGroupDetail = (item) => {
   $router.push(`/${idGroup.value}/groups/groupDetail/${item.id}`);
 }
 
-
+const toAssociateDeviceGroup= () => {
+  $router.push(`/${idGroup.value}/associateDeviceGroup`);
+}
 
 </script>

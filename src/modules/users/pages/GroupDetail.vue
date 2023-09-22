@@ -14,6 +14,7 @@
               </template>
             </v-breadcrumbs>
           </v-row>
+
           <v-divider thickness="3" class="mb-4"></v-divider>
 
           <v-row>
@@ -194,8 +195,6 @@ onBeforeMount(async () => {
   }
 });
 
-
-
 const getLastPositionDevice = async ({ deviceId }) => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
   try {
@@ -212,8 +211,6 @@ const getLastPositionDevice = async ({ deviceId }) => {
     throw err;
   }
 }
-
-
 
 const getDevicesGroups = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
@@ -244,4 +241,5 @@ const getGroupData = async () => {
 const goToLogsDevice = (item) => {
   $router.push(`/${idGroup.value}/groups/groupDetail/${idViewGroup.value}/logs/${item.id}`);
 }
+
 </script>

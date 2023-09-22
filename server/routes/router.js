@@ -10,7 +10,7 @@ import { login, isAuthenticated, logout } from '../controllers/authController.js
 import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createGroup, associateUserUserGroup, getGroupByGroupIdByUserId, getGroupsPrueba } from '../controllers/groupController.js'
 import { getAllUsers, createUser, getGroupUsers, getNotAssignedUser, getNotAssignedUserByEmail, isAdmin, setUserIntoGroup } from '../controllers/usersController.js'
 import { getLogsByDeviceId, getLogDetail } from '../controllers/logsController.js'
-import { getDevicesByUserId, getDevice, getDevicesIdByGroup, getPositionDevice } from '../controllers/devicesController.js'
+import { getDevicesByUserId, getDevice, getDevicesIdByGroup, getPositionDevice, getDevicesGroupsNotAssigned,setDevicesIntoGroup } from '../controllers/devicesController.js'
 
 const MAX_SIZE = 10000000;
 
@@ -112,5 +112,7 @@ router.get('/devices/user/:id', getDevicesByUserId)
 router.get('/devices/:idGroup', getDevicesIdByGroup)
 router.get('/device/:id', getDevice)
 router.get('/device/:id/position', getPositionDevice)
+router.get('/device/notAssignedDeviceGroup/:idGroup', getDevicesGroupsNotAssigned)
+router.post('/devices/assign', setDevicesIntoGroup)
 
 export default router;

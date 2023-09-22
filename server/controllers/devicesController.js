@@ -13,7 +13,6 @@ export const getDevice = async (req, res) => {
   }
 }
 
-
 export const getDevicesByUserId = async (req, res) => {
   const { id } = req.params;
   try {
@@ -74,7 +73,6 @@ export const getDevicesByUserId = async (req, res) => {
   }
 }
 
-
 const getGroupsByUserId = (id) => {
   return new Promise((resolve, reject) => {
     connection.query('SELECT * FROM  UserGroupMembers WHERE userId = ?', [id], (error, elements) => {
@@ -108,7 +106,6 @@ const getDevicesGroupsByUserGroupId = ({ id }) => {
   });
 };
 
-
 export const getDevicesIdByGroup = async (req, res) => {
   const { idGroup } = req.params;
   try {
@@ -138,7 +135,6 @@ const getDeviceIdBygroupId = ({ deviceGroupId }) => {
   });
 };
 
-
 export const getPositionDevice = async (req, res) => {
   const { id } = req.params;
   try {
@@ -154,7 +150,6 @@ export const getPositionDevice = async (req, res) => {
   }
 }
 
-
 const getPositionDeviceService = (deviceId) => {
   return new Promise((resolve, reject) => {
     connection.query('select * from DeviceHistory  where deviceId = ? order by createdAt desc limit 1 ', [deviceId], (error, elements) => {
@@ -166,3 +161,42 @@ const getPositionDeviceService = (deviceId) => {
   });
 
 };
+
+export const getDevicesGroupsNotAssigned = async (req, res) => {
+
+  //select * from DeviceGroups WHERE id NOT IN (SELECT DISTINCT deviceGroupId FROM DeviceGroupUserGroup where userGroupId = 3)
+  const { idGroup } = req.params;
+
+  try {
+    connection.query(`select * from DeviceGroups WHERE id NOT IN (SELECT DISTINCT deviceGroupId FROM DeviceGroupUserGroup where userGroupId = ${idGroup})`, (error, results) => {
+      if (res.length === 0) {
+        res.status(200).send([]);
+      } else {
+        res.status(200).send(results)
+      }
+    })
+  } catch (error) {
+    res.status(500).send(error)
+  }
+
+
+} 
+
+export const setDevicesIntoGroup = async (req, res) => {
+
+  const { deviceGroupId, groupId } = req.body;
+
+  try {
+    connection.query(`INSERT INTO DeviceGroupUserGroup (deviceGroupId, userGroupId)VALUES(${deviceGroupId},${groupId})`, (error, results) => {
+      if (error) {
+        res.status(401).send({ msg: 'Esta asociación ya existe' })
+        return;
+      } else {
+        res.status(200).send('Dispositivos asignado a grupo correctamente')
+      }
+    });
+  } catch (error) {
+    res.status(500).send(error);
+    return;
+  }
+}

@@ -34,5 +34,10 @@ export default [
     name: "AsignUser",
     component: async () => await import('@/modules/users/pages/AsignUser.vue')
   },
+  {
+    path: "/:idGroup/associateDeviceGroup",
+    name: "AssociateDeviceGroup",
+    component: async () => await import('@/modules/users/pages/AssociateDeviceGroup.vue')
+  },
 
 ]
