@@ -21,32 +21,31 @@
           </v-col>
         </v-row>
 
-          <v-row v-if="groupSelected" class="overflow-auto">
-            <v-col cols="12">
-              <v-data-table v-model:page="pageGroupsDevices" :headers="headers" :items="devicesGroupsList" hover="true"
-                :items-per-page="10" hide-default-footer class="elevation-1 mt-6">
-                <template v-slot:item="{ item }">
-                  <tr>
-                    <td>{{ item.columns.name }}</td>
-                    <td>{{ item.columns.description }}</td>
-                    <td>
-                      <v-row>
-                        <v-btn class="justify-end mr-2" color="primary" variant=""
-                          @click="opendialogAssignGroupDevice(item.raw.id)"
-                          prepend-icon="mdi-account-plus">
-                        </v-btn>
-                      </v-row>
-                    </td>
-                  </tr>
-                </template>
-                <template v-slot:bottom>
-                  <div class="text-center pt-2">
-                    <v-pagination v-model="page2"></v-pagination>
-                  </div>
-                </template>
-              </v-data-table>
-            </v-col>
-          </v-row>
+        <v-row v-if="groupSelected" class="overflow-auto">
+          <v-col cols="12">
+            <v-data-table v-model:page="pageGroupsDevices" :headers="headers" :items="devicesGroupsList" hover="true"
+              :items-per-page="10" hide-default-footer class="elevation-1 mt-6">
+              <template v-slot:item="{ item }">
+                <tr>
+                  <td>{{ item.columns.name }}</td>
+                  <td>{{ item.columns.description }}</td>
+                  <td>
+                    <v-row>
+                      <v-btn class="justify-end mr-2" color="primary" variant=""
+                        @click="opendialogAssignGroupDevice(item.raw.id)" prepend-icon="mdi-plus">
+                      </v-btn>
+                    </v-row>
+                  </td>
+                </tr>
+              </template>
+              <template v-slot:bottom>
+                <div class="text-center pt-2">
+                  <v-pagination v-model="page2"></v-pagination>
+                </div>
+              </template>
+            </v-data-table>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
 

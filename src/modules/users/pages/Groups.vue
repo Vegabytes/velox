@@ -23,11 +23,7 @@
 
                   <v-menu location="bottom">
                     <template v-slot:activator="{ props }">
-                      <v-btn
-                        variant="tonal" color="primary"
-                        prepend-icon="mdi-menu"
-                        v-bind="props"
-                      >
+                      <v-btn variant="tonal" color="primary" prepend-icon="mdi-menu" v-bind="props">
                         Opciones
                       </v-btn>
                     </template>
@@ -41,8 +37,8 @@
                       </v-list-item>
 
                       <v-list-item>
-                        <v-btn variant="tonal" color="primary" size="x-small" @click="toCreateUser()" prepend-icon="mdi-account-plus"
-                        class="">Crear nuevo usuario</v-btn>
+                        <v-btn variant="tonal" color="primary" size="x-small" @click="toCreateUser()"
+                          prepend-icon="mdi-account-plus" class="">Crear nuevo usuario</v-btn>
                       </v-list-item>
 
                       <v-list-item>
@@ -52,9 +48,9 @@
 
                       <v-list-item>
                         <v-btn variant="tonal" color="primary" size="x-small" @click="toAssociateDeviceGroup()"
-                        prepend-icon="mdi-devices">Asociar Dispositivos a grupo de usuarios</v-btn>
+                          prepend-icon="mdi-devices">Asociar Dispositivos a grupo de usuarios</v-btn>
                       </v-list-item>
-                        
+
                     </v-list>
                   </v-menu>
 
@@ -83,10 +79,10 @@
                         <v-row class="flex-lg-row flex-column px-4">
                           <p class="text-h5 text-md-h4 font-weight-regular">
                             {{ item.name }}.
-                            <span class="text-body-1 text-md-h5 ma-1 font-italic font-weight-bold text-primary">{{
+                            <!--           <span class="text-body-1 text-md-h5 ma-1 font-italic font-weight-bold text-primary">{{
                               item.devices.length }}
                               dispositivos
-                            </span>
+                            </span> -->
                           </p>
                         </v-row>
                         <v-row class="flex-lg-row flex-column px-4">
@@ -229,7 +225,7 @@ const goToGroupDetail = (item) => {
   $router.push(`/${idGroup.value}/groups/groupDetail/${item.id}`);
 }
 
-const toAssociateDeviceGroup= () => {
+const toAssociateDeviceGroup = () => {
   $router.push(`/${idGroup.value}/associateDeviceGroup`);
 }
 
