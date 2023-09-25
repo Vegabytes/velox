@@ -55,21 +55,25 @@
                                     </v-row>
                                 </v-card>
                                 <v-card>
-                                    <v-row class="my-4">
-                                        <v-card class="imagenRadar rounded-l d-flex justify-center ma-4"
-                                            v-for="(slide, i) in appStore.currentLog.images" :key="i">
-                                            <v-img :src="`${url}/${appStore.currentLog.imagePath}/${slide}`" cover
-                                                @click="selectPhoto(i)" />
-                                        </v-card>
-                                    </v-row>
-                                </v-card>
-                                <v-card class="mt-6">
-                                    <v-carousel v-model="selectedPhoto" hide-delimiters
-                                        :style='{ height: mobile ? "300px" : "400px" }'>
-                                        <v-carousel-item v-for="(slide, i) in appStore.currentLog.images" :key="i" cover>
-                                            <v-img :src="`${url}/${appStore.currentLog.imagePath}/${slide}`" />
-                                        </v-carousel-item>
-                                    </v-carousel>
+
+                                  <v-row class="ma-2">
+                                    <v-col cols="2" class="d-flex justify-center align-center">
+                                      <v-btn variant="text" icon="mdi-chevron-left" @click="(contadorImg !==0)?contadorImg--:null" :disabled="contadorImg === 0"></v-btn>
+                                    </v-col>
+                                    <v-col cols="8" class="d-flex flex-column justify-center align-center">
+                                      <v-col>
+                                        <v-col cols="12" class="d-flex justify-center align-center">
+                                          <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`" style="cursor: pointer" @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`)" />
+                                        </v-col>
+                                        <v-col cols="12" class="d-flex justify-center align-center">
+                                          <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`" style="cursor: pointer" @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`)"/>
+                                        </v-col>
+                                      </v-col>
+                                    </v-col>
+                                    <v-col cols="2" class="d-flex justify-center align-center">
+                                      <v-btn variant="text" icon="mdi-chevron-right" @click="(contadorImg < 3)?contadorImg++:null" :disabled="contadorImg === 3"></v-btn>
+                                    </v-col>
+                                  </v-row>
                                 </v-card>
                             </v-col>
                             <v-col cols="12" md="6">
@@ -114,6 +118,14 @@
                         </v-row>
                     </v-card>
                 </v-card-text>
+
+              <!-- Diálogo visualizar foto-->
+              <v-dialog v-model="dialogoAbierto">
+                <v-card>
+                  <v-img :src="`${imagenSelected}`"/>
+                </v-card>
+              </v-dialog>
+
             </v-container>
         </v-card>
     </v-container>
@@ -172,6 +184,15 @@ const breadcrumbsItems = [
     },
 ]
 
+let dialogoAbierto = ref(false)
+let contadorImg = ref(0)
+const imagenes = {
+  0 : ['front_left.jpg','front_right.jpg'],
+  1 : ['v1_left.jpg','v1_right.jpg'],
+  2 : ['v2_left.jpg','v2_right.jpg'],
+  3 : ['back_left.jpg','back_right.jpg'],
+}
+let imagenSelected = ref('')
 
 onBeforeMount(async () => {
     loadingStore.setLoading(true);
@@ -238,6 +259,11 @@ const getGroupData = async () => {
 
 const selectPhoto = (index) => {
     selectedPhoto.value = index
+}
+
+const openDialog = (imgPath) => {
+  imagenSelected.value = imgPath
+  dialogoAbierto.value = true
 }
 
 </script>
