@@ -49,10 +49,15 @@
                                     <v-row class="mb-2">
                                         <strong class="mr-4">Matrícula infracción: </strong>
                                         {{ JSON.parse(appStore.currentLog.data).plate }}</v-row>
-                                    <v-row>
+                                    <v-row class="mb-2">
                                         <strong class="mr-4">ID Agente: </strong>
                                         {{ JSON.parse(appStore.currentLog.data).idUser }}
                                     </v-row>
+                                  <v-row>
+                                    <strong class="mr-4">Observaciones: </strong>
+                                    {{ JSON.parse(appStore.currentLog.data).observation }}
+                                  </v-row>
+
                                 </v-card>
                                 <v-card>
 
@@ -150,6 +155,32 @@ const idGroup = computed(() => $route.params.idGroup)
 const idLog = computed(() => $route.params.idLog)
 const idDevice = computed(() => $route.params.idDevice)
 const currentGroup = computed(() => appStore.currentGroup);
+const url = ref(import.meta.env['VITE_SERVER_BASE_URL']);
+const breadcrumbsItems = [
+  {
+    title: 'Inicio',
+    disabled: false,
+    to: { name: 'Groups' },
+  },
+  {
+    title: 'Listado de dispositivos',
+    disabled: false,
+    exact: true,
+    to: { name: 'GroupDetail' },
+  },
+  {
+    title: 'Detalles del dispositivo',
+    disabled: false,
+    to: { name: 'Logs' },
+  },
+  {
+    title: 'Logs',
+    disabled: true,
+    href: 'breadcrumbs_link_1',
+  },
+]
+
+// ********** mapa ***************
 const projection = ref("EPSG:4326");
 const zoom = ref(10);
 const rotation = ref(0);
@@ -157,33 +188,10 @@ const radius = ref(10);
 const strokeWidth = ref(4);
 const strokeColor = ref("blue");
 const fillColor = ref("blue");
-const selectedPhoto = ref(0);
-const url = ref(import.meta.env['VITE_SERVER_BASE_URL']);
+// ************************************************
 
-const breadcrumbsItems = [
-    {
-        title: 'Inicio',
-        disabled: false,
-        to: { name: 'Groups' },
-    },
-    {
-        title: 'Listado de dispositivos',
-        disabled: false,
-        exact: true,
-        to: { name: 'GroupDetail' },
-    },
-    {
-        title: 'Detalles del dispositivo',
-        disabled: false,
-        to: { name: 'Logs' },
-    },
-    {
-        title: 'Logs',
-        disabled: true,
-        href: 'breadcrumbs_link_1',
-    },
-]
 
+// ********** Carrousel / visualizador de imágenes
 let dialogoAbierto = ref(false)
 let contadorImg = ref(0)
 const imagenes = {
@@ -193,6 +201,8 @@ const imagenes = {
   3 : ['back_left.jpg','back_right.jpg'],
 }
 let imagenSelected = ref('')
+// ************************************************
+
 
 onBeforeMount(async () => {
     loadingStore.setLoading(true);
@@ -214,7 +224,6 @@ onBeforeMount(async () => {
         loadingStore.setLoading();
     }
 });
-
 
 const getLogData = async () => {
     const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
@@ -242,8 +251,6 @@ const getDeviceData = async () => {
     }
 }
 
-
-
 const getGroupData = async () => {
     const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
@@ -257,10 +264,6 @@ const getGroupData = async () => {
     }
 }
 
-const selectPhoto = (index) => {
-    selectedPhoto.value = index
-}
-
 const openDialog = (imgPath) => {
   imagenSelected.value = imgPath
   dialogoAbierto.value = true
@@ -268,10 +271,3 @@ const openDialog = (imgPath) => {
 
 </script>
 
-<style scope>
-.imagenRadar {
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-}
-</style>
