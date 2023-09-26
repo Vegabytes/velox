@@ -6,7 +6,7 @@
                 <v-card-text>
                     <v-row class="mt-2">
                         <v-col>
-                            <v-row c>
+                            <v-row>
                                 <v-avatar class="ma-3" size="x-large">
                                     <v-img v-if="appStore.currentDevice" cover :src="appStore.currentDevice.path"></v-img>
                                 </v-avatar>
@@ -27,100 +27,136 @@
                     <v-divider thickness="3" class="mb-4"></v-divider>
 
                     <v-card class="mt-2" variant="flat">
-                        <v-row>
-                            <v-col cols="12" md="6">
-                                <v-card variant="tonal" class="pa-8">
-                                    <v-row class="mb-2">
-                                        <strong class="mr-4">Fecha hora infracción:</strong>
-                                        {{ formatDate(
-                                            new Date(Number(JSON.parse(appStore.currentLog.data).timestamp))
-                                        )
-                                        }}
-                                    </v-row>
-                                    <v-row class="mb-2">
-                                        <strong class="mr-4">Pos GPS: </strong>
-                                        {{ JSON.parse(appStore.currentLog.data).gps }}</v-row>
-                                    <v-row class="mb-2">
-                                        <strong class="mr-4">Velocidad de la vía: </strong>
-                                        {{ JSON.parse(appStore.currentLog.data).MaxVel }}</v-row>
-                                    <v-row class="mb-2">
-                                        <strong class="mr-4">Velocidad detectada:</strong>
-                                        {{ JSON.parse(appStore.currentLog.data).RealVel }}</v-row>
-                                    <v-row class="mb-2">
-                                        <strong class="mr-4">Matrícula infracción: </strong>
-                                        {{ JSON.parse(appStore.currentLog.data).plate }}</v-row>
-                                    <v-row class="mb-2">
-                                        <strong class="mr-4">ID Agente: </strong>
-                                        {{ JSON.parse(appStore.currentLog.data).idUser }}
-                                    </v-row>
-                                  <v-row>
-                                    <strong class="mr-4">Observaciones: </strong>
-                                    {{ JSON.parse(appStore.currentLog.data).observation }}
-                                  </v-row>
 
-                                </v-card>
-                                <v-card>
+                      <v-row>
 
-                                  <v-row class="ma-2">
-                                    <v-col cols="2" class="d-flex justify-center align-center">
-                                      <v-btn variant="text" icon="mdi-chevron-left" @click="(contadorImg !==0)?contadorImg--:null" :disabled="contadorImg === 0"></v-btn>
-                                    </v-col>
-                                    <v-col cols="8" class="d-flex flex-column justify-center align-center">
-                                      <v-col>
-                                        <v-col cols="12" class="d-flex justify-center align-center">
-                                          <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`" style="cursor: pointer" @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`)" />
-                                        </v-col>
-                                        <v-col cols="12" class="d-flex justify-center align-center">
-                                          <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`" style="cursor: pointer" @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`)"/>
-                                        </v-col>
-                                      </v-col>
-                                    </v-col>
-                                    <v-col cols="2" class="d-flex justify-center align-center">
-                                      <v-btn variant="text" icon="mdi-chevron-right" @click="(contadorImg < 3)?contadorImg++:null" :disabled="contadorImg === 3"></v-btn>
-                                    </v-col>
-                                  </v-row>
-                                </v-card>
+                        <!--IMÁGENES-->
+                        <v-col cols="12" md="6">
+                          <v-row class="ma-2">
+                            <v-col cols="2" class="d-flex justify-center align-center">
+                              <v-btn variant="text" icon="mdi-chevron-left" @click="(contadorImg !==0)?contadorImg--:null" :disabled="contadorImg === 0"></v-btn>
                             </v-col>
-                            <v-col cols="12" md="6">
-                                <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
-                                    :loadTilesWhileInteracting="true">
-                                    <ol-view ref="view" :center="appStore.currentLog.position.split(',').reverse()"
-                                        :rotation="rotation" :zoom="zoom" :projection="projection" />
-                                    <ol-tile-layer>
-                                        <ol-source-osm />
-                                    </ol-tile-layer>
-                                    <ol-vector-layer>
-                                        <ol-source-vector>
-                                            <ol-feature>
-                                                <ol-geom-point
-                                                    :coordinates="appStore.currentLog.position.split(',').reverse()"></ol-geom-point>
-                                                <ol-style>
-                                                    <ol-style-circle :radius="radius">
-                                                        <ol-style-fill :color="fillColor"></ol-style-fill>
-                                                        <ol-style-stroke :color="strokeColor"
-                                                            :width="strokeWidth"></ol-style-stroke>
-                                                    </ol-style-circle>
-                                                    <ol-style-text :text="appStore.currentLog.eventType">
-                                                        <ol-style-fill color="white"></ol-style-fill>
-                                                    </ol-style-text>
-                                                </ol-style>
-                                            </ol-feature>
-                                            <ol-feature>
-                                                <ol-geom-point
-                                                    :coordinates="appStore.currentLog.position.split(',').reverse()"></ol-geom-point>
-                                                <ol-style>
-                                                    <ol-style-circle :radius="radius">
-                                                        <ol-style-fill :color="fillColor"></ol-style-fill>
-                                                        <ol-style-stroke :color="strokeColor"
-                                                            :width="strokeWidth"></ol-style-stroke>
-                                                    </ol-style-circle>
-                                                </ol-style>
-                                            </ol-feature>
-                                        </ol-source-vector>
-                                    </ol-vector-layer>
-                                </ol-map>
+                            <v-col cols="8" class="d-flex flex-column justify-center align-center">
+                              <v-col>
+                                <v-col cols="12" class="d-flex justify-center align-center">
+                                  <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`" style="cursor: pointer" @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`)" />
+                                </v-col>
+                                <v-col cols="12" class="d-flex justify-center align-center">
+                                  <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`" style="cursor: pointer" @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`)"/>
+                                </v-col>
+                              </v-col>
                             </v-col>
-                        </v-row>
+                            <v-col cols="2" class="d-flex justify-center align-center">
+                              <v-btn variant="text" icon="mdi-chevron-right" @click="(contadorImg < 3)?contadorImg++:null" :disabled="contadorImg === 3"></v-btn>
+                            </v-col>
+                          </v-row>
+                        </v-col>
+
+                        <!--MAPA-->
+                        <v-col cols="12" md="6">
+                          <ol-map style="height: 500px;" class="mb-2" :loadTilesWhileAnimating="true"
+                                  :loadTilesWhileInteracting="true">
+                            <ol-view ref="view" :center="appStore.currentLog.position.split(',').reverse()"
+                                     :rotation="rotation" :zoom="zoom" :projection="projection" />
+                            <ol-tile-layer>
+                              <ol-source-osm />
+                            </ol-tile-layer>
+                            <ol-vector-layer>
+                              <ol-source-vector>
+                                <ol-feature>
+                                  <ol-geom-point
+                                    :coordinates="appStore.currentLog.position.split(',').reverse()"></ol-geom-point>
+                                  <ol-style>
+                                    <ol-style-circle :radius="radius">
+                                      <ol-style-fill :color="fillColor"></ol-style-fill>
+                                      <ol-style-stroke :color="strokeColor"
+                                                       :width="strokeWidth"></ol-style-stroke>
+                                    </ol-style-circle>
+                                    <ol-style-text :text="appStore.currentLog.eventType">
+                                      <ol-style-fill color="white"></ol-style-fill>
+                                    </ol-style-text>
+                                  </ol-style>
+                                </ol-feature>
+                                <ol-feature>
+                                  <ol-geom-point
+                                    :coordinates="appStore.currentLog.position.split(',').reverse()"></ol-geom-point>
+                                  <ol-style>
+                                    <ol-style-circle :radius="radius">
+                                      <ol-style-fill :color="fillColor"></ol-style-fill>
+                                      <ol-style-stroke :color="strokeColor"
+                                                       :width="strokeWidth"></ol-style-stroke>
+                                    </ol-style-circle>
+                                  </ol-style>
+                                </ol-feature>
+                              </ol-source-vector>
+                            </ol-vector-layer>
+                          </ol-map>
+                        </v-col>
+
+                      </v-row>
+                      <v-row>
+
+                        <!--JSON-->
+                        <v-col cols="12" md="6">
+                          <v-card variant="tonal" color="primary">
+                            <v-card-item>
+                              <v-card-title>
+                                Metadata
+                              </v-card-title>
+                            </v-card-item>
+                            <v-divider></v-divider>
+                            <v-card-text>
+                              <pre>{{appStore.currentLog.metadata}}</pre>
+                            </v-card-text>
+                          </v-card>
+                        </v-col>
+
+                        <!--FORMULARIO-->
+                        <v-col cols="12" md="6">
+                          <v-card variant="tonal" color="primary">
+                            <v-card-item>
+                              <v-card-title>
+                                Datos
+                              </v-card-title>
+                            </v-card-item>
+                            <v-divider></v-divider>
+                            <v-card-text>
+                              <v-col>
+                                <v-row class="mb-2">
+                                  <strong class="mr-4">Fecha hora infracción:</strong>
+                                  {{ formatDate(
+                                  new Date(Number(JSON.parse(appStore.currentLog.data).timestamp))
+                                )
+                                  }}
+                                </v-row>
+                                <v-row class="mb-2">
+                                  <strong class="mr-4">Pos GPS: </strong>
+                                  {{ JSON.parse(appStore.currentLog.data).gps }}</v-row>
+                                <v-row class="mb-2">
+                                  <strong class="mr-4">Velocidad de la vía: </strong>
+                                  {{ JSON.parse(appStore.currentLog.data).MaxVel }}</v-row>
+                                <v-row class="mb-2">
+                                  <strong class="mr-4">Velocidad detectada:</strong>
+                                  {{ JSON.parse(appStore.currentLog.data).RealVel }}</v-row>
+                                <v-row class="mb-2">
+                                  <strong class="mr-4">Matrícula infracción: </strong>
+                                  {{ JSON.parse(appStore.currentLog.data).plate }}</v-row>
+                                <v-row class="mb-2">
+                                  <strong class="mr-4">ID Agente: </strong>
+                                  {{ JSON.parse(appStore.currentLog.data).idUser }}
+                                </v-row>
+                                <v-row>
+                                  <strong class="mr-4">Observaciones: </strong>
+                                  {{ JSON.parse(appStore.currentLog.data).observation }}
+                                </v-row>
+                              </v-col>
+                            </v-card-text>
+                          </v-card>
+                        </v-col>
+
+                      </v-row>
+
+
                     </v-card>
                 </v-card-text>
 
