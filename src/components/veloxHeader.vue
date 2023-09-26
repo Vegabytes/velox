@@ -9,15 +9,15 @@
       <v-img :src="`${path}/${props.path}`" class="align-end rounded-bs-xl" style="cursor: pointer" @click="irHome()"
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" :height="mobile ? '100px' : '200px'" cover>
         <v-card-title class="text-white text-lg-h3 text-h5 mb-1" v-text="props.name"></v-card-title>
-        <v-card-subtitle class="text-white text-h7   mb-4" v-text="props.description"></v-card-subtitle>
+        <v-card-subtitle class="text-white text-h7 mb-4" v-text="props.description"></v-card-subtitle>
       </v-img>
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-row class="align-center justify-center avatar-user">
             <v-col class="pa-0">
               <v-avatar :size="mobile ? 35 : 45">
-                <v-img :src="`${path}/${appStore.getCurrentUser.path}`" :alt="appStore.getCurrentUser.path"
-                  v-bind="props"></v-img>
+                <v-img :src="appStore.getCurrentUser.path ? `${path}/${appStore.getCurrentUser.path}` : imageDefault"
+                  :alt="appStore.getCurrentUser.path" v-bind="props"></v-img>
               </v-avatar>
               <!--               <div class="text-secondary text-subtitle-2"> {{ appStore.getCurrentUser.name }}</div> -->
             </v-col>
@@ -62,6 +62,7 @@ const isAdmin = computed(() => appStore.getIsAdmin);
 const idGroup = computed(() => $route.params.idGroup)
 const props = defineProps(['path', 'name', 'description'])
 const path = ref(import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000');
+const imageDefault = ref('https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png');
 
 const logout = () => $router.push(`/${idGroup.value}/login`);
 const irHome = () => $router.push(`/${idGroup.value}/groups`);
@@ -84,6 +85,10 @@ const irHome = () => $router.push(`/${idGroup.value}/groups`);
 
 .icono-salir {
   cursor: pointer;
+}
+
+.v-img__img--contain {
+  object-fit: contain !important;
 }
 </style>
 
