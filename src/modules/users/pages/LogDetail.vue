@@ -39,10 +39,10 @@
                   <v-col cols="8" class="d-flex flex-column justify-center align-center">
                     <v-col>
                       <v-col cols="12" class="d-flex justify-center align-center">
-                        <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`" style="cursor: pointer" @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`)" />
+                        <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`" style="cursor: zoom-in" @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`)" />
                       </v-col>
                       <v-col cols="12" class="d-flex justify-center align-center">
-                        <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`" style="cursor: pointer" @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`)"/>
+                        <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`" style="cursor: zoom-in" @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`)"/>
                       </v-col>
                     </v-col>
                   </v-col>
