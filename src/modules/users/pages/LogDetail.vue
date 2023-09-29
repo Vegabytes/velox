@@ -12,7 +12,7 @@
                 </v-avatar>
                 <v-card-item>
                   <v-card-title class="text-h5 text-md-h4 font-weight-bold">{{ appStore.currentDevice.name
-                    }}</v-card-title>
+                  }}</v-card-title>
                   <v-card-subtitle>{{ appStore.currentDevice.description }}</v-card-subtitle>
                 </v-card-item>
               </v-row>
@@ -34,20 +34,26 @@
               <v-col cols="12" md="6">
                 <v-row class="ma-2">
                   <v-col cols="2" class="d-flex justify-center align-center">
-                    <v-btn variant="text" icon="mdi-chevron-left" @click="(contadorImg !==0)?contadorImg--:null" :disabled="contadorImg === 0"></v-btn>
+                    <v-btn variant="text" icon="mdi-chevron-left" @click="(contadorImg !== 0) ? contadorImg-- : null"
+                      :disabled="contadorImg === 0"></v-btn>
                   </v-col>
                   <v-col cols="8" class="d-flex flex-column justify-center align-center">
                     <v-col>
                       <v-col cols="12" class="d-flex justify-center align-center">
-                        <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`" style="cursor: zoom-in" @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`)" />
+                        <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`"
+                          style="cursor: zoom-in"
+                          @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`)" />
                       </v-col>
                       <v-col cols="12" class="d-flex justify-center align-center">
-                        <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`" style="cursor: zoom-in" @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`)"/>
+                        <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`"
+                          style="cursor: zoom-in"
+                          @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`)" />
                       </v-col>
                     </v-col>
                   </v-col>
                   <v-col cols="2" class="d-flex justify-center align-center">
-                    <v-btn variant="text" icon="mdi-chevron-right" @click="(contadorImg < 3)?contadorImg++:null" :disabled="contadorImg === 3"></v-btn>
+                    <v-btn variant="text" icon="mdi-chevron-right" @click="(contadorImg < 3) ? contadorImg++ : null"
+                      :disabled="contadorImg === 3"></v-btn>
                   </v-col>
                 </v-row>
               </v-col>
@@ -55,22 +61,20 @@
               <!--MAPA-->
               <v-col cols="12" md="6">
                 <ol-map style="height: 500px;" class="mb-2" :loadTilesWhileAnimating="true"
-                        :loadTilesWhileInteracting="true">
-                  <ol-view ref="view" :center="appStore.currentLog.position.split(',').reverse()"
-                           :rotation="rotation" :zoom="zoom" :projection="projection" />
+                  :loadTilesWhileInteracting="true">
+                  <ol-view ref="view" :center="appStore.currentLog.position.split(',').reverse()" :rotation="rotation"
+                    :zoom="zoom" :projection="projection" />
                   <ol-tile-layer>
                     <ol-source-osm />
                   </ol-tile-layer>
                   <ol-vector-layer>
                     <ol-source-vector>
                       <ol-feature>
-                        <ol-geom-point
-                          :coordinates="appStore.currentLog.position.split(',').reverse()"></ol-geom-point>
+                        <ol-geom-point :coordinates="appStore.currentLog.position.split(',').reverse()"></ol-geom-point>
                         <ol-style>
                           <ol-style-circle :radius="radius">
                             <ol-style-fill :color="fillColor"></ol-style-fill>
-                            <ol-style-stroke :color="strokeColor"
-                                             :width="strokeWidth"></ol-style-stroke>
+                            <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
                           </ol-style-circle>
                           <ol-style-text :text="appStore.currentLog.eventType">
                             <ol-style-fill color="white"></ol-style-fill>
@@ -78,13 +82,11 @@
                         </ol-style>
                       </ol-feature>
                       <ol-feature>
-                        <ol-geom-point
-                          :coordinates="appStore.currentLog.position.split(',').reverse()"></ol-geom-point>
+                        <ol-geom-point :coordinates="appStore.currentLog.position.split(',').reverse()"></ol-geom-point>
                         <ol-style>
                           <ol-style-circle :radius="radius">
                             <ol-style-fill :color="fillColor"></ol-style-fill>
-                            <ol-style-stroke :color="strokeColor"
-                                             :width="strokeWidth"></ol-style-stroke>
+                            <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
                           </ol-style-circle>
                         </ol-style>
                       </ol-feature>
@@ -106,7 +108,7 @@
                   </v-card-item>
                   <v-divider></v-divider>
                   <v-card-text>
-                    <pre>{{appStore.currentLog.metadata}}</pre>
+                    <pre>{{ appStore.currentLog.metadata }}</pre>
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -125,8 +127,8 @@
                       <v-row class="mb-2">
                         <strong class="mr-4">Fecha hora infracción:</strong>
                         {{ formatDate(
-                        new Date(Number(JSON.parse(appStore.currentLog.data).timestamp))
-                      )
+                          new Date(Number(JSON.parse(appStore.currentLog.data).timestamp))
+                        )
                         }}
                       </v-row>
                       <v-row class="mb-2">
@@ -162,8 +164,13 @@
 
         <!-- Diálogo visualizar foto-->
         <v-dialog v-model="dialogoAbierto">
+
+
           <v-card>
-            <v-img :src="`${imagenSelected}`"/>
+            <div class="close-button-container">
+              <v-btn icon="mdi-close" color="secondary" @click="dialogoAbierto = false"></v-btn>
+            </div>
+            <v-img :src="`${imagenSelected}`" />
           </v-card>
         </v-dialog>
 
@@ -231,10 +238,10 @@ const fillColor = ref("blue");
 let dialogoAbierto = ref(false)
 let contadorImg = ref(0)
 const imagenes = {
-  0 : ['front_left.jpg','front_right.jpg'],
-  1 : ['v1_left.jpg','v1_right.jpg'],
-  2 : ['v2_left.jpg','v2_right.jpg'],
-  3 : ['back_left.jpg','back_right.jpg'],
+  0: ['front_left.jpg', 'front_right.jpg'],
+  1: ['v1_left.jpg', 'v1_right.jpg'],
+  2: ['v2_left.jpg', 'v2_right.jpg'],
+  3: ['back_left.jpg', 'back_right.jpg'],
 }
 let imagenSelected = ref('')
 // ************************************************
@@ -306,4 +313,14 @@ const openDialog = (imgPath) => {
 }
 
 </script>
+
+
+<style scoped>
+.close-button-container {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 1;
+}
+</style>
 

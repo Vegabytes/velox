@@ -26,7 +26,7 @@
 
                   <h2 v-if="listDevicesByUser.length === 0" class="text-primary text-h5">No hay dispositivos asignados al
                     grupo</h2>
-                  <div v-if="listDevicesByUser.length > 0" v-for="item in listDevicesByUser">
+                  <div v-if="listDevicesByUser.length > 0" v-for="item in listDevicesByUser" :key="item.id">
                     <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToLogsDevice(item)">
                       <div class="py-5">
                         <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover
@@ -68,6 +68,9 @@
     <!-- Diálogo última posición-->
     <v-dialog v-model="dialogLastPosition">
       <v-card>
+        <div class="close-button-container">
+          <v-btn icon="mdi-close" color="secondary" @click="dialogLastPosition = false"></v-btn>
+        </div>
         <v-card-text class="pa-8">
           <ol-map style="height: 500px;" :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true">
             <ol-view ref="view" :center="lastPosition.split(',').reverse()" :rotation="rotation" :zoom="zoom"
@@ -108,9 +111,6 @@
             </ol-vector-layer>
           </ol-map>
         </v-card-text>
-        <v-card-actions>
-          <v-btn color="primary" @click="dialogLastPosition = false">Cancelar</v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
 
@@ -243,3 +243,13 @@ const goToLogsDevice = (item) => {
 }
 
 </script>
+
+
+<style scoped>
+.close-button-container {
+  position: absolute;
+  right: 40px;
+  top: 40px;
+  z-index: 1;
+}
+</style>
