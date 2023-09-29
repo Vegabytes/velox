@@ -198,7 +198,8 @@ const idGroup = computed(() => $route.params.idGroup)
 const idLog = computed(() => $route.params.idLog)
 const idDevice = computed(() => $route.params.idDevice)
 const currentGroup = computed(() => appStore.currentGroup);
-const url = ref(import.meta.env['VITE_SERVER_BASE_URL']);
+/* const url = ref(import.meta.env['VITE_SERVER_BASE_URL']); */
+const url = ref('http://185.166.213.42/velocikaptor');
 const breadcrumbsItems = [
   {
     title: 'Inicio',

@@ -26,19 +26,8 @@ app.use(express.urlencoded({ extended: true }))
 
 app.set('port', process.env.PORT || 5000);
 
-app.use(express.static('public'));
+app.use(express.static('http://185.166.213.42//var/www/html/velocikaptor/images'));
 app.use('/images', express.static('images'));
-/* app.use('/uploads', express.static('uploads')); */
-
-
-
-
-// CORS
-/* app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-}); */
 
 
 
