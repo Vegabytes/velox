@@ -88,7 +88,7 @@ const irHome = () => $router.push(`/${idGroup.value}/groups`);
 }
 
 .v-img__img--contain {
-  object-fit: contain !important;
+  object-fit: cover !important;
 }
 </style>
 

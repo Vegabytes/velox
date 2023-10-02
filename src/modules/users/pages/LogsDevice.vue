@@ -1,100 +1,96 @@
 <template>
-    <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
-        <v-card elevation="8" rounded="lg" color="secondary" v-if="!loadingStore.isLoading">
-            <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
-            <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
-                <v-card-text>
-                    <v-row class="mt-2">
-                        <v-col>
+  <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
+    <v-card elevation="8" rounded="lg" color="secondary" v-if="!loadingStore.isLoading">
+      <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
+      <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
+        <v-card-text>
+          <v-row class="mt-2">
+            <v-col>
 
-                            <v-row>
-                                <v-avatar class="ma-3" size="x-large">
-                                    <v-img cover :src="currentDevice.path"></v-img>
-                                </v-avatar>
-                                <v-card-item>
-                                    <v-card-title class="text-h5 text-md-h4 font-weight-bold">{{
-                                        currentDevice.name }}</v-card-title>
-                                    <v-card-subtitle class="">{{ currentDevice.description }}</v-card-subtitle>
-                                </v-card-item>
-                            </v-row>
-                        </v-col>
-                        <v-breadcrumbs :items="breadcrumbsItems">
-                            <template v-slot:prepend>
-                                <v-icon size="small" icon="mdi-home"></v-icon>
-                            </template>
-                        </v-breadcrumbs>
-                    </v-row>
+              <v-row>
+                <v-avatar class="ma-3" size="x-large">
+                  <v-img cover :src="currentDevice.path"></v-img>
+                </v-avatar>
+                <v-card-item>
+                  <v-card-title class="text-h5 text-md-h4 font-weight-bold">{{
+                    currentDevice.name }}</v-card-title>
+                  <v-card-subtitle class="">{{ currentDevice.description }}</v-card-subtitle>
+                </v-card-item>
+              </v-row>
+            </v-col>
+            <v-breadcrumbs :items="breadcrumbsItems">
+              <template v-slot:prepend>
+                <v-icon size="small" icon="mdi-home"></v-icon>
+              </template>
+            </v-breadcrumbs>
+          </v-row>
 
-                    <v-divider thickness="3" class="mb-4"></v-divider>
+          <v-divider thickness="3" class="mb-4"></v-divider>
 
-                    <v-row class="mt-3">
-                        <v-col cols="12" md="6">
-                            <v-data-table v-model:page="page" :headers="headers" :items="currentDeviceLogs" hover="true"
-                                :items-per-page="50" hide-default-footer class="elevation-1">
-                                <template v-slot:item="{ item }">
-                                    <tr @click="toLogDetail(item.columns.id)" style="cursor:pointer">
-                                        <td>{{ item.columns.id }}</td>
-                                        <td>{{ item.columns.timestamp }}</td>
-                                    </tr>
-                                </template>
-                                <template v-slot:bottom>
-                                    <div class="text-center pt-2">
-                                        <v-pagination v-model="page" :length="pageCount"></v-pagination>
-                                    </div>
-                                </template>
-                            </v-data-table>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <ol-map style="height: 500px;" :loadTilesWhileAnimating="true"
-                                :loadTilesWhileInteracting="true">
-                                <ol-view ref="view" v-if="currentDeviceLogs.length > 0"
-                                    :center="currentDeviceLogs[0].position.split(',').reverse()" :rotation="rotation"
-                                    :zoom="zoom" :projection="projection" />
+          <v-row class="mt-3">
+            <v-col cols="12" md="6">
+              <v-data-table v-model:page="page" :headers="headers" :items="currentDeviceLogs" hover="true"
+                :items-per-page="50" hide-default-footer class="elevation-1">
+                <template v-slot:item="{ item }">
+                  <tr @click="toLogDetail(item.columns.id)" style="cursor:pointer">
+                    <td>{{ item.columns.id }}</td>
+                    <td>{{ item.columns.timestamp }}</td>
+                  </tr>
+                </template>
+                <template v-slot:bottom>
+                  <div class="text-center pt-2">
+                    <v-pagination v-model="page" :length="pageCount"></v-pagination>
+                  </div>
+                </template>
+              </v-data-table>
+            </v-col>
+            <v-col cols="12" md="6">
+              <ol-map style="height: 500px;" :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true">
+                <ol-view ref="view" v-if="currentDeviceLogs.length > 0"
+                  :center="currentDeviceLogs[0].position.split(',').reverse()" :rotation="rotation" :zoom="zoom"
+                  :projection="projection" />
 
-                                <ol-tile-layer>
-                                    <ol-source-osm />
-                                </ol-tile-layer>
+                <ol-tile-layer>
+                  <ol-source-osm />
+                </ol-tile-layer>
 
-                                <ol-vector-layer>
-                                    <ol-source-vector>
-                                        <ol-feature v-if="currentDeviceLogs.length > 0" v-for="item in currentDeviceLogs">
-                                            <ol-geom-point
-                                                :coordinates="item.position.split(',').reverse()"></ol-geom-point>
-                                            <ol-style>
-                                                <ol-style-circle :radius="radius">
-                                                    <ol-style-fill :color="fillColor"></ol-style-fill>
-                                                    <ol-style-stroke :color="strokeColor"
-                                                        :width="strokeWidth"></ol-style-stroke>
-                                                </ol-style-circle>
-                                                <ol-style-text :text="item.eventType">
-                                                    <ol-style-fill color="white"></ol-style-fill>
-                                                </ol-style-text>
-                                            </ol-style>
-                                        </ol-feature>
+                <ol-vector-layer>
+                  <ol-source-vector>
+                    <ol-feature v-if="currentDeviceLogs.length > 0" v-for="item in currentDeviceLogs">
+                      <ol-geom-point :coordinates="item.position.split(',').reverse()"></ol-geom-point>
+                      <ol-style>
+                        <ol-style-circle :radius="radius">
+                          <ol-style-fill :color="fillColor"></ol-style-fill>
+                          <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
+                        </ol-style-circle>
+                        <ol-style-text :text="item.eventType">
+                          <ol-style-fill color="white"></ol-style-fill>
+                        </ol-style-text>
+                      </ol-style>
+                    </ol-feature>
 
 
-                                        <ol-feature v-for="item in currentDeviceLogs">
-                                            <ol-geom-point :coordinates="[item.position]"></ol-geom-point>
-                                            <ol-style>
-                                                <ol-style-circle :radius="radius">
-                                                    <ol-style-fill :color="fillColor"></ol-style-fill>
-                                                    <ol-style-stroke :color="strokeColor"
-                                                        :width="strokeWidth"></ol-style-stroke>
-                                                </ol-style-circle>
-                                            </ol-style>
-                                        </ol-feature>
-                                    </ol-source-vector>
+                    <ol-feature v-for="item in currentDeviceLogs">
+                      <ol-geom-point :coordinates="[item.position]"></ol-geom-point>
+                      <ol-style>
+                        <ol-style-circle :radius="radius">
+                          <ol-style-fill :color="fillColor"></ol-style-fill>
+                          <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
+                        </ol-style-circle>
+                      </ol-style>
+                    </ol-feature>
+                  </ol-source-vector>
 
-                                </ol-vector-layer>
-                            </ol-map>
+                </ol-vector-layer>
+              </ol-map>
 
 
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-            </v-container>
-        </v-card>
-    </v-container>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-container>
+    </v-card>
+  </v-container>
 </template>
 
 <script setup>
@@ -123,8 +119,8 @@ const currentDeviceLogs = ref([]);
 const page = ref(1)
 
 const headers = [
-    { title: 'Id', align: 'start', key: 'id', },
-    { title: 'Log', align: 'start', key: 'timestamp' }
+  { title: 'Id', align: 'start', key: 'id', },
+  { title: 'Log', align: 'start', key: 'timestamp' }
 ]
 
 const projection = ref("EPSG:4326");
@@ -137,93 +133,95 @@ const fillColor = ref("blue");
 
 
 onBeforeMount(async () => {
-    loadingStore.setLoading(true);
-    if (!appStore.getCurrentUser || !appStore.getCurrentUser.name) {
-        $router.push(`/${idGroup.value}/login`);
-    }
-    try {
-        await getDeviceData()
-        await getLogsByDevice()
+  loadingStore.setLoading(true);
+  if (!appStore.getCurrentUser || !appStore.getCurrentUser.name) {
+    $router.push(`/${idGroup.value}/login`);
+  }
+  try {
+    await getDeviceData()
+    await getLogsByDevice()
 
-        if (!appStore.currentGroup || !appStore.currentGroup.id) {
-            await getGroupData();
-        }
-    } catch (error) {
-        console.error(error);
-    } finally {
-        loadingStore.setLoading();
+    if (!appStore.currentGroup || !appStore.currentGroup.id) {
+      await getGroupData();
     }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    loadingStore.setLoading();
+  }
 });
 
 const breadcrumbsItems = [
-    {
-        title: 'Inicio',
-        disabled: false,
-        to: { name: 'Groups' },
-    },
-    {
-        title: 'Listado de dispositivos',
-        disabled: false,
-        exact: true,
-        to: { name: 'GroupDetail' },
-    },
-    {
-        title: 'Detalles del dispositivo',
-        disabled: true,
-        href: 'breadcrumbs_link_1',
-    },
+  {
+    title: 'Inicio',
+    disabled: false,
+    to: { name: 'Groups' },
+  },
+  {
+    title: 'Listado de dispositivos',
+    disabled: false,
+    exact: true,
+    to: { name: 'GroupDetail' },
+  },
+  {
+    title: 'Detalles del dispositivo',
+    disabled: true,
+    href: 'breadcrumbs_link_1',
+  },
 ]
 
 const getGroupData = async () => {
-    const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
-    try {
-        const res = await axios.get(`${url}/groups/group/${idGroup.value}`)
-        appStore.currentGroup = res.data;
-    }
-    catch (err) {
-        console.error(err);
-        throw err;
-    }
+  try {
+    const res = await axios.get(`${url}/groups/group/${idGroup.value}`)
+    appStore.currentGroup = res.data;
+  }
+  catch (err) {
+    console.error(err);
+    throw err;
+  }
 }
 
 const getLogsByDevice = async () => {
-    const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
-    try {
-        const res = await axios.get(`${url}/logs/device/${idCurrentDevice.value}`)
-        let a = res.data
-        currentDeviceLogs.value = a
-        let dataFormatted = []
-        res.data.forEach((e) => {
-            e.timestamp = formatDate(Number(JSON.parse(e.data).timestamp))
-            dataFormatted.push(e)
-        });
-        currentDeviceLogs.value = dataFormatted;
+  try {
+    const res = await axios.get(`${url}/logs/device/${idCurrentDevice.value}`)
+    let a = res.data
+    currentDeviceLogs.value = a
+    let dataFormatted = []
+    res.data.forEach((e) => {
+      console.log("e", e);
+      //e.timestamp = formatDate(Number(JSON.parse(e.data).timestamp))
+      e.timestamp = formatDate(e.eventTimeStamp)
+      dataFormatted.push(e)
+    });
+    currentDeviceLogs.value = dataFormatted;
 
 
-    }
-    catch (err) {
-        console.error(err);
-        throw err;
-    }
+  }
+  catch (err) {
+    console.error(err);
+    throw err;
+  }
 }
 
 const getDeviceData = async () => {
-    const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
-    try {
-        const res = await axios.get(`${url}/device/${idCurrentDevice.value}`)
-        appStore.currentDevice = res.data[0];
-        currentDevice.value = res.data[0]
-    }
-    catch (err) {
-        console.error(err);
-        throw err;
-    }
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+  try {
+    const res = await axios.get(`${url}/device/${idCurrentDevice.value}`)
+    appStore.currentDevice = res.data[0];
+    currentDevice.value = res.data[0]
+  }
+  catch (err) {
+    console.error(err);
+    throw err;
+  }
 }
 
 const toLogDetail = (id) => {
-    $router.push(`/${idGroup.value}/groups/groupDetail/${idViewGroup.value}/logs/${currentDevice.value.id}/log/${id}`);
+  $router.push(`/${idGroup.value}/groups/groupDetail/${idViewGroup.value}/logs/${currentDevice.value.id}/log/${id}`);
 }
 
 </script>
