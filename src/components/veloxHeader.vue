@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col :cols="mobile ? 2 : 1" class="d-flex justify-center align-center pa-0">
-      <v-img class="mt-3" :max-width="mobile ? '40' : '70'" src="@/assets/logo.png" style="cursor: pointer"
+      <v-img class="mt-3" :max-width="mobile ? '40' : '100'" src="@/assets/logo_vkr.svg" style="cursor: pointer"
         @click="irHome()" />
     </v-col>
     <v-col :cols="mobile ? 10 : 11" class="d-flex justify-center pa-0">

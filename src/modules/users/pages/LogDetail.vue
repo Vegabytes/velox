@@ -59,8 +59,8 @@
               </v-col>
 
               <!--MAPA-->
-              <v-col cols="12" md="6">
-                <ol-map style="height: 500px;" class="mb-2" :loadTilesWhileAnimating="true"
+              <v-col class="mt-10" cols="12" md="6">
+                <ol-map style="height: 750px;" class="mb-2" :loadTilesWhileAnimating="true"
                   :loadTilesWhileInteracting="true">
                   <ol-view ref="view" :center="appStore.currentLog.position.split(',').reverse()" :rotation="rotation"
                     :zoom="zoom" :projection="projection" />
@@ -226,7 +226,7 @@ const breadcrumbsItems = [
 
 // ********** mapa ***************
 const projection = ref("EPSG:4326");
-const zoom = ref(10);
+const zoom = ref(16);
 const rotation = ref(0);
 const radius = ref(10);
 const strokeWidth = ref(4);

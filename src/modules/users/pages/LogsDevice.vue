@@ -29,8 +29,8 @@
 
           <v-row class="mt-3">
             <v-col cols="12" md="6">
-              <v-data-table v-model:page="page" :headers="headers" :items="currentDeviceLogs" hover="true"
-                :items-per-page="50" hide-default-footer class="elevation-1">
+              <v-data-table v-model:page="page" :headers="headers" height="340" :items="currentDeviceLogs" hover="true"
+                :items-per-page="5" hide-default-footer class="elevation-1">
                 <template v-slot:item="{ item }">
                   <tr @click="toLogDetail(item.columns.id)" style="cursor:pointer">
                     <td>{{ item.columns.id }}</td>
@@ -38,14 +38,14 @@
                   </tr>
                 </template>
                 <template v-slot:bottom>
-                  <div class="text-center pt-2">
+                  <div class="text-center">
                     <v-pagination v-model="page" :length="pageCount"></v-pagination>
                   </div>
                 </template>
               </v-data-table>
             </v-col>
             <v-col cols="12" md="6">
-              <ol-map style="height: 500px;" :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true">
+              <ol-map style="height: 400px;" :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true">
                 <ol-view ref="view" v-if="currentDeviceLogs.length > 0"
                   :center="currentDeviceLogs[0].position.split(',').reverse()" :rotation="rotation" :zoom="zoom"
                   :projection="projection" />

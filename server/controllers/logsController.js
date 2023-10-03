@@ -2,7 +2,6 @@ import connection from '../database/db.js';
 import 'dotenv/config'
 import fs from 'fs/promises';
 import { readFile } from 'fs/promises';
-
 export const getLogsByDeviceId = async (req, res) => {
 
   try {
@@ -16,15 +15,15 @@ export const getLogsByDeviceId = async (req, res) => {
   }
 }
 
-export const getLogDetail = async(req,res)=>{
+export const getLogDetail = async (req, res) => {
 
-  try{
+  try {
     const { id } = req.params;
     connection.query('SELECT * FROM Logs where id = ?', [id], async (error, results) => {
       if (error) {
         res.status(400).send(error)
         return
-      }else{
+      } else {
         const path = results[0].imagePath;
         const files = await fs.readdir(path);
 
@@ -49,7 +48,7 @@ export const getLogDetail = async(req,res)=>{
       }
 
     });
-  }catch(error){
+  } catch (error) {
     res.status(500).send(error)
   }
 }

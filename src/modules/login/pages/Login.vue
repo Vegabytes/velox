@@ -6,7 +6,7 @@
     <v-col v-if="!isLoading">
       <v-form @submit.prevent ref="formLogin">
 
-        <v-img class="mx-auto my-6" max-width="80" src="@/assets/logo.png">
+        <v-img class="mx-auto my-6" max-width="100" src="@/assets/logo_vkr.svg">
         </v-img>
 
         <v-row class="d-flex justify-center">
