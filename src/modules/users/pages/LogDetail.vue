@@ -7,6 +7,7 @@
           <v-row class="mt-2">
             <v-col>
               <v-row>
+
                 <v-avatar class="ma-3" size="x-large">
                   <v-img v-if="appStore.currentDevice" cover :src="appStore.currentDevice.path"></v-img>
                 </v-avatar>
@@ -31,39 +32,52 @@
             <v-row>
 
               <!--IMÁGENES-->
-              <v-col cols="12" md="6">
-                <v-row class="ma-2">
-                  <v-col cols="2" class="d-flex justify-center align-center">
-                    <v-btn variant="text" icon="mdi-chevron-left" @click="(contadorImg !== 0) ? contadorImg-- : null"
+              <v-col cols="12" md="6" class="py-0">
+                <v-row class="mt-2">
+                  <v-col cols="1" class="d-flex justify-center align-center py-0">
+                    <v-btn variant="text" icon="mdi-chevron-left"
+                      @click="(contadorImg !== 0) ? contadorImg-- : null, handleZoom(contadorImg)"
                       :disabled="contadorImg === 0"></v-btn>
                   </v-col>
-                  <v-col cols="8" class="d-flex flex-column justify-center align-center">
-                    <v-col>
+                  <v-col cols="9" class="d-flex flex-column justify-center align-center py-0">
+                    <v-col class="px-0">
                       <v-col cols="12" class="d-flex justify-center align-center">
+                        <br>
                         <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`"
-                          style="cursor: zoom-in"
-                          @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][0]}`)" />
+                          :id="`image-left-${contadorImg}`">
+                          <template v-slot:placeholder>
+                            <div class="d-flex align-center justify-center fill-height">
+                              <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+                            </div>
+                          </template>
+                        </v-img>
                       </v-col>
                       <v-col cols="12" class="d-flex justify-center align-center">
                         <v-img :src="`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`"
-                          style="cursor: zoom-in"
-                          @click="openDialog(`${url}/${appStore.currentLog.imagePath}/${imagenes[contadorImg][1]}`)" />
+                          :id="`image-right-${contadorImg}`">
+                          <template v-slot:placeholder>
+                            <div class="d-flex align-center justify-center fill-height">
+                              <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+                            </div>
+                          </template>
+                        </v-img>
                       </v-col>
                     </v-col>
                   </v-col>
-                  <v-col cols="2" class="d-flex justify-center align-center">
-                    <v-btn variant="text" icon="mdi-chevron-right" @click="(contadorImg < 3) ? contadorImg++ : null"
+                  <v-col cols="1" class="d-flex justify-center align-center px-0">
+                    <v-btn variant="text" icon="mdi-chevron-right"
+                      @click="(contadorImg < 3) ? contadorImg++ : null, handleZoom(contadorImg)"
                       :disabled="contadorImg === 3"></v-btn>
                   </v-col>
                 </v-row>
               </v-col>
 
               <!--MAPA-->
-              <v-col class="mt-10" cols="12" md="6">
-                <ol-map style="height: 750px;" class="mb-2" :loadTilesWhileAnimating="true"
+              <v-col class="mt-5" cols="12" md="6">
+                <ol-map style="height: 100%;" class="mb-2" :loadTilesWhileAnimating="true"
                   :loadTilesWhileInteracting="true">
                   <ol-view ref="view" :center="appStore.currentLog.position.split(',').reverse()" :rotation="rotation"
-                    :zoom="zoom" :projection="projection" />
+                    :zoom="_zoom" :projection="projection" />
                   <ol-tile-layer>
                     <ol-source-osm />
                   </ol-tile-layer>
@@ -99,7 +113,7 @@
             <v-row>
 
               <!--JSON-->
-              <v-col cols="12" md="6">
+              <v-col cols="12" md="6" class="mt-6">
                 <v-card variant="tonal" color="primary">
                   <v-card-item>
                     <v-card-title>
@@ -114,7 +128,7 @@
               </v-col>
 
               <!--FORMULARIO-->
-              <v-col cols="12" md="6">
+              <v-col cols="12" md="6" class="mt-6">
                 <v-card variant="tonal" color="primary">
                   <v-card-item>
                     <v-card-title>
@@ -182,7 +196,7 @@
 <script setup>
 import axios from "axios";
 import { computed, ref } from 'vue';
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, onMounted, onActivated } from 'vue'
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore, useLoadingStore } from '@/store/index';
 import veloxHeader from '@/components/veloxHeader.vue'
@@ -224,9 +238,11 @@ const breadcrumbsItems = [
   },
 ]
 
+
+
 // ********** mapa ***************
 const projection = ref("EPSG:4326");
-const zoom = ref(16);
+const _zoom = ref(18);
 const rotation = ref(0);
 const radius = ref(10);
 const strokeWidth = ref(4);
@@ -242,11 +258,22 @@ const imagenes = {
   0: ['front_left.jpg', 'front_right.jpg'],
   1: ['v1_left.jpg', 'v1_right.jpg'],
   2: ['v2_left.jpg', 'v2_right.jpg'],
-  3: ['back_left.jpg', 'back_right.jpg'],
+  3: ['back_left.jpg', 'back_left.jpg'],
 }
 let imagenSelected = ref('')
 // ************************************************
+setTimeout(() => {
+  $('#image-left-0').css('cursor', 'zoom-in').zoom();
+  $('#image-right-0').css('cursor', 'zoom-in').zoom();
 
+}, 1500);
+
+const handleZoom = (img) => {
+  setTimeout(() => {
+    $(`#image-left-${img}`).css('cursor', 'zoom-in').zoom();
+    $(`#image-right-${img}`).css('cursor', 'zoom-in').zoom();
+  }, 500);
+}
 
 onBeforeMount(async () => {
   loadingStore.setLoading(true);
@@ -308,10 +335,10 @@ const getGroupData = async () => {
   }
 }
 
-const openDialog = (imgPath) => {
+/* const openDialog = (imgPath) => {
   imagenSelected.value = imgPath
   dialogoAbierto.value = true
-}
+} */
 
 </script>
 
@@ -322,6 +349,28 @@ const openDialog = (imgPath) => {
   right: 16px;
   top: 16px;
   z-index: 1;
+}
+
+.zoom {
+  display: inline-block;
+  position: relative;
+}
+
+.zoom img {
+  display: block;
+  width: 500px;
+  height: 500px;
+}
+
+.v-responsive.v-img {
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+
+.ol-viewport {
+  border-radius: 6px;
+  border: 1px solid transparent;
+
 }
 </style>
 

@@ -225,3 +225,16 @@ const toLogDetail = (id) => {
 }
 
 </script>
+
+
+<style>
+.v-table {
+  border-radius: 6px;
+}
+
+.ol-viewport {
+  border-radius: 6px;
+  border: 1px solid transparent;
+
+}
+</style>

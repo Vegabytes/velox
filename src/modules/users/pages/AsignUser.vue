@@ -210,5 +210,9 @@ watch(searchText, (v) => {
 .color-transparent {
   background-color: transparent !important;
 }
+
+.v-table {
+  border-radius: 6px;
+}
 </style>
 

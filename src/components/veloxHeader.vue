@@ -1,10 +1,10 @@
 <template>
   <v-row>
-    <v-col :cols="mobile ? 2 : 1" class="d-flex justify-center align-center pa-0">
+    <v-col :cols="mobile ? 2 : 2" class="d-flex justify-center align-center pa-0">
       <v-img class="mt-3" :max-width="mobile ? '40' : '100'" src="@/assets/logo_vkr.svg" style="cursor: pointer"
         @click="irHome()" />
     </v-col>
-    <v-col :cols="mobile ? 10 : 11" class="d-flex justify-center pa-0">
+    <v-col :cols="mobile ? 10 : 10" class="d-flex justify-center pa-0">
 
       <v-img :src="`${path}/${props.path}`" class="align-end rounded-bs-xl" style="cursor: pointer" @click="irHome()"
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" :height="mobile ? '100px' : '200px'" cover>

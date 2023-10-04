@@ -72,7 +72,7 @@
           <v-btn icon="mdi-close" color="secondary" @click="dialogLastPosition = false"></v-btn>
         </div>
         <v-card-text class="pa-8">
-          <ol-map style="height: 500px;" :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true">
+          <ol-map style="height: 500px" :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true">
             <ol-view ref="view" :center="lastPosition.split(',').reverse()" :rotation="rotation" :zoom="zoom"
               :projection="projection" />
 
@@ -169,7 +169,7 @@ const breadcrumbsItems = [
 ]
 
 const projection = ref("EPSG:4326");
-const zoom = ref(10);
+const zoom = ref(18);
 const rotation = ref(0);
 const radius = ref(10);
 const strokeWidth = ref(4);
@@ -251,5 +251,11 @@ const goToLogsDevice = (item) => {
   right: 40px;
   top: 40px;
   z-index: 1;
+}
+
+.ol-viewport {
+  border-radius: 6px;
+  border: 1px solid transparent;
+
 }
 </style>

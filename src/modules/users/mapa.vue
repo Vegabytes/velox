@@ -1,16 +1,6 @@
 <template>
-  <ol-map
-    :loadTilesWhileAnimating="true"
-    :loadTilesWhileInteracting="true"
-    style="height: 500px;width: 500px;"
-  >
-    <ol-view
-      ref="view"
-      :center="position"
-      :rotation="rotation"
-      :zoom="zoom"
-      :projection="projection"
-    />
+  <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height: 500px;width: 500px;">
+    <ol-view ref="view" :center="position" :rotation="rotation" :zoom="zoom" :projection="projection" />
 
     <ol-tile-layer>
       <ol-source-osm />
@@ -31,17 +21,26 @@
 </template>
 
 <script setup>
-import { ref,computed } from "vue";
+import { ref, computed } from "vue";
 import { useAppStore } from '@/store/index';
 import markerIcon from "@/assets/marker.png";
 const appStore = useAppStore()
 
 const props = defineProps(['position'])
 
-const position = computed(()=>{return appStore.devicePosition})
+const position = computed(() => { return appStore.devicePosition })
 
 const center = ref([-3.7025600, 40.4165000]);
 const projection = ref("EPSG:4326");
 const zoom = ref(10);
 const rotation = ref(0);
 </script>
+
+
+<style>
+.ol-viewport {
+  border-radius: 6px;
+  border: 1px solid transparent;
+
+}
+</style>
