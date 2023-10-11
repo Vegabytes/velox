@@ -7,7 +7,6 @@ import { promisify } from 'util';
 
 
 export const login = async (req, res) => {
-  console.log("login");
   const { email, pass, groupId } = req.body;
 
   try {

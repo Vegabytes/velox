@@ -16,28 +16,13 @@
 
 // Styles
 import '@mdi/font/css/materialdesignicons.css'
-import { VDatePicker } from 'vuetify/labs/VDatePicker'
 import 'vuetify/styles'
-import { es } from 'vuetify/locale'
-/* import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'; */
 
-
-// Composables
 import { createVuetify } from 'vuetify'
-
-const RetroBlue = '#2E6FF2'
-const AndreaBlue = '#4174D9'
-const BlueBlush = '#D7D9D8'
-const CapriIsle = '#4F5954'
-const SpringKiss = '#E5F2B6'
+import { es } from 'vuetify/locale'
 
 const MaastrichtBlue = '#011C40'
 const MaastrichtBlue2 = '#d7e4ed'
-const BlueJeans = '#5CB9F2'
-const HeisenbergBlue = '#6DCCF2'
-const Scandal = '#ADD9D4'
-const SpaghettiMonster = '#F2CD88'
 
 
 const customLightTheme = {
@@ -66,14 +51,10 @@ const customDarkTheme = {
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
-  components: {
-    /*     VueDatePicker, */
+  locale: {
+    locale: 'es',
+    messages: { es },
   },
-  /*   locale: {
-      locale: 'es',
-      fallback: 'es',
-      messages: { es },
-    }, */
   theme: {
     defaultTheme: 'customLightTheme',
     themes: {

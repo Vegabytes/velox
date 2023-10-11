@@ -74,7 +74,7 @@
 
               <!--MAPA-->
               <v-col class="mt-5" cols="12" md="6">
-                <ol-map style="height: 100%;" class="mb-2" :loadTilesWhileAnimating="true"
+                <ol-map :class="mobile ? 'height-mobile' : 'h-100'" class="mb-2" :loadTilesWhileAnimating="true"
                   :loadTilesWhileInteracting="true">
                   <ol-view ref="view" :center="appStore.currentLog.position.split(',').reverse()" :rotation="rotation"
                     :zoom="_zoom" :projection="projection" />
@@ -122,7 +122,7 @@
                   </v-card-item>
                   <v-divider></v-divider>
                   <v-card-text>
-                    <pre>{{ appStore.currentLog.metadata }}</pre>
+                    <pre class="overflow-x-auto">{{ appStore.currentLog.metadata }}</pre>
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -370,7 +370,10 @@ const getGroupData = async () => {
 .ol-viewport {
   border-radius: 6px;
   border: 1px solid transparent;
+}
 
+.height-mobile {
+  height: 30rem;
 }
 </style>
 

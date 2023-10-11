@@ -30,8 +30,8 @@
           </v-col>
           <v-row v-if="groupSelected && searchText" class="overflow-auto">
             <v-col cols="12">
-              <v-data-table v-model:page="pageUsers" :headers="headers" :items="userListNotAsign" hover="true"
-                :items-per-page="10" hide-default-footer class="elevation-1 mt-6">
+              <v-data-table v-model:page="page" :headers="headers" :items="userListNotAsign" hover
+                :items-per-page="itemsPerPage" hide-default-footer class="elevation-1 mt-6">
                 <template v-slot:item="{ item }">
                   <tr>
                     <td>{{ item.columns.name }}</td>
@@ -49,7 +49,7 @@
                 </template>
                 <template v-slot:bottom>
                   <div class="text-center pt-2">
-                    <v-pagination v-model="page2"></v-pagination>
+                    <v-pagination v-model="page" :length="pageCount"></v-pagination>
                   </div>
                 </template>
               </v-data-table>
@@ -81,26 +81,28 @@
 
 <script setup>
 
-import { ref, watch } from 'vue'
-import { useAppStore, useLoginStore } from '@/store/index';
+import { ref, watch, computed, onBeforeMount } from 'vue'
+import { useAppStore, useLoadingStore } from '@/store/index';
 import axios from "axios";
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import veloxHeader from '@/components/veloxHeader.vue'
 import { useDisplay } from 'vuetify';
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const { mobile } = useDisplay()
 const appStore = useAppStore()
-const loginStore = useLoginStore()
 const $router = useRouter();
+const $route = useRoute();
+const loadingStore = useLoadingStore();
+const currentUser = computed(() => appStore.getCurrentUser);
 
 let groupSelected = ref(null)
 let userListNotAsign = ref([])
 let userGroupList = ref([])
 let searchText = ref(null)
 let userSelectedId = ref(null)
-
-const pageUsers = ref(1)
+const idGroup = computed(() => $route.params.idGroup)
+const isAdmin = computed(() => appStore.getIsAdmin);
 
 const headers = [
   { title: 'Nombre', align: 'start', key: 'name', },
@@ -108,7 +110,11 @@ const headers = [
   { title: 'Correo Electrónico', align: 'start', key: 'email' },
   { title: 'Asignar', align: 'start', key: '' },
 ]
-const page2 = ref(1)
+const page = ref(1);
+const itemsPerPage = ref(5);
+const pageCount = computed(() => {
+  return Math.ceil(userListNotAsign.value.length / itemsPerPage.value)
+});
 const dialogAsignUser = ref(false);
 
 const snackbarActivate = ref(false);
@@ -122,6 +128,76 @@ const breadcrumbsItems = [
     to: { name: 'Groups' },
   },
 ]
+
+onBeforeMount(async () => {
+  loadingStore.setLoading(true);
+  if (!currentUser.value || !currentUser.value.id) {
+    $router.push(`/${idGroup.value}/login`);
+  }
+  try {
+
+    await checkIsAdmin()
+
+    if (!appStore.currentGroup || !appStore.currentGroup.id) {
+      await getGroupData();
+    }
+
+
+    if (isAdmin.value) {
+      await getUserGroups()
+    } else {
+      await getGroupData()
+      goToGroupDetail(appStore.currentGroup)
+    }
+
+
+  } catch (error) {
+    console.error(error);
+  } finally {
+    loadingStore.setLoading();
+  }
+});
+
+const goToGroupDetail = (item) => {
+  $router.push(`/${idGroup.value}/groups/groupDetail/${item.id}`);
+}
+
+const checkIsAdmin = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+  try {
+    const res = await axios.get(`${url}/user/admin/${idGroup.value}/${appStore.getCurrentUser.id}`)
+    appStore.setIsAdmin(res.data.admin)
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+const getUserGroups = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+  try {
+    const res = await axios.get(`${url}/groups/${idGroup.value}/user/${appStore.getCurrentUser.id}`)
+    appStore.userGroups = res.data;
+  }
+  catch (err) {
+    console.error(err);
+    throw err;
+  }
+
+}
+
+const getGroupData = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+
+  try {
+    const res = await axios.get(`${url}/groups/group/${idGroup.value}`)
+    appStore.currentGroup = res.data;
+  }
+  catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
 
 const getNotAssignedUsersByEmail = async (idGroup) => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
@@ -179,16 +255,14 @@ const openDialogAsignUser = (id) => {
 
 
 watch(groupSelected, (v) => {
-  if (!loginStore.loggedUser.groupId) {
-    $router.push("error");
-  } else {
-    if (groupSelected.value) {
-      getUsersGroup(v)
-      userListNotAsign.value = [];
-      searchText.value = '';
-    }
+  if (groupSelected.value) {
+    getUsersGroup(v)
+    userListNotAsign.value = [];
+    searchText.value = '';
   }
 })
+
+
 
 watch(searchText, (v) => {
 

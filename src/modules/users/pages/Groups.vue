@@ -118,6 +118,7 @@ const $route = useRoute();
 const appStore = useAppStore()
 const loadingStore = useLoadingStore();
 
+
 const currentGroup = computed(() => appStore.currentGroup);
 const userGroups = computed(() => appStore.userGroups);
 const currentUser = computed(() => appStore.getCurrentUser);
@@ -170,8 +171,8 @@ const checkIsAdmin = async () => {
     const res = await axios.get(`${url}/user/admin/${idGroup.value}/${appStore.getCurrentUser.id}`)
     appStore.setIsAdmin(res.data.admin)
   } catch (error) {
-    console.error(err);
-    throw err;
+    console.error(error);
+    throw error;
   }
 }
 

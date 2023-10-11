@@ -29,8 +29,8 @@
 
           <v-row class="mt-3">
             <v-col cols="12" md="6">
-              <v-data-table v-model:page="page" :headers="headers" height="340" :items="currentDeviceLogs" hover="true"
-                :items-per-page="5" hide-default-footer class="elevation-1">
+              <v-data-table v-model:page="page" :headers="headers" height="340" :items="currentDeviceLogs" hover
+                :items-per-page="itemsPerPage" hide-default-footer class="elevation-1">
                 <template v-slot:item="{ item }">
                   <tr @click="toLogDetail(item.columns.id)" style="cursor:pointer">
                     <td>{{ item.columns.id }}</td>
@@ -95,8 +95,7 @@
 
 <script setup>
 import axios from "axios";
-import { computed, ref } from 'vue';
-import { onBeforeMount } from 'vue'
+import { computed, ref, onBeforeMount } from 'vue';
 import { useRoute, useRouter } from "vue-router";
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { useAppStore, useLoadingStore } from '@/store/index';
@@ -116,7 +115,11 @@ const currentGroup = computed(() => appStore.currentGroup);
 const currentDevice = ref()
 const currentDeviceLogs = ref([]);
 
-const page = ref(1)
+const page = ref(1);
+const itemsPerPage = ref(5);
+const pageCount = computed(() => {
+  return Math.ceil(currentDeviceLogs.value.length / itemsPerPage.value)
+});
 
 const headers = [
   { title: 'Id', align: 'start', key: 'id', },

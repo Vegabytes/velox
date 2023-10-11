@@ -10,7 +10,7 @@ import { login, isAuthenticated, logout } from '../controllers/authController.js
 import { getAllGroups, getGroupByGrupoId, getGroupByUserId, createGroup, associateUserUserGroup, getGroupByGroupIdByUserId, getGroupsPrueba } from '../controllers/groupController.js'
 import { getAllUsers, createUser, getGroupUsers, getNotAssignedUser, getNotAssignedUserByEmail, isAdmin, setUserIntoGroup } from '../controllers/usersController.js'
 import { getLogsByDeviceId, getLogDetail } from '../controllers/logsController.js'
-import { getDevicesByUserId, getDevice, getDevicesIdByGroup, getPositionDevice, getDevicesGroupsNotAssigned,setDevicesIntoGroup } from '../controllers/devicesController.js'
+import { getDevicesByUserId, getDevice, getDevicesIdByGroup, getPositionDevice, getDevicesGroupsNotAssigned, setDevicesIntoGroup } from '../controllers/devicesController.js'
 
 const MAX_SIZE = 10000000;
 
@@ -19,8 +19,6 @@ const storage = multer.diskStorage({
     cb(null, './images/groups')
   },
   filename: (req, file, cb) => {
-
-    console.log(file);
     cb(null, uuidv4() + path.extname(file.originalname))
   }
 });
