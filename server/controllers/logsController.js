@@ -71,3 +71,21 @@ export const getDenuncias = async (req, res) => {
     res.status(500).send(error)
   }
 }
+
+//select * from Infractions as i inner join Logs as l where i.idLog = l.id and i.idLog = 1
+export const getDenunciaDetail = async (req, res) => {
+  try {
+    const { idLog } = req.params;
+    connection.query(`select * from Infractions as i inner join Logs as l where i.idLog = l.id and i.idLog = ${idLog}`, async (error, results) => {
+      if (error) {
+        res.status(400).send(error)
+        return
+      } else {
+        res.status(200).send(results)
+      }
+
+    });
+  } catch (error) {
+    res.status(500).send(error)
+  }
+}
