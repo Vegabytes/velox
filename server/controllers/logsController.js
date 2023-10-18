@@ -2,6 +2,7 @@ import connection from '../database/db.js';
 import 'dotenv/config'
 import fs from 'fs/promises';
 import { readFile } from 'fs/promises';
+
 export const getLogsByDeviceId = async (req, res) => {
 
   try {
@@ -44,6 +45,24 @@ export const getLogDetail = async (req, res) => {
         // })
 
         results[0]['images'] = files
+        res.status(200).send(results)
+      }
+
+    });
+  } catch (error) {
+    res.status(500).send(error)
+  }
+}
+
+export const getDenuncias = async (req, res) => {
+  try {
+    const { idGroup } = req.params;
+    connection.query(`
+    select * from Infractions where idLog in (SELECT id from Logs where deviceId in (SELECT deviceId FROM DeviceGroupMembers where groupId=${idGroup}))`, async (error, results) => {
+      if (error) {
+        res.status(400).send(error)
+        return
+      } else {
         res.status(200).send(results)
       }
 

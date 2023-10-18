@@ -26,6 +26,8 @@
                       <v-btn variant="tonal" color="primary" prepend-icon="mdi-menu" v-bind="props">
                         Opciones
                       </v-btn>
+                      <v-btn variant="tonal" color="primary" prepend-icon="mdi-file-document-multiple" @click="toDenuncias()">
+                        Denuncias</v-btn>
                     </template>
 
                     <v-list>
@@ -228,6 +230,10 @@ const goToGroupDetail = (item) => {
 
 const toAssociateDeviceGroup = () => {
   $router.push(`/${idGroup.value}/associateDeviceGroup`);
+}
+
+const toDenuncias= () => {
+  $router.push(`/${idGroup.value}/denuncias`);
 }
 
 </script>
