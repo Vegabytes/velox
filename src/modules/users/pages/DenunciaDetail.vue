@@ -48,67 +48,32 @@
                     <v-divider/>
                     <v-card-item>
 
-                      <p class="text-primary font-weight-bold">Ubicación: <span class="font-weight-regular">Posición GPS</span></p>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center py-0">
-                          <p class="text-primary">Latitud:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="py-0">
-                          <v-text-field variant="underlined" density="compact"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center py-0">
-                          <p class="text-primary">Longitud:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="py-0">
-                          <v-text-field variant="underlined" density="compact"></v-text-field>
-                        </v-col>
-                      </v-row>
+                      <p class="text-primary font-weight-bold mb-4">Ubicación: <span class="font-weight-regular">Posición GPS</span></p>
+
+                      <p class="text-primary">Latitud / Longitud</p>
+                      <v-text-field variant="underlined" density="compact"></v-text-field>
 
 
+                      <p class="text-primary font-weight-bold mb-4">Fecha de la denuncia</p>
+                      <p class="text-primary">Dia / Hora</p>
+                      <v-text-field variant="underlined" density="compact"></v-text-field>
 
-                      <p class="text-primary font-weight-bold">Fecha de la denuncia</p>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Día:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Hora:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
-
-                      <p class="text-primary font-weight-bold mt-4">Agente denunciante</p>
-
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Num:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
-                    </v-card-item>
-                  </v-card>
-
-                  <v-card variant="outlined" class="mt-2">
-                    <v-card-item>
-                      <p class="mt-4 font-weight-bold text-primary">Velocidad detectada</p>
+                      <p class="text-primary font-weight-bold mb-4">Agente denunciante</p>
+                      <p class="text-primary">Num</p>
                       <v-text-field variant="underlined" density="compact"></v-text-field>
                     </v-card-item>
                   </v-card>
 
                   <v-card variant="outlined" class="mt-2">
                     <v-card-item>
-                      <p class="mt-4 font-weight-bold text-primary">Etiqueta medioambiental detectada</p>
+                      <p class="text-primary">Velocidad detectada</p>
+                      <v-text-field variant="underlined" density="compact"></v-text-field>
+                    </v-card-item>
+                  </v-card>
+
+                  <v-card variant="outlined" class="mt-2">
+                    <v-card-item>
+                      <p class="text-primary">Etiqueta medioambiental detectada</p>
                       <v-text-field variant="underlined" density="compact"></v-text-field>
                     </v-card-item>
                   </v-card>
@@ -122,38 +87,16 @@
                     </v-card-item>
                     <v-divider/>
                     <v-card-item>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Matrícula:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Marca:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Modelo:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Color:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
+
+                      <p class="text-primary">Matrícula</p>
+                      <v-text-field variant="underlined" density="compact"></v-text-field>
+                      <p class="text-primary">Marca</p>
+                      <v-text-field variant="underlined" density="compact"></v-text-field>
+                      <p class="text-primary">Modelo</p>
+                      <v-text-field variant="underlined" density="compact"></v-text-field>
+                      <p class="text-primary">Color</p>
+                      <v-text-field variant="underlined" density="compact"></v-text-field>
+
                     </v-card-item>
                   </v-card>
 
@@ -165,70 +108,14 @@
                     </v-card-item>
                     <v-divider/>
                     <v-card-item>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Nombre:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Apellidos:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">DNI:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Dirección:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Calle:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Número:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Piso:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="3" class="d-flex align-center">
-                          <p class="text-primary">Población:</p>
-                        </v-col>
-                        <v-col cols="12" sm="9" class="d-flex align-center pa-0">
-                          <v-text-field variant="underlined"></v-text-field>
-                        </v-col>
-                      </v-row>
+                      <p class="text-primary">Nombre</p>
+                      <v-text-field variant="underlined" density="compact"/>
+                      <p class="text-primary">Apellidos</p>
+                      <v-text-field variant="underlined" density="compact"/>
+                      <p class="text-primary">DNI</p>
+                      <v-text-field variant="underlined" density="compact"/>
+                      <p class="text-primary">Dirección</p>
+                      <v-textarea variant="underlined"/>
                     </v-card-item>
 
                   </v-card>
@@ -289,6 +176,9 @@ const breadcrumbsItems = [
   },
 ]
 
+const isAdmin = computed(() => appStore.getIsAdmin);
+const idDenuncia= computed(() => $route.params.idDenuncia)
+const currentUser = computed(() => appStore.getCurrentUser);
 const denuncia = ref()
 
 
@@ -314,15 +204,48 @@ const imagenes = {
   3: ['back_left.jpg', 'back_left.jpg'],
 }
 onBeforeMount(async () => {
+  
+  loadingStore.setLoading(true);
+
+  if (!currentUser.value || !currentUser.value.id) {
+    $router.push(`/${idGroup.value}/login`);
+  }
+  try {
+
+    await checkIsAdmin()
+
+    if (isAdmin.value) {
+      await getDenunciaData()
+    } else {
+      $router.push(`/${idGroup.value}/login`);
+    }
+
+
+  } catch (error) {
+    console.error(error);
+  } finally {
+    loadingStore.setLoading();
+  }
 
 });
+
+const checkIsAdmin = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+  try {
+    const res = await axios.get(`${url}/user/admin/${idGroup.value}/${appStore.getCurrentUser.id}`)
+    appStore.setIsAdmin(res.data.admin)
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 
 const getDenunciaData = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
   try {
-    const res = await axios.get(`${url}/denuncia/${idLog.value}`)
+    const res = await axios.get(`${url}/denuncia/${idDenuncia.value}`)
     denuncia.value = res.data;
   }
   catch (err) {
@@ -330,37 +253,6 @@ const getDenunciaData = async () => {
     throw err;
   }
 }
-
-const getDeviceData = async () => {
-  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
-
-  try {
-    const res = await axios.get(`${url}/device/${idDevice.value}`)
-    appStore.currentDevice = res.data[0];
-  }
-  catch (err) {
-    console.error(err);
-    throw err;
-  }
-}
-
-const getGroupData = async () => {
-  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
-
-  try {
-    const res = await axios.get(`${url}/groups/group/${idGroup.value}`)
-    appStore.currentGroup = res.data;
-  }
-  catch (err) {
-    console.error(err);
-    throw err;
-  }
-}
-
-/* const openDialog = (imgPath) => {
-  imagenSelected.value = imgPath
-  dialogoAbierto.value = true
-} */
 
 </script>
 
