@@ -65,7 +65,7 @@
 
 <script setup>
 
-import { ref, watch, computed, onBeforeMount } from 'vue'
+import { ref, computed, onBeforeMount } from 'vue'
 import { useAppStore, useLoadingStore } from '@/store/index';
 import axios from "axios";
 import { VDataTable } from 'vuetify/labs/VDataTable'
@@ -82,7 +82,6 @@ const loadingStore = useLoadingStore();
 const currentUser = computed(() => appStore.getCurrentUser);
 
 let infraccionesList = ref([])
-let searchText = ref(null)
 const idGroup = computed(() => $route.params.idGroup)
 const isAdmin = computed(() => appStore.getIsAdmin);
 
@@ -100,7 +99,7 @@ const headers = [
   { title: 'Ver', align: 'start', key: '' },
 ]
 const page = ref(1);
-const itemsPerPage = ref(5
+const itemsPerPage = ref(6
 );
 const pageCount = computed(() => {
   return Math.ceil(infraccionesList.value.length / itemsPerPage.value)
@@ -124,6 +123,9 @@ onBeforeMount(async () => {
   try {
 
     await checkIsAdmin()
+    if (!appStore.currentGroup || !appStore.currentGroup.id) {
+      await getGroupData();
+    }
 
     if (isAdmin.value) {
       await getInfracciones()
@@ -176,6 +178,18 @@ const toDenuciaDetail = async (idDenucia) => {
   $router.push(`/${idGroup.value}/infraccion/${idDenucia}`);
 }
 
+const getGroupData = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+
+  try {
+    const res = await axios.get(`${url}/groups/group/${idGroup.value}`)
+    appStore.currentGroup = res.data;
+  }
+  catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
 </script>
 
 <style scoped>
