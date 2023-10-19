@@ -71,7 +71,6 @@ export const getInfracciones = async (req, res) => {
           })
         res['images'] = files
       };
-      /*       console.log("data", data); */
       if (error) {
         res.status(400).send(error)
         return
@@ -87,10 +86,20 @@ export const getInfracciones = async (req, res) => {
 }
 
 //select * from Infractions as i inner join Logs as l where i.idLog = l.id and i.idLog = 1
-export const getDenunciaDetail = async (req, res) => {
+export const getInfraccionDetail = async (req, res) => {
   try {
     const { idLog } = req.params;
-    connection.query(`select * from Infractions as i inner join Logs as l where i.idLog = l.id and i.idLog = ${idLog}`, async (error, results) => {
+    connection.query(`select i.*, l.createdAt as dateLog, l.eventType, l.data, l.imagePath from Infractions as i inner join Logs as l where i.idLog = l.id and i.idLog = ${idLog}`, async (error, results) => {
+      for await (const res of results) {
+        const path = res.imagePath;
+        const files = await fs.readdir(path);
+        await readFile(path + '/meta.json', 'utf8')
+          .then((data) => {
+            const jsonObject = JSON.parse(data);
+            res['metadata'] = jsonObject
+          })
+        res['images'] = files
+      };
       if (error) {
         res.status(400).send(error)
         return

@@ -3,10 +3,14 @@
     <v-card elevation="8" rounded="lg" color="secondary">
       <veloxHeader :path="appStore.currentGroup.path" :name="appStore.currentGroup.name"
         :description="appStore.currentGroup.description" />
+
       <v-card-text :class="mobile ? 'pa-4' : 'pa-12'">
         <v-row class="mt-4 my-8 justify-space-between">
           <v-col ols="12" lg="6" class="d-flex">
             <h2 class="text-primary text-h5 text-lg-h3 text-md-h4">Infracciones</h2>
+            <h2 v-if="!loadingStore.isLoading && infraccionesList.length === 0" class="text-primary text-h5">No hay
+              infracciones asociadas al
+              grupo</h2>
           </v-col>
           <v-breadcrumbs :items="breadcrumbsItems" class="px-0">
             <template v-slot:prepend>
@@ -40,8 +44,8 @@
                     <td>{{ item.columns.status }}</td>
                     <td>
                       <v-row>
-                        <v-btn class="justify-end mr-2" color="primary" variant="" disabled
-                          @click="toDenuciaDetail(item.columns.idLog)" prepend-icon="mdi-eye-arrow-right-outline" />
+                        <v-btn class="justify-end mr-2" color="primary" @click="toDenuciaDetail(item)" variant="plain"
+                          prepend-icon="mdi-eye-arrow-right-outline" />
                       </v-row>
                     </td>
                   </tr>
@@ -137,7 +141,7 @@ onBeforeMount(async () => {
   } catch (error) {
     console.error(error);
   } finally {
-    loadingStore.setLoading();
+    loadingStore.setLoading(false);
   }
 });
 
@@ -174,8 +178,8 @@ const getInfracciones = async () => {
   }
 }
 
-const toDenuciaDetail = async (idDenucia) => {
-  $router.push(`/${idGroup.value}/infraccion/${idDenucia}`);
+const toDenuciaDetail = async data => {
+  $router.push(`/${idGroup.value}/infraccion/${data.raw.id}`);
 }
 
 const getGroupData = async () => {

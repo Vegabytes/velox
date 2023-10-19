@@ -45,9 +45,9 @@ export default [
     component: async () => await import('@/modules/users/pages/Infracciones.vue')
   },
   {
-    path: "/:idGroup/denuncia/:idDenuncia",
+    path: "/:idGroup/infraccion/:idInfraccion",
     name: "Denuncia",
-    component: async () => await import('@/modules/users/pages/DenunciaDetail.vue')
+    component: async () => await import('@/modules/users/pages/InfraccionDetail.vue')
   },
 
 ]
