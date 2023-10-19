@@ -54,11 +54,24 @@ export const getLogDetail = async (req, res) => {
   }
 }
 
-export const getDenuncias = async (req, res) => {
+export const getInfracciones = async (req, res) => {
   try {
     const { idGroup } = req.params;
     connection.query(`
-    select * from Infractions where idLog in (SELECT id from Logs where deviceId in (SELECT deviceId FROM DeviceGroupMembers where groupId=${idGroup}))`, async (error, results) => {
+    select i.*, l.createdAt as dateLog, l.eventType, l.data, l.imagePath from Logs as l inner join Infractions as i where l.id = i.idLog and l.deviceId in (SELECT deviceId FROM DeviceGroupMembers where groupId in
+      (SELECT deviceGroupId FROM DeviceGroupUserGroup where userGroupId = ${idGroup}))`, async (error, results) => {
+
+      for await (const res of results) {
+        const path = res.imagePath;
+        const files = await fs.readdir(path);
+        await readFile(path + '/meta.json', 'utf8')
+          .then((data) => {
+            const jsonObject = JSON.parse(data);
+            res['metadata'] = jsonObject
+          })
+        res['images'] = files
+      };
+      /*       console.log("data", data); */
       if (error) {
         res.status(400).send(error)
         return
@@ -67,6 +80,7 @@ export const getDenuncias = async (req, res) => {
       }
 
     });
+
   } catch (error) {
     res.status(500).send(error)
   }

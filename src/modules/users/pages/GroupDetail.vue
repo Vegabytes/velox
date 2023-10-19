@@ -51,7 +51,7 @@
                     </div>
                     <v-row class="flex-lg-row flex-column px-4 mb-4">
                       <div>
-                        <v-btn class="justify-end pl-0 text-grey" variant="" append-icon="mdi-eye"
+                        <v-btn class="justify-end pl-0 text-grey" append-icon="mdi-eye"
                           @click="getLastPositionDevice(item)">
                           Última posición</v-btn>
                       </div>
@@ -144,11 +144,15 @@ const idGroup = computed(() => $route.params.idGroup)
 const idViewGroup = computed(() => $route.params.id)
 const isAdmin = computed(() => appStore.getIsAdmin);
 
-const userGroupsCurrent = computed(() =>
-  (userGroups.value.length > 1)
+const userGroupsCurrent = computed(() => {
+  return (userGroups.value.length > 1)
     ? userGroups.value.filter(({ id }) => id == idViewGroup.value)
     : [currentGroup.value]
-)
+})
+
+
+
+
 
 const dialogLastPosition = ref(false)
 const lastPosition = ref(null);
@@ -183,11 +187,18 @@ onBeforeMount(async () => {
     $router.push(`/${idGroup.value}/login`);
   }
   try {
-
+    await checkIsAdmin()
     if (!appStore.currentGroup || !appStore.currentGroup.id) {
       await getGroupData();
     }
-    await getDevicesGroups()
+
+    if (isAdmin.value) {
+      await getUserGroups()
+      await getDevicesGroups()
+    } else {
+      await getGroupData()
+      goToGroupDetail(appStore.currentGroup)
+    }
   } catch (error) {
     console.error(error);
   } finally {
@@ -240,6 +251,30 @@ const getGroupData = async () => {
 
 const goToLogsDevice = (item) => {
   $router.push(`/${idGroup.value}/groups/groupDetail/${idViewGroup.value}/logs/${item.id}`);
+}
+
+const checkIsAdmin = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+  try {
+    const res = await axios.get(`${url}/user/admin/${idGroup.value}/${appStore.getCurrentUser.id}`)
+    appStore.setIsAdmin(res.data.admin)
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+const getUserGroups = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+  try {
+    const res = await axios.get(`${url}/groups/${idGroup.value}/user/${appStore.getCurrentUser.id}`)
+    appStore.userGroups = res.data;
+  }
+  catch (err) {
+    console.error(err);
+    throw err;
+  }
+
 }
 
 </script>
