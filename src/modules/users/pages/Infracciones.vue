@@ -6,7 +6,7 @@
       <v-card-text :class="mobile ? 'pa-4' : 'pa-12'">
         <v-row class="mt-4 my-8 justify-space-between">
           <v-col ols="12" lg="6" class="d-flex">
-            <h2 class="text-primary text-h5 text-lg-h3 text-md-h4">Denuncias</h2>
+            <h2 class="text-primary text-h5 text-lg-h3 text-md-h4">Infracciones</h2>
           </v-col>
           <v-breadcrumbs :items="breadcrumbsItems" class="px-0">
             <template v-slot:prepend>
@@ -16,30 +16,32 @@
         </v-row>
         <v-row>
           <v-col cols="12">
-            
-            <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details /> 
+
+            <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details />
 
 
           </v-col>
         </v-row>
 
         <v-row>
-          <v-row v-if="denunciasList.length > 0" class="overflow-auto">
+          <v-row v-if="infraccionesList.length > 0" class="overflow-auto">
             <v-col cols="12">
-              <v-data-table v-model:page="page" :headers="headers" :items="denunciasList" hover :search="search"
+              <v-data-table v-model:page="page" :headers="headers" :items="infraccionesList" hover :search="search"
                 :items-per-page="itemsPerPage" hide-default-footer class="elevation-1 mt-6">
                 <template v-slot:item="{ item }">
                   <tr>
-                    <td>{{ item.columns.createdAt }}</td>
-                    <td>{{ item.columns.idLog }}</td>
-                    <td>{{ item.columns.type }}</td>
+                    <td>{{ item.columns.dateLog }}</td>
+                    <td>{{ item.columns.eventType }}</td>
                     <td>{{ item.columns.plate }}</td>
                     <td>{{ item.columns.emissions }}</td>
-                    <td>{{ item.columns.velocity }}</td>
+                    <td>{{ item.columns.metadata.MaxVel }}</td>
+                    <td>{{ item.columns.metadata.idUser }}</td>
+                    <td>{{ item.columns.metadata.idDevice }}</td>
                     <td>{{ item.columns.status }}</td>
                     <td>
                       <v-row>
-                        <v-btn class="justify-end mr-2" color="primary" variant="" @click="toDenuciaDetail(item.columns.idLog)" prepend-icon="mdi-eye-arrow-right-outline" />
+                        <v-btn class="justify-end mr-2" color="primary" variant="" disabled
+                          @click="toDenuciaDetail(item.columns.idLog)" prepend-icon="mdi-eye-arrow-right-outline" />
                       </v-row>
                     </td>
                   </tr>
@@ -70,7 +72,7 @@ import { VDataTable } from 'vuetify/labs/VDataTable'
 import veloxHeader from '@/components/veloxHeader.vue'
 import { useDisplay } from 'vuetify';
 import { useRoute, useRouter } from "vue-router";
-import { formatDate } from '@/support/helpers/general'
+import { formatDateShort } from '@/support/helpers/general'
 
 const { mobile } = useDisplay()
 const appStore = useAppStore()
@@ -79,7 +81,7 @@ const $route = useRoute();
 const loadingStore = useLoadingStore();
 const currentUser = computed(() => appStore.getCurrentUser);
 
-let denunciasList = ref([])
+let infraccionesList = ref([])
 let searchText = ref(null)
 const idGroup = computed(() => $route.params.idGroup)
 const isAdmin = computed(() => appStore.getIsAdmin);
@@ -87,19 +89,21 @@ const isAdmin = computed(() => appStore.getIsAdmin);
 const search = ref('')
 
 const headers = [
-  { title: 'Fecha de la denuncia', align: 'start', key: 'createdAt', },
-  { title: 'Id', align: 'start', key: 'idLog', },
-  { title: 'Tipo', align: 'start', key: 'type', },
+  { title: 'Fecha de la denuncia', align: 'start', key: 'dateLog', },
+  { title: 'Tipo de infracción', align: 'start', key: 'eventType', },
   { title: 'Matrícula', align: 'start', key: 'plate', },
   { title: 'Emisiones', align: 'start', key: 'emissions', },
-  { title: 'Velocidad', align: 'start', key: 'velocity', },
+  { title: 'Velocidad detectada', align: 'start', key: 'metadata1', },
+  { title: 'Id Usuario', align: 'start', key: 'metadata2', },
+  { title: 'Id Dispositivo', align: 'start', key: 'metadata', },
   { title: 'Status', align: 'start', key: 'status', },
   { title: 'Ver', align: 'start', key: '' },
 ]
 const page = ref(1);
-const itemsPerPage = ref(20);
+const itemsPerPage = ref(5
+);
 const pageCount = computed(() => {
-  return Math.ceil(denunciasList.value.length / itemsPerPage.value)
+  return Math.ceil(infraccionesList.value.length / itemsPerPage.value)
 });
 
 const breadcrumbsItems = [
@@ -122,7 +126,7 @@ onBeforeMount(async () => {
     await checkIsAdmin()
 
     if (isAdmin.value) {
-      await getDenuncias()
+      await getInfracciones()
     } else {
       $router.push(`/${idGroup.value}/login`);
     }
@@ -146,20 +150,21 @@ const checkIsAdmin = async () => {
   }
 }
 
-const getDenuncias = async () => {
+const getInfracciones = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
 
   try {
-    const res = await axios.get(`${url}/denuncias/${idGroup.value}`)
+    const res = await axios.get(`${url}/infracciones/${idGroup.value}`)
 
     let dataFormatted = []
 
     res.data.forEach((e) => {
-      e.createdAt = formatDate(e.createdAt)
+      e.dateLog = formatDateShort(e.dateLog)
       dataFormatted.push(e)
     });
 
-    denunciasList.value = dataFormatted;
+    infraccionesList.value = dataFormatted;
+
   }
   catch (err) {
     console.error(err);
@@ -167,8 +172,8 @@ const getDenuncias = async () => {
   }
 }
 
-const toDenuciaDetail = async(idDenucia)=>{
-  $router.push(`/${idGroup.value}/denuncia/${idDenucia}`);
+const toDenuciaDetail = async (idDenucia) => {
+  $router.push(`/${idGroup.value}/infraccion/${idDenucia}`);
 }
 
 </script>

@@ -48,6 +48,8 @@
       </v-card-text>
     </v-card>
 
+
+
     <!-- Diálogo asignar usuario-->
     <v-dialog v-model="dialogAssignGroupDevice" width="auto">
       <v-card>

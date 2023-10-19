@@ -53,7 +53,8 @@
       </v-card-text>
     </v-card>
 
-
+    <a href="javascript:window.print()">Imprimir
+    </a>
   </v-container>
   <v-snackbar v-model="snackbarStore.activate" :color="snackbarStore.color" :location="snackbarStore.location"
     :timeout="snackbarStore.timeout">
