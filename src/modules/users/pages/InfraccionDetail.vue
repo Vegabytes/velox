@@ -51,12 +51,19 @@
                   <v-divider />
                   <v-card-item>
 
-                    <p class="text-primary font-weight-bold mb-4">Ubicación: <span class="font-weight-regular">Posición
-                        GPS</span></p>
+                    <p class="text-primary font-weight-bold mb-4">Ubicación:
+                      <!--           <span class="font-weight-regular">Posición
+                        GPS</span>-->
+                    </p>
 
-                    <p class="text-primary">Latitud / Longitud</p>
+                    <p class="text-primary">Posición
+                      GPS: Latitud / Longitud</p>
                     <v-text-field variant="underlined" density="compact">{{
                       infraccion[0].position }}</v-text-field>
+
+                    <p class="text-primary">Dirección</p>
+                    <v-text-field variant="underlined" density="compact">{{
+                      infraccion[0].address }}</v-text-field>
 
 
                     <p class="text-primary font-weight-bold mb-4">Fecha de la infracción</p>
@@ -64,6 +71,8 @@
                     <v-text-field variant="underlined" density="compact">
                       {{ formatDate(infraccion[0].dateLog) }}
                     </v-text-field>
+
+
 
                     <p class="text-primary font-weight-bold mb-4">Agente denunciante</p>
                     <p class="text-primary">Num</p>
@@ -75,7 +84,18 @@
 
                 <v-card variant="outlined" class="mt-2">
                   <v-card-item>
-                    <p class="text-primary">Velocidad detectada</p>
+                    <p class="text-primary">Velocidad permitida</p>
+                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact">{{
+                      infraccion[0].metadata.MaxVel
+                    }} km/h</v-text-field>
+                    <v-row>
+                      <v-col cols="6">
+                        <p class="text-primary">Velocidad detectada</p>
+                      </v-col>
+                      <v-col cols="6">
+                        <p class="text-red text-uppercase font-weight-bold">Sancionable</p>
+                      </v-col>
+                    </v-row>
                     <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact">{{
                       infraccion[0].metadata.RealVel
                     }} km/h</v-text-field>
@@ -84,7 +104,17 @@
 
                 <v-card variant="outlined" class="mt-2">
                   <v-card-item>
-                    <p class="text-primary">Etiqueta medioambiental detectada</p>
+                    <p class="text-primary">Etiqueta medioambiental permitida</p>
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].emissionsZone }}</v-text-field>
+
+                    <v-row>
+                      <v-col cols="6">
+                        <p class="text-primary">Etiqueta medioambiental detectada</p>
+                      </v-col>
+                      <v-col cols="6">
+                        <p class="text-green text-uppercase font-weight-bold">Permitida</p>
+                      </v-col>
+                    </v-row>
                     <v-text-field variant="underlined" density="compact">{{ infraccion[0].emissions }}</v-text-field>
                   </v-card-item>
                 </v-card>
@@ -148,6 +178,8 @@
                     <v-card-title>
                       <p class="text-primary">Imágenes del vehículo</p>
                     </v-card-title>
+                    <v-img :width="300" aspect-ratio="16/9" cover
+                      :src="`${url}/${appStore.currentLog.imagePath}/${infraccion[0].images[0]}`"></v-img>
                   </v-card-item>
                   <v-divider></v-divider>
                 </v-card>
@@ -214,12 +246,12 @@ const fillColor = ref("blue");
 // ********** Carrousel / visualizador de imágenes
 let dialogoAbierto = ref(false)
 let contadorImg = ref(0)
-const imagenes = {
-  0: ['front_left.jpg', 'front_right.jpg'],
-  1: ['v1_left.jpg', 'v1_right.jpg'],
-  2: ['v2_left.jpg', 'v2_right.jpg'],
-  3: ['back_left.jpg', 'back_left.jpg'],
-}
+
+
+const imagenes = [
+  'front_right.jpg', 'v1_right.jpg', 'back_right.jpg'
+]
+
 onBeforeMount(async () => {
 
   loadingStore.setLoading(true);
