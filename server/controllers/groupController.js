@@ -55,17 +55,16 @@ export const getAllGroups = async (req, res) => {
 
 export const getGroupByGroupIdByUserId = async (req, res) => {
   const { groupId, userId } = req.params;
-
   try {
 
     const admin = await checkGroupAdmin(groupId, userId);
     if (admin.length === 0) {
-      res.status(400).send(error);
+      res.status(403).send("Prohibido");
       return;
     }
-
     const gruposByParentGroupId
       = await getGroupsByParentGroupId(groupId);
+
 
     const gruposByParentGroupIdNotNull = gruposByParentGroupId.filter(user => !!user);
 
@@ -79,6 +78,7 @@ export const getGroupByGroupIdByUserId = async (req, res) => {
         return await getDevicesGroupsByUserGroupId(element);
       })
     )
+
     const flattenDeep = (arr1) => {
       return arr1.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), []);
     }
@@ -159,7 +159,7 @@ export const getGroupByUserId = async (req, res) => {
 
 export const getGroupsByParentGroupId = async (idGroup) => {
   return new Promise((resolve, reject) => {
-    connection.query('SELECT * FROM UserGroups WHERE parentGroupId = ?', [idGroup], (error, elements) => {
+    connection.query('SELECT * FROM UserGroups WHERE parentGroupId = ? or id = ?', [idGroup, idGroup], (error, elements) => {
       if (error) {
         return reject(error);
       }

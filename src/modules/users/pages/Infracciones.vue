@@ -147,7 +147,6 @@ onBeforeMount(async () => {
 const checkIsAdmin = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
   try {
-    debugger
     const res = await axios.get(`${url}/user/admin/${idGroup.value}/${appStore.getCurrentUser.id}`)
     appStore.setIsAdmin(res.data.admin)
   } catch (error) {
