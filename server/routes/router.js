@@ -105,7 +105,7 @@ router.get('/user/admin/:idGroup/:idUser', isAdmin)
 router.get('/logs/device/:id', getLogsByDeviceId)
 router.get('/log/:id', getLogDetail)
 router.get('/infracciones/:idGroup', getInfracciones)
-router.get('/infraccion/:idLog', getInfraccionDetail)
+router.get('/infraccion/:idInfraction', getInfraccionDetail)
 
 //Devices
 router.get('/devices/user/:id', getDevicesByUserId)

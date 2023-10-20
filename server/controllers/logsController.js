@@ -99,8 +99,8 @@ export const getInfracciones = async (req, res) => {
 //select * from Infractions as i inner join Logs as l where i.idLog = l.id and i.idLog = 1
 export const getInfraccionDetail = async (req, res) => {
   try {
-    const { idLog } = req.params;
-    connection.query(`select i.*, l.createdAt as dateLog, l.eventType, l.data, l.imagePath, l.position from Infractions as i inner join Logs as l where i.idLog = l.id and i.idLog = ${idLog}`, async (error, results) => {
+    const { idInfraction } = req.params;
+    connection.query(`select i.*, l.createdAt as dateLog, l.eventType, l.data, l.imagePath from Logs as l inner join Infractions as i where l.id = i.idLog and i.id = ${idInfraction}`, async (error, results) => {
       for await (const res of results) {
         try {
           const path = res.imagePath;
