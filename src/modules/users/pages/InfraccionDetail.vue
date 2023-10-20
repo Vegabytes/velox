@@ -179,7 +179,7 @@
                       <p class="text-primary">Imágenes del vehículo</p>
                     </v-card-title>
                     <v-img :width="300" aspect-ratio="16/9" cover
-                      :src="`${url}/${appStore.currentLog.imagePath}/${infraccion[0].images[0]}`"></v-img>
+                      :src="`${url}/${infraccion[0].imagePath}/${infraccion[0].images[0]}`"></v-img>
                   </v-card-item>
                   <v-divider></v-divider>
                 </v-card>
