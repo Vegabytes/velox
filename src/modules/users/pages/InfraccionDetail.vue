@@ -362,10 +362,10 @@ const getGroupData = async () => {
 
 const saveInfraction = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
-
   try {
     const res = await axios.post(`${url}/infraccion/${idInfraccion.value}`, { payload: infractionToEdit.value })
     snackbarStore.activateMessage(res.data, 'success', 2500)
+    await getInfraccionData();
   }
   catch (err) {
     console.error(err);

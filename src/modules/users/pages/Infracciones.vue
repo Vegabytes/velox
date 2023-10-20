@@ -178,7 +178,7 @@ const getInfracciones = async () => {
 }
 
 const toDenuciaDetail = async data => {
-  $router.push(`/${idGroup.value}/infraccion/${data.id}`);
+  $router.push(`/${idGroup.value}/infraccion/${data.idLog}`);
 }
 
 const getGroupData = async () => {
