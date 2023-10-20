@@ -6,7 +6,7 @@
 
       <v-card-text :class="mobile ? 'pa-4' : 'pa-12'">
         <v-row class="mt-4 my-8 justify-space-between">
-          <v-col ols="12" lg="6" class="d-flex">
+          <v-col ols="12" lg="6">
             <h2 class="text-primary text-h5 text-lg-h3 text-md-h4">Infracciones</h2>
             <h2 v-if="!loadingStore.isLoading && infraccionesList.length === 0" class="text-primary text-h5">No hay
               infracciones asociadas al
