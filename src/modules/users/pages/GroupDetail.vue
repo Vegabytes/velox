@@ -50,9 +50,9 @@
 
                         </div>
                       </div>
-                      <v-row class="flex-lg-row flex-column px-4 mb-4">
+                      <v-row class="flex-lg-row flex-column px-4 mt-1 mb-6">
                         <div>
-                          <v-btn class="justify-end pl-0 text-grey" append-icon="mdi-eye"
+                          <v-btn class="justify-end  primary" variant="tonal" append-icon="mdi-eye"
                             @click="getLastPositionDevice(item)">
                             Última posición</v-btn>
                         </div>
