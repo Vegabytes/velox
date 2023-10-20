@@ -40,7 +40,6 @@
                     <v-text-field variant="underlined" density="compact"></v-text-field>
                   </v-card-item>
                 </v-card>
-
                 <v-card variant="outlined" class="mt-2">
                   <v-card-item>
                     <v-card-title>
@@ -54,18 +53,20 @@
                         GPS</span></p>
 
                     <p class="text-primary">Latitud / Longitud</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].position }}</v-text-field>
+                    <v-text-field variant="underlined" density="compact">{{
+                      infraccion[0].metadata.gps }}</v-text-field>
 
 
                     <p class="text-primary font-weight-bold mb-4">Fecha de la infracción</p>
                     <p class="text-primary">Dia / Hora</p>
-                    <v-text-field variant="underlined" density="compact">
+                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact">
                       {{ formatDate(infraccion[0].dateLog) }}
                     </v-text-field>
 
                     <p class="text-primary font-weight-bold mb-4">Agente denunciante</p>
                     <p class="text-primary">Num</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].metadata.idUser
+                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact">{{
+                      infraccion[0].metadata.idUser
                     }}</v-text-field>
                   </v-card-item>
                 </v-card>
@@ -73,7 +74,8 @@
                 <v-card variant="outlined" class="mt-2">
                   <v-card-item>
                     <p class="text-primary">Velocidad detectada</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].metadata.RealVel
+                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact">{{
+                      infraccion[0].metadata.RealVel
                     }}</v-text-field>
                   </v-card-item>
                 </v-card>
@@ -81,7 +83,7 @@
                 <v-card variant="outlined" class="mt-2">
                   <v-card-item>
                     <p class="text-primary">Etiqueta medioambiental detectada</p>
-                    <v-text-field variant="underlined" density="compact"></v-text-field>
+                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact"></v-text-field>
                   </v-card-item>
                 </v-card>
               </v-col>
@@ -96,13 +98,13 @@
                   <v-card-item>
 
                     <p class="text-primary">Matrícula</p>
-                    <v-text-field variant="underlined" density="compact"></v-text-field>
+                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact"></v-text-field>
                     <p class="text-primary">Marca</p>
-                    <v-text-field variant="underlined" density="compact"></v-text-field>
+                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact"></v-text-field>
                     <p class="text-primary">Modelo</p>
-                    <v-text-field variant="underlined" density="compact"></v-text-field>
+                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact"></v-text-field>
                     <p class="text-primary">Color</p>
-                    <v-text-field variant="underlined" density="compact"></v-text-field>
+                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact"></v-text-field>
 
                   </v-card-item>
                 </v-card>

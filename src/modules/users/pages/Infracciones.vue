@@ -38,9 +38,9 @@
                     <td>{{ item.eventType }}</td>
                     <td>{{ item.plate }}</td>
                     <td>{{ item.emissions }}</td>
-                    <td>{{ item.metadata.RealVel }}</td>
-                    <td>{{ item.metadata.idUser }}</td>
-                    <td>{{ item.metadata.idDevice }}</td>
+                    <td v-if="item.metadata">{{ item.metadata.RealVel }}</td>
+                    <td v-if="item.metadata">{{ item.metadata.idUser }}</td>
+                    <td v-if="item.metadata">{{ item.metadata.idDevice }}</td>
                     <td>{{ item.status }}</td>
                     <td>
                       <v-row>
@@ -103,7 +103,7 @@ const headers = [
   { title: 'Ver', align: 'start', key: '' },
 ]
 const page = ref(1);
-const itemsPerPage = ref(6
+const itemsPerPage = ref(10
 );
 const pageCount = computed(() => {
   return Math.ceil(infraccionesList.value.length / itemsPerPage.value)

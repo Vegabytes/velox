@@ -25,17 +25,22 @@ export const getLogDetail = async (req, res) => {
         res.status(400).send(error)
         return
       } else {
-        const path = results[0].imagePath;
-        const files = await fs.readdir(path);
+        try {
+          const path = results[0].imagePath;
+          const files = await fs.readdir(path);
 
-        await readFile(path + '/meta.json', 'utf8')
-          .then((data) => {
-            const jsonObject = JSON.parse(data);
-            results[0]['metadata'] = jsonObject
-          })
-          .catch((error) => {
-            console.error('Error al leer el archivo:', error);
-          });
+          await readFile(path + '/meta.json', 'utf8')
+            .then((data) => {
+              const jsonObject = JSON.parse(data);
+              results[0]['metadata'] = jsonObject
+            })
+            .catch((error) => {
+              console.error('Error al leer el archivo:', error);
+            });
+
+        } catch (err) {
+          console.log(err);
+        }
 
         //Eliminamos el fichero meta de la imagenes
         // files.forEach((f,i)=>{
@@ -95,16 +100,21 @@ export const getInfracciones = async (req, res) => {
 export const getInfraccionDetail = async (req, res) => {
   try {
     const { idLog } = req.params;
-    connection.query(`select i.*, l.createdAt as dateLog, l.eventType, l.data, l.imagePath from Infractions as i inner join Logs as l where i.idLog = l.id and i.idLog = ${idLog}`, async (error, results) => {
+    connection.query(`select i.*, l.createdAt as dateLog, l.eventType, l.data, l.imagePath, l.position from Infractions as i inner join Logs as l where i.idLog = l.id and i.idLog = ${idLog}`, async (error, results) => {
       for await (const res of results) {
-        const path = res.imagePath;
-        const files = await fs.readdir(path);
-        await readFile(path + '/meta.json', 'utf8')
-          .then((data) => {
-            const jsonObject = JSON.parse(data);
-            res['metadata'] = jsonObject
-          })
-        res['images'] = files
+        try {
+          const path = res.imagePath;
+          const files = await fs.readdir(path);
+          await readFile(path + '/meta.json', 'utf8')
+            .then((data) => {
+              const jsonObject = JSON.parse(data);
+              res['metadata'] = jsonObject
+            })
+          res['images'] = files
+        }
+        catch (err) {
+          console.log(err);
+        }
       };
       if (error) {
         res.status(400).send(error)
