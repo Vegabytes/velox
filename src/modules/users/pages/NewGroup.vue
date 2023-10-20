@@ -114,12 +114,12 @@ const createNewGroup = async () => {
       userStore.newGroup['path'] = `${file.destination}/${file.filename}`;
 
       const res = await axios.post(`${url}/groups/create`, userStore.newGroup)
-      snackbarStore.activateMessage('Grupo creado correctamente', 'primary', 2500)
+      snackbarStore.activateMessage('Grupo creado correctamente', 'success', 2500)
       $router.push(`/${idGroup.value}/groups`);
 
     }
     catch (error) {
-      snackbarStore.activateMessage(Error, 'error', 2500)
+      snackbarStore.activateMessage(error, 'error', 2500)
       console.error(error);
     }
   }

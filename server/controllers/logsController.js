@@ -127,3 +127,37 @@ export const getInfraccionDetail = async (req, res) => {
     res.status(500).send(error)
   }
 }
+
+
+export const saveInfraction = async (req, res) => {
+  const { payload } = req.body;
+  const { idInfraction } = req.params;
+  const { infractionDesc, infractionArticle, idLog, createdBy, type, price,
+    points, status, vehicle, plate, emissions, emissionsZone, description,
+    address, color, model, maker, vehicleType, driverName, driverSurname,
+    driverId, driverAddress, driverCP, organism } = payload;
+
+  try {
+    connection.query(`INSERT INTO Infractions (idLog, infractionDesc, infractionArticle,
+      createdBy, type,price,points,status,vehicle,plate,
+       emissions,emissionsZone, description,address,color,model,maker,vehicleType,
+       driverName,driverSurname,driverId,driverAddress,driverCP,organism
+    )
+     VALUES (${idLog},'${infractionDesc}','${infractionArticle}',${createdBy},
+     '${type}','${price}',${points},'${status}','${vehicle}','${plate}','${emissions}',
+     '${emissionsZone}','${description}','${address}','${color}',
+     '${model}','${maker}','${vehicleType}','${driverName}','${driverSurname}','${driverId}',
+     '${driverAddress}','${driverCP}','${organism}')`, (error, results) => {
+      if (error) {
+        console.log("error", error);
+        res.status(401).send({ msg: 'Error al modificar la infracción' })
+        return;
+      } else {
+        res.status(200).send('Infracción modificada correctamente')
+      }
+    });
+  } catch (error) {
+    res.status(500).send(error);
+    return;
+  }
+}

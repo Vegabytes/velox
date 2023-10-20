@@ -1,208 +1,231 @@
 <template>
+  <br>
   <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
-    <v-card elevation="8" rounded="lg" color="secondary" v-if="!loadingStore.isLoading">
-      <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
-      <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
+    <v-form @submit.prevent ref="formInfraction">
+      <v-card elevation="8" rounded="lg" color="secondary" v-if="!loadingStore.isLoading">
+        <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
+        <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
 
-        <v-card-text>
-          <v-row class="mt-4 my-8 justify-space-between">
-            <v-col>
-              <h2 class="text-primary text-h5 text-lg-h3 text-md-h4">Detalles de la infracción</h2>
-              <h2 v-if="!loadingStore.isLoading && (!infraccion || infraccion.length === 0)"
-                class="text-primary text-h5 mt-4">Esta
-                infracción no se encuentra disponible</h2>
-            </v-col>
-            <v-breadcrumbs :items="breadcrumbsItems" class="px-0">
-              <template v-slot:prepend>
-                <v-icon size="small" icon="mdi-home"></v-icon>
-              </template>
-            </v-breadcrumbs>
-          </v-row>
-
-          <v-divider thickness="3" class="mb-4"></v-divider>
-
-          <v-card class="mt-2" variant="flat" v-if="!loadingStore.isLoading && infraccion && infraccion.length > 0">
-
-            <v-row>
-              <v-col cols="12" lg="5" class=" pa-4">
-
-                <v-card variant="outlined">
-                  <v-card-item>
-                    <v-card-title>
-                      <p class="text-primary">Ordenanza municipal de circulación Infringida</p>
-                    </v-card-title>
-                  </v-card-item>
-                  <v-divider />
-                  <v-card-item>
-                    <p class="text-primary">Selección de la infracción cometida</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].infractionDesc
-                    }}</v-text-field>
-                    <p class="text-primary">Artículo inflingido</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].infractionArticle
-                    }}</v-text-field>
-                  </v-card-item>
-                </v-card>
-                <v-card variant="outlined" class="mt-2">
-                  <v-card-item>
-                    <v-card-title>
-                      <p class="text-primary">Datos de la infracción</p>
-                    </v-card-title>
-                  </v-card-item>
-                  <v-divider />
-                  <v-card-item>
-
-                    <p class="text-primary font-weight-bold mb-4">Ubicación:
-                      <!--           <span class="font-weight-regular">Posición
-                        GPS</span>-->
-                    </p>
-
-                    <p class="text-primary">Posición
-                      GPS: Latitud / Longitud</p>
-                    <v-text-field variant="underlined" density="compact">{{
-                      infraccion[0].position }}</v-text-field>
-
-                    <p class="text-primary">Dirección</p>
-                    <v-text-field variant="underlined" density="compact">{{
-                      infraccion[0].address }}</v-text-field>
-
-
-                    <p class="text-primary font-weight-bold mb-4">Fecha de la infracción</p>
-                    <p class="text-primary">Dia / Hora</p>
-                    <v-text-field variant="underlined" density="compact">
-                      {{ formatDate(infraccion[0].dateLog) }}
-                    </v-text-field>
-
-
-
-                    <p class="text-primary font-weight-bold mb-4">Agente denunciante</p>
-                    <p class="text-primary">Num</p>
-                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact">{{
-                      infraccion[0].metadata.idUser
-                    }}</v-text-field>
-                  </v-card-item>
-                </v-card>
-
-                <v-card variant="outlined" class="mt-2">
-                  <v-card-item>
-                    <p class="text-primary">Velocidad permitida</p>
-                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact">{{
-                      infraccion[0].metadata.MaxVel
-                    }} km/h</v-text-field>
-                    <v-row>
-                      <v-col cols="6">
-                        <p class="text-primary">Velocidad detectada</p>
-                      </v-col>
-                      <v-col cols="6">
-                        <p class="text-red text-uppercase font-weight-bold">Sancionable</p>
-                      </v-col>
-                    </v-row>
-                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact">{{
-                      infraccion[0].metadata.RealVel
-                    }} km/h</v-text-field>
-                  </v-card-item>
-                </v-card>
-
-                <v-card variant="outlined" class="mt-2">
-                  <v-card-item>
-                    <p class="text-primary">Etiqueta medioambiental permitida</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].emissionsZone }}</v-text-field>
-
-                    <v-row>
-                      <v-col cols="6">
-                        <p class="text-primary">Etiqueta medioambiental detectada</p>
-                      </v-col>
-                      <v-col cols="6">
-                        <p class="text-green text-uppercase font-weight-bold">Permitida</p>
-                      </v-col>
-                    </v-row>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].emissions }}</v-text-field>
-                  </v-card-item>
-                </v-card>
+          <v-card-text>
+            <v-row class="mt-4 my-8 justify-space-between">
+              <v-col>
+                <h2 class="text-primary text-h5 text-lg-h3 text-md-h4">Detalles de la infracción</h2>
+                <h2 v-if="!loadingStore.isLoading && (!infraccion || infraccion.length === 0)"
+                  class="text-primary text-h5 mt-4">Esta
+                  infracción no se encuentra disponible</h2>
               </v-col>
-              <v-col cols="12" lg="4" class=" pa-4">
-                <v-card variant="outlined">
-                  <v-card-item>
-                    <v-card-title>
-                      <p class="text-primary">Datos del vehículo</p>
-                    </v-card-title>
-                  </v-card-item>
-                  <v-divider />
-                  <v-card-item>
-                    <p class="text-primary">Vehículo</p>
-                    <v-text-field variant="underlined" density="compact">
-                      {{ infraccion[0].vehicle }}
-                    </v-text-field>
-                    <p class="text-primary">Matrícula</p>
-                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact">
-                      {{ infraccion[0].plate }} </v-text-field>
-                    <p class="text-primary">Marca</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].maker }}</v-text-field>
-                    <p class="text-primary">Modelo</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].model }}</v-text-field>
-                    <p class="text-primary">Color</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].color }}</v-text-field>
-                    <p class="text-primary">Tipo de vehículo</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].vehicleType }}</v-text-field>
-
-                  </v-card-item>
-                </v-card>
-
-                <v-card variant="outlined" class="mt-2">
-                  <v-card-item>
-                    <v-card-title>
-                      <p class="text-primary">Datos del conductor</p>
-                    </v-card-title>
-                  </v-card-item>
-                  <v-divider />
-                  <v-card-item>
-                    <p class="text-primary">Nombre</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].driverName }}</v-text-field>
-                    <p class="text-primary">Apellidos</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].driverSurname }}</v-text-field>
-                    <p class="text-primary">DNI</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].driverId }}</v-text-field>
-                    <p class="text-primary">Dirección</p>
-                    <v-text-field variant="underlined" density="compact">
-                      {{ infraccion[0].driverAddress }}
-                    </v-text-field>
-                    <p class="text-primary">Código postal</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].driverCP }}</v-text-field>
-                  </v-card-item>
-
-                </v-card>
-
-              </v-col>
-              <v-col cols="12" lg="3" class=" pa-4">
-                <v-card variant="outlined">
-                  <v-card-title>
-                    <p class="text-primary">Imágenes del vehículo</p>
-                  </v-card-title>
-                  <v-card-item class="justify-center">
-
-                    <v-img :width="300" aspect-ratio="16/9" cover class="rounded"
-                      :src="`${url}/${infraccion[0].imagePath}/${infraccion[0].images[0]}`"></v-img>
-                  </v-card-item>
-                  <v-card-item class="justify-center">
-
-                    <v-img :width="300" aspect-ratio="16/9" cover class="rounded"
-                      :src="`${url}/${infraccion[0].imagePath}/${infraccion[0].images[1]}`"></v-img>
-                  </v-card-item>
-                  <v-card-item class="justify-center">
-
-                    <v-img :width="300" aspect-ratio="16/9" cover class="rounded"
-                      :src="`${url}/${infraccion[0].imagePath}/${infraccion[0].images[2]}`"></v-img>
-                  </v-card-item>
-                  <v-divider></v-divider>
-                </v-card>
-              </v-col>
+              <v-breadcrumbs :items="breadcrumbsItems" class="px-0">
+                <template v-slot:prepend>
+                  <v-icon size="small" icon="mdi-home"></v-icon>
+                </template>
+              </v-breadcrumbs>
             </v-row>
 
+            <v-divider thickness="3" class="mb-4"></v-divider>
 
-          </v-card>
-        </v-card-text>
-      </v-container>
-    </v-card>
+            <v-card class="mt-2" variant="flat" v-if="!loadingStore.isLoading && infraccion && infraccion.length > 0">
+
+              <v-row>
+                <v-col cols="12" lg="5" class=" pa-4">
+
+                  <v-card variant="outlined">
+                    <v-card-item>
+                      <v-card-title>
+                        <p class="text-primary">Ordenanza municipal de circulación Infringida</p>
+                      </v-card-title>
+                    </v-card-item>
+                    <v-divider />
+                    <v-card-item>
+                      <p class="text-primary">Selección de la infracción cometida</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.infractionDesc"></v-text-field>
+                      <p class="text-primary">Artículo inflingido</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.infractionArticle"></v-text-field>
+                    </v-card-item>
+                  </v-card>
+                  <v-card variant="outlined" class="mt-2">
+                    <v-card-item>
+                      <v-card-title>
+                        <p class="text-primary">Datos de la infracción</p>
+                      </v-card-title>
+                    </v-card-item>
+                    <v-divider />
+                    <v-card-item>
+
+                      <p class="text-primary font-weight-bold mb-4">Ubicación:
+                        <!--           <span class="font-weight-regular">Posición
+                        GPS</span>-->
+                      </p>
+
+                      <p class="text-primary">Posición
+                        GPS: Latitud / Longitud</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.position"></v-text-field>
+
+                      <p class="text-primary">Dirección</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.address"></v-text-field>
+
+
+                      <p class="text-primary font-weight-bold mb-4">Fecha de la infracción</p>
+                      <p class="text-primary">Dia / Hora</p>
+                      <v-text-field variant="underlined" density="compact" v-model="infractionToEdit.dateLog">
+                      </v-text-field>
+
+
+
+                      <p class="text-primary font-weight-bold mb-4">Agente denunciante</p>
+                      <p class="text-primary">Num</p>
+                      <v-text-field v-if="infractionToEdit.metadata" variant="underlined" density="compact"
+                        v-model="infractionToEdit.metadata.idUser"></v-text-field>
+                    </v-card-item>
+                  </v-card>
+
+                  <v-card variant="outlined" class="mt-2">
+                    <v-card-item>
+                      <p class="text-primary">Velocidad permitida</p>
+                      <v-text-field v-if="infractionToEdit.metadata" variant="underlined" density="compact"
+                        v-model="infractionToEdit.metadata.MaxVel"> km/h</v-text-field>
+                      <v-row>
+                        <v-col cols="6">
+                          <p class="text-primary">Velocidad detectada</p>
+                        </v-col>
+                        <v-col cols="6">
+                          <p class="text-red text-uppercase font-weight-bold">Sancionable</p>
+                        </v-col>
+                      </v-row>
+                      <v-text-field v-if="infractionToEdit.metadata" variant="underlined" density="compact"
+                        v-model="infractionToEdit.metadata.RealVel"> km/h</v-text-field>
+                    </v-card-item>
+                  </v-card>
+
+                  <v-card variant="outlined" class="mt-2">
+                    <v-card-item>
+                      <p class="text-primary">Etiqueta medioambiental permitida</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.emissionsZone"></v-text-field>
+
+                      <v-row>
+                        <v-col cols="6">
+                          <p class="text-primary">Etiqueta medioambiental detectada</p>
+                        </v-col>
+                        <v-col cols="6">
+                          <p class="text-green text-uppercase font-weight-bold">Permitida</p>
+                        </v-col>
+                      </v-row>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.emissions"></v-text-field>
+                    </v-card-item>
+                  </v-card>
+                </v-col>
+                <v-col cols="12" lg="4" class=" pa-4">
+                  <v-card variant="outlined">
+                    <v-card-item>
+                      <v-card-title>
+                        <p class="text-primary">Datos del vehículo</p>
+                      </v-card-title>
+                    </v-card-item>
+                    <v-divider />
+                    <v-card-item>
+                      <p class="text-primary">Vehículo</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.vehicle"></v-text-field>
+                      <p class="text-primary">Matrícula</p>
+                      <v-text-field variant="underlined" density="compact">
+                        {{ infractionToEdit.plate }} </v-text-field>
+                      <p class="text-primary">Marca</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.maker"></v-text-field>
+                      <p class="text-primary">Modelo</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.model"></v-text-field>
+                      <p class="text-primary">Color</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.color"></v-text-field>
+                      <p class="text-primary">Tipo de vehículo</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.vehicleType"></v-text-field>
+
+                    </v-card-item>
+                  </v-card>
+
+                  <v-card variant="outlined" class="mt-2">
+                    <v-card-item>
+                      <v-card-title>
+                        <p class="text-primary">Datos del conductor</p>
+                      </v-card-title>
+                    </v-card-item>
+                    <v-divider />
+                    <v-card-item>
+                      <p class="text-primary">Nombre</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.driverName"></v-text-field>
+                      <p class="text-primary">Apellidos</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.driverSurname"></v-text-field>
+                      <p class="text-primary">DNI</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.driverId"></v-text-field>
+                      <p class="text-primary">Dirección</p>
+                      <v-text-field variant="underlined" density="compact" v-model="infractionToEdit.driverAddress">
+
+                      </v-text-field>
+                      <p class="text-primary">Código postal</p>
+                      <v-text-field variant="underlined" density="compact"
+                        v-model="infractionToEdit.driverCP"></v-text-field>
+                    </v-card-item>
+
+                  </v-card>
+
+                </v-col>
+                <v-col cols="12" lg="3" class=" pa-4">
+                  <v-card variant="outlined">
+                    <v-card-title>
+                      <p class="text-primary">Imágenes del vehículo</p>
+                    </v-card-title>
+                    <v-card-item class="justify-center">
+
+                      <v-img :width="300" aspect-ratio="16/9" cover class="rounded"
+                        :src="`${url}/${infractionToEdit.imagePath}/${imagenes[0]}`"></v-img>
+                    </v-card-item>
+                    <v-card-item class="justify-center">
+
+                      <v-img :width="300" aspect-ratio="16/9" cover class="rounded"
+                        :src="`${url}/${infractionToEdit.imagePath}/${imagenes[1]}`"></v-img>
+                    </v-card-item>
+                    <v-card-item class="justify-center">
+
+                      <v-img :width="300" aspect-ratio="16/9" cover class="rounded"
+                        :src="`${url}/${infractionToEdit.imagePath}/${imagenes[2]}`"></v-img>
+                    </v-card-item>
+                    <v-divider></v-divider>
+                  </v-card>
+                </v-col>
+              </v-row>
+
+
+            </v-card>
+          </v-card-text>
+          <v-card-item>
+            <v-row>
+              <v-col cols="12">
+                <v-btn block class="mb-8" color="primary" size="large" type="submit" @click="saveInfraction">
+                  Guardar
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-item>
+        </v-container>
+
+      </v-card>
+
+    </v-form>
   </v-container>
+  <v-snackbar v-model="snackbarStore.activate" :color="snackbarStore.color" :location="snackbarStore.location"
+    :timeout="snackbarStore.timeout">
+    <div class="text-subtitle-1 pb-2"> {{ snackbarStore.text }}</div>
+  </v-snackbar>
 </template>
 
 <script setup>
@@ -210,16 +233,18 @@ import axios from "axios";
 import { computed, ref } from 'vue';
 import { onBeforeMount, onMounted, onActivated } from 'vue'
 import { useRoute, useRouter } from "vue-router";
-import { useAppStore, useLoadingStore } from '@/store/index';
+import { useAppStore, useLoadingStore, useSnackbarStore } from '@/store/index';
 import veloxHeader from '@/components/veloxHeader.vue'
 import { formatDate } from '@/support/helpers/general';
 import { useDisplay } from 'vuetify';
+
 
 const { mobile } = useDisplay()
 const $router = useRouter();
 const $route = useRoute();
 const appStore = useAppStore()
 const loadingStore = useLoadingStore();
+const snackbarStore = useSnackbarStore();
 const idGroup = computed(() => $route.params.idGroup)
 const currentGroup = computed(() => appStore.currentGroup);
 const breadcrumbsItems = [
@@ -239,8 +264,11 @@ const breadcrumbsItems = [
 const isAdmin = computed(() => appStore.getIsAdmin);
 const idInfraccion = computed(() => $route.params.idInfraccion)
 const currentUser = computed(() => appStore.getCurrentUser);
-const infraccion = ref()
+const infraccion = ref([])
 const url = ref('http://185.166.213.42/velocikaptor');
+
+
+const infractionToEdit = ref({});
 
 
 // ********** mapa ***************
@@ -311,6 +339,7 @@ const getInfraccionData = async () => {
   try {
     const res = await axios.get(`${url}/infraccion/${idInfraccion.value}`)
     infraccion.value = res.data;
+    infractionToEdit.value = { ...infraccion.value[0] };
   }
   catch (err) {
     console.error(err);
@@ -330,6 +359,22 @@ const getGroupData = async () => {
     throw err;
   }
 }
+
+const saveInfraction = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+
+  try {
+    const res = await axios.post(`${url}/infraccion/${idInfraccion.value}`, { payload: infractionToEdit.value })
+    snackbarStore.activateMessage(res.data, 'success', 2500)
+  }
+  catch (err) {
+    console.error(err);
+    snackbarStore.activateMessage(error, 'error', 2500)
+    throw err;
+  }
+}
+
+
 
 </script>
 

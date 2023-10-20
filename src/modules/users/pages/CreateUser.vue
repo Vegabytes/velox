@@ -169,7 +169,7 @@ const createNewUser = async () => {
       userStore.createdUser['path'] = `${file.destination}/${file.filename}`;
 
       const res = await axios.post(`${url}/users/create`, userStore.createdUser)
-      snackbarStore.activateMessage('Usuario creado correctamente', 'primary', 2500)
+      snackbarStore.activateMessage('Usuario creado correctamente', 'success', 2500)
       $router.push(`/${idGroup.value}/groups`);
 
     } catch (error) {
