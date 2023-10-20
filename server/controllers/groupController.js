@@ -60,7 +60,7 @@ export const getGroupByGroupIdByUserId = async (req, res) => {
 
     const admin = await checkGroupAdmin(groupId, userId);
     if (admin.length === 0) {
-      if (error) res.status(400).send(error);
+      res.status(400).send(error);
       return;
     }
 
