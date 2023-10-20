@@ -174,12 +174,23 @@
               </v-col>
               <v-col cols="12" lg="3" class=" pa-4">
                 <v-card variant="outlined">
-                  <v-card-item>
-                    <v-card-title>
-                      <p class="text-primary">Imágenes del vehículo</p>
-                    </v-card-title>
-                    <v-img :width="300" aspect-ratio="16/9" cover
+                  <v-card-title>
+                    <p class="text-primary">Imágenes del vehículo</p>
+                  </v-card-title>
+                  <v-card-item class="justify-center">
+
+                    <v-img :width="300" aspect-ratio="16/9" cover class="rounded"
                       :src="`${url}/${infraccion[0].imagePath}/${infraccion[0].images[0]}`"></v-img>
+                  </v-card-item>
+                  <v-card-item class="justify-center">
+
+                    <v-img :width="300" aspect-ratio="16/9" cover class="rounded"
+                      :src="`${url}/${infraccion[0].imagePath}/${infraccion[0].images[1]}`"></v-img>
+                  </v-card-item>
+                  <v-card-item class="justify-center">
+
+                    <v-img :width="300" aspect-ratio="16/9" cover class="rounded"
+                      :src="`${url}/${infraccion[0].imagePath}/${infraccion[0].images[2]}`"></v-img>
                   </v-card-item>
                   <v-divider></v-divider>
                 </v-card>
@@ -229,7 +240,7 @@ const isAdmin = computed(() => appStore.getIsAdmin);
 const idInfraccion = computed(() => $route.params.idInfraccion)
 const currentUser = computed(() => appStore.getCurrentUser);
 const infraccion = ref()
-
+const url = ref('http://185.166.213.42/velocikaptor');
 
 
 // ********** mapa ***************
