@@ -54,7 +54,7 @@
 
                     <p class="text-primary">Latitud / Longitud</p>
                     <v-text-field variant="underlined" density="compact">{{
-                      infraccion[0].metadata.gps }}</v-text-field>
+                      infraccion[0].position }}</v-text-field>
 
 
                     <p class="text-primary font-weight-bold mb-4">Fecha de la infracción</p>
@@ -76,14 +76,14 @@
                     <p class="text-primary">Velocidad detectada</p>
                     <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact">{{
                       infraccion[0].metadata.RealVel
-                    }}</v-text-field>
+                    }} km/h</v-text-field>
                   </v-card-item>
                 </v-card>
 
                 <v-card variant="outlined" class="mt-2">
                   <v-card-item>
                     <p class="text-primary">Etiqueta medioambiental detectada</p>
-                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact"></v-text-field>
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].emissions }}</v-text-field>
                   </v-card-item>
                 </v-card>
               </v-col>
@@ -96,15 +96,21 @@
                   </v-card-item>
                   <v-divider />
                   <v-card-item>
-
+                    <p class="text-primary">Vehículo</p>
+                    <v-text-field variant="underlined" density="compact">
+                      {{ infraccion[0].vehicle }}
+                    </v-text-field>
                     <p class="text-primary">Matrícula</p>
-                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact"></v-text-field>
+                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact">
+                      {{ infraccion[0].plate }} </v-text-field>
                     <p class="text-primary">Marca</p>
-                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact"></v-text-field>
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].maker }}</v-text-field>
                     <p class="text-primary">Modelo</p>
-                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact"></v-text-field>
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].model }}</v-text-field>
                     <p class="text-primary">Color</p>
-                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact"></v-text-field>
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].color }}</v-text-field>
+                    <p class="text-primary">Tipo de vehículo</p>
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].vehicleType }}</v-text-field>
 
                   </v-card-item>
                 </v-card>
