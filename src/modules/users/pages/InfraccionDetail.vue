@@ -35,9 +35,11 @@
                   <v-divider />
                   <v-card-item>
                     <p class="text-primary">Selección de la infracción cometida</p>
-                    <v-text-field variant="underlined" density="compact"></v-text-field>
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].infractionDesc
+                    }}</v-text-field>
                     <p class="text-primary">Artículo inflingido</p>
-                    <v-text-field variant="underlined" density="compact"></v-text-field>
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].infractionArticle
+                    }}</v-text-field>
                   </v-card-item>
                 </v-card>
                 <v-card variant="outlined" class="mt-2">
@@ -59,7 +61,7 @@
 
                     <p class="text-primary font-weight-bold mb-4">Fecha de la infracción</p>
                     <p class="text-primary">Dia / Hora</p>
-                    <v-text-field v-if="infraccion[0].metadata" variant="underlined" density="compact">
+                    <v-text-field variant="underlined" density="compact">
                       {{ formatDate(infraccion[0].dateLog) }}
                     </v-text-field>
 
@@ -124,13 +126,17 @@
                   <v-divider />
                   <v-card-item>
                     <p class="text-primary">Nombre</p>
-                    <v-text-field variant="underlined" density="compact" />
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].driverName }}</v-text-field>
                     <p class="text-primary">Apellidos</p>
-                    <v-text-field variant="underlined" density="compact" />
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].driverSurname }}</v-text-field>
                     <p class="text-primary">DNI</p>
-                    <v-text-field variant="underlined" density="compact" />
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].driverId }}</v-text-field>
                     <p class="text-primary">Dirección</p>
-                    <v-textarea variant="underlined" />
+                    <v-text-field variant="underlined" density="compact">
+                      {{ infraccion[0].driverAddress }}
+                    </v-text-field>
+                    <p class="text-primary">Código postal</p>
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].driverCP }}</v-text-field>
                   </v-card-item>
 
                 </v-card>
