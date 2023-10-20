@@ -65,14 +65,16 @@
 
                     <p class="text-primary font-weight-bold mb-4">Agente denunciante</p>
                     <p class="text-primary">Num</p>
-                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].dateLog }}</v-text-field>
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].metadata.idUser
+                    }}</v-text-field>
                   </v-card-item>
                 </v-card>
 
                 <v-card variant="outlined" class="mt-2">
                   <v-card-item>
                     <p class="text-primary">Velocidad detectada</p>
-                    <v-text-field variant="underlined" density="compact"></v-text-field>
+                    <v-text-field variant="underlined" density="compact">{{ infraccion[0].metadata.RealVel
+                    }}</v-text-field>
                   </v-card-item>
                 </v-card>
 

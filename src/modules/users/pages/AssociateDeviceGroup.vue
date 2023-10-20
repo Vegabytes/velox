@@ -26,12 +26,12 @@
               :items-per-page="itemsPerPage" hide-default-footer class="elevation-1 mt-6">
               <template v-slot:item="{ item }">
                 <tr>
-                  <td>{{ item.columns.name }}</td>
-                  <td>{{ item.columns.description }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.description }}</td>
                   <td>
                     <v-row>
                       <v-btn class="justify-end mr-2" color="primary" variant=""
-                        @click="opendialogAssignGroupDevice(item.raw.id)" prepend-icon="mdi-plus">
+                        @click="opendialogAssignGroupDevice(item.id)" prepend-icon="mdi-plus">
                       </v-btn>
                     </v-row>
                   </td>
@@ -135,8 +135,7 @@ onBeforeMount(async () => {
     if (isAdmin.value) {
       await getUserGroups()
     } else {
-      await getGroupData()
-      goToGroupDetail(appStore.currentGroup)
+      $router.push(`/${idGroup.value}/login`);
     }
 
 

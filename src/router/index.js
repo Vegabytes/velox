@@ -9,6 +9,11 @@ const routes = [
   ...loginRoutes,
   ...usersRoutes,
   {
+    path: "/:idGroup/notAllowed",
+    name: "notAllowed",
+    component: async () => await import('@/views/notAllowed')
+  },
+  {
     path: "/:catchAll(.*)",
     name: "Error",
     component: async () => await import('@/views/Error')

@@ -34,14 +34,13 @@
                 :items-per-page="itemsPerPage" hide-default-footer class="elevation-1 mt-6">
                 <template v-slot:item="{ item }">
                   <tr>
-                    <td>{{ item.columns.name }}</td>
-                    <td>{{ item.columns.lastName }}</td>
-                    <td>{{ item.columns.email }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.lastName }}</td>
+                    <td>{{ item.email }}</td>
                     <td>
                       <v-row>
-                        <v-btn class="justify-end mr-2" color="primary" variant=""
-                          @click="openDialogAsignUser(item.raw.id)" :disabled="item.raw.id === appStore.currentUser.id"
-                          prepend-icon="mdi-account-plus">
+                        <v-btn class="justify-end mr-2" color="primary" variant="" @click="openDialogAsignUser(item.id)"
+                          :disabled="item.id === appStore.currentUser.id" prepend-icon="mdi-account-plus">
                         </v-btn>
                       </v-row>
                     </td>
@@ -142,12 +141,10 @@ onBeforeMount(async () => {
       await getGroupData();
     }
 
-
     if (isAdmin.value) {
       await getUserGroups()
     } else {
-      await getGroupData()
-      goToGroupDetail(appStore.currentGroup)
+      $router.push(`Error`);
     }
 
 

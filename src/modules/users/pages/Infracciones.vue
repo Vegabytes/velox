@@ -34,14 +34,14 @@
                 :items-per-page="itemsPerPage" hide-default-footer class="elevation-1 mt-6">
                 <template v-slot:item="{ item }">
                   <tr>
-                    <td>{{ item.columns.dateLog }}</td>
-                    <td>{{ item.columns.eventType }}</td>
-                    <td>{{ item.columns.plate }}</td>
-                    <td>{{ item.columns.emissions }}</td>
-                    <td>{{ item.columns.metadata.MaxVel }}</td>
-                    <td>{{ item.columns.metadata.idUser }}</td>
-                    <td>{{ item.columns.metadata.idDevice }}</td>
-                    <td>{{ item.columns.status }}</td>
+                    <td>{{ item.dateLog }}</td>
+                    <td>{{ item.eventType }}</td>
+                    <td>{{ item.plate }}</td>
+                    <td>{{ item.emissions }}</td>
+                    <td>{{ item.metadata.RealVel }}</td>
+                    <td>{{ item.metadata.idUser }}</td>
+                    <td>{{ item.metadata.idDevice }}</td>
+                    <td>{{ item.status }}</td>
                     <td>
                       <v-row>
                         <v-btn class="justify-end mr-2" color="primary" @click="toDenuciaDetail(item)" variant="plain"
@@ -118,7 +118,6 @@ const breadcrumbsItems = [
 ]
 
 onBeforeMount(async () => {
-
   loadingStore.setLoading(true);
 
   if (!currentUser.value || !currentUser.value.id) {
@@ -134,7 +133,7 @@ onBeforeMount(async () => {
     if (isAdmin.value) {
       await getInfracciones()
     } else {
-      $router.push(`/${idGroup.value}/login`);
+      $router.push(`notAllowed`);
     }
 
 
@@ -148,6 +147,7 @@ onBeforeMount(async () => {
 const checkIsAdmin = async () => {
   const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
   try {
+    debugger
     const res = await axios.get(`${url}/user/admin/${idGroup.value}/${appStore.getCurrentUser.id}`)
     appStore.setIsAdmin(res.data.admin)
   } catch (error) {
@@ -179,7 +179,7 @@ const getInfracciones = async () => {
 }
 
 const toDenuciaDetail = async data => {
-  $router.push(`/${idGroup.value}/infraccion/${data.raw.id}`);
+  $router.push(`/${idGroup.value}/infraccion/${data.id}`);
 }
 
 const getGroupData = async () => {

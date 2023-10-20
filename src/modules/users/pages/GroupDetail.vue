@@ -26,37 +26,40 @@
 
                   <h2 v-if="listDevicesByUser.length === 0" class="text-primary text-h5">No hay dispositivos asignados al
                     grupo</h2>
-                  <div v-if="listDevicesByUser.length > 0" v-for="item in listDevicesByUser" :key="item.id">
-                    <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToLogsDevice(item)">
-                      <div class="py-5">
-                        <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover
-                          class="rounded-xl"></v-img>
+                  <section v-if="listDevicesByUser.length > 0">
+                    <div v-for="item in listDevicesByUser" :key="item.id">
+                      <div class="d-flex flex-row align-center" style="cursor: pointer;" @click="goToLogsDevice(item)">
+                        <div class="py-5">
+                          <v-img v-if="item.path" :src="item.path" alt="GroupAvatar" height="100px" width="100px" cover
+                            class="rounded-xl"></v-img>
+                        </div>
+                        <div class="ma-2 pa-2 d-flex flex-column">
+                          <v-row class="flex-lg-row flex-column px-4">
+                            <p class="text-h5 text-md-h4 font-weight-regular">
+                              {{ item.name }}
+
+                            </p>
+                          </v-row>
+                          <v-row class="flex-lg-row flex-column px-4">
+                            <div>
+                              <p class="text-body-1 text-md-h5 mx-1 text-grey"> {{ item.description }}</p>
+                            </div>
+                          </v-row>
+
+
+
+                        </div>
                       </div>
-                      <div class="ma-2 pa-2 d-flex flex-column">
-                        <v-row class="flex-lg-row flex-column px-4">
-                          <p class="text-h5 text-md-h4 font-weight-regular">
-                            {{ item.name }}
-
-                          </p>
-                        </v-row>
-                        <v-row class="flex-lg-row flex-column px-4">
-                          <div>
-                            <p class="text-body-1 text-md-h5 mx-1 text-grey"> {{ item.description }}</p>
-                          </div>
-                        </v-row>
-
-
-
-                      </div>
+                      <v-row class="flex-lg-row flex-column px-4 mb-4">
+                        <div>
+                          <v-btn class="justify-end pl-0 text-grey" append-icon="mdi-eye"
+                            @click="getLastPositionDevice(item)">
+                            Última posición</v-btn>
+                        </div>
+                      </v-row>
                     </div>
-                    <v-row class="flex-lg-row flex-column px-4 mb-4">
-                      <div>
-                        <v-btn class="justify-end pl-0 text-grey" append-icon="mdi-eye"
-                          @click="getLastPositionDevice(item)">
-                          Última posición</v-btn>
-                      </div>
-                    </v-row>
-                  </div>
+                  </section>
+
                 </v-card-text>
               </v-card>
             </v-col>
@@ -194,11 +197,10 @@ onBeforeMount(async () => {
 
     if (isAdmin.value) {
       await getUserGroups()
-      await getDevicesGroups()
-    } else {
-      await getGroupData()
-      goToGroupDetail(appStore.currentGroup)
     }
+
+    await getDevicesGroups()
+
   } catch (error) {
     console.error(error);
   } finally {
@@ -276,6 +278,10 @@ const getUserGroups = async () => {
   }
 
 }
+const goToGroupDetail = (item) => {
+  /*   $router.push(`/${idGroup.value}/groups/groupDetail/${item.id}`); */
+}
+
 
 </script>
 

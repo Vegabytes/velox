@@ -63,13 +63,13 @@ export const getInfracciones = async (req, res) => {
 
       for await (const res of results) {
         const path = res.imagePath;
-        const files = await fs.readdir(path);
+        /*         const files = await fs.readdir(path); */
         await readFile(path + '/meta.json', 'utf8')
           .then((data) => {
             const jsonObject = JSON.parse(data);
             res['metadata'] = jsonObject
           })
-        res['images'] = files
+        /*         res['images'] = files */
       };
       if (error) {
         res.status(400).send(error)

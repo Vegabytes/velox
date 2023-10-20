@@ -27,14 +27,14 @@
 
           <v-divider thickness="3" class="mb-4"></v-divider>
 
-          <v-row class="mt-3">
+          <v-row class="mt-3" v-if="currentDeviceLogs.length > 0">
             <v-col cols="12" md="6">
               <v-data-table v-model:page="page" :headers="headers" height="340" :items="currentDeviceLogs" hover
                 :items-per-page="itemsPerPage" hide-default-footer class="elevation-1">
                 <template v-slot:item="{ item }">
-                  <tr @click="toLogDetail(item.columns.id)" style="cursor:pointer">
-                    <td>{{ item.columns.id }}</td>
-                    <td>{{ item.columns.timestamp }}</td>
+                  <tr @click="toLogDetail(item.id)" style="cursor:pointer">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.timestamp }}</td>
                   </tr>
                 </template>
                 <template v-slot:bottom>
@@ -150,7 +150,7 @@ onBeforeMount(async () => {
   } catch (error) {
     console.error(error);
   } finally {
-    loadingStore.setLoading();
+    loadingStore.setLoading(false);
   }
 });
 

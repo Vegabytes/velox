@@ -48,6 +48,6 @@ export default [
     path: "/:idGroup/infraccion/:idInfraccion",
     name: "Denuncia",
     component: async () => await import('@/modules/users/pages/InfraccionDetail.vue')
-  },
+  }
 
 ]

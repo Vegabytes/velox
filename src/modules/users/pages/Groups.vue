@@ -156,7 +156,6 @@ onBeforeMount(async () => {
     if (isAdmin.value) {
       await getUserGroups()
     } else {
-      await getGroupData()
       goToGroupDetail(appStore.currentGroup)
     }
 

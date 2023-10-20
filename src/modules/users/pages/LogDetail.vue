@@ -258,7 +258,7 @@ const imagenes = {
   0: ['front_left.jpg', 'front_right.jpg'],
   1: ['v1_left.jpg', 'v1_right.jpg'],
   2: ['v2_left.jpg', 'v2_right.jpg'],
-  3: ['back_left.jpg', 'back_left.jpg'],
+  3: ['back_left.jpg', 'back_right.jpg'],
 }
 let imagenSelected = ref('')
 // ************************************************
