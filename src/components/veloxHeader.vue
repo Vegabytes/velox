@@ -62,7 +62,7 @@ const isAdmin = computed(() => appStore.getIsAdmin);
 const idGroup = computed(() => $route.params.idGroup)
 const props = defineProps(['path', 'name', 'description'])
 const path = ref(import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000');
-const imageDefault = ref('https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png');
+const imageDefault = ref('https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar-thumbnail.png');
 
 const logout = () => $router.push(`/${idGroup.value}/login`);
 const irHome = () => $router.push(`/${idGroup.value}/groups`);

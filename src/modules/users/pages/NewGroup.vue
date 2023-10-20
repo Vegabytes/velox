@@ -52,9 +52,6 @@
         </v-form>
       </v-card-text>
     </v-card>
-
-    <a href="javascript:window.print()">Imprimir
-    </a>
   </v-container>
   <v-snackbar v-model="snackbarStore.activate" :color="snackbarStore.color" :location="snackbarStore.location"
     :timeout="snackbarStore.timeout">
@@ -67,7 +64,7 @@
 <script setup>
 
 import { ref, computed, onBeforeMount } from 'vue'
-import { useAppStore, useUsersStore, useSnackbarStore } from '@/store/index';
+import { useAppStore, useUsersStore, useSnackbarStore, useLoadingStore } from '@/store/index';
 import rules from '../../../support/rules/fieldRules'
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
@@ -78,6 +75,8 @@ const { mobile } = useDisplay()
 const appStore = useAppStore()
 const userStore = useUsersStore()
 const snackbarStore = useSnackbarStore();
+const loadingStore = useLoadingStore();
+const currentUser = computed(() => appStore.getCurrentUser);
 const $router = useRouter();
 const $route = useRoute();
 
@@ -85,6 +84,7 @@ const formNewGroup = ref(null);
 const estadoFormulario = ref(false);
 const idGroup = computed(() => $route.params.idGroup)
 const files = ref([]);
+const isAdmin = computed(() => appStore.getIsAdmin);
 
 const breadcrumbsItems = [
   {
@@ -96,7 +96,29 @@ const breadcrumbsItems = [
 
 
 onBeforeMount(async () => {
-  userStore.createdUser = {};
+  loadingStore.setLoading(true);
+  if (!currentUser.value || !currentUser.value.id) {
+    $router.push(`/${idGroup.value}/login`);
+  }
+  try {
+
+    await checkIsAdmin()
+
+    if (!appStore.currentGroup || !appStore.currentGroup.id) {
+      await getGroupData();
+    }
+
+
+    if (!isAdmin.value) {
+      $router.push(`notAllowed`);
+    }
+
+
+  } catch (error) {
+    console.error(error);
+  } finally {
+    loadingStore.setLoading();
+  }
 });
 
 
@@ -148,6 +170,30 @@ const subirArchivo = async () => {
   catch (err) {
     console.log("err", err);
     throw err;
+  }
+}
+
+const getGroupData = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+
+  try {
+    const res = await axios.get(`${url}/groups/group/${idGroup.value}`)
+    appStore.currentGroup = res.data;
+  }
+  catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
+const checkIsAdmin = async () => {
+  const url = import.meta.env['VITE_SERVER_BASE_URL'] || 'http://185.166.213.42:5000'
+  try {
+    const res = await axios.get(`${url}/user/admin/${idGroup.value}/${appStore.getCurrentUser.id}`)
+    appStore.setIsAdmin(res.data.admin)
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 }
 
