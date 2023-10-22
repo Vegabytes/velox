@@ -6,8 +6,11 @@
     <v-col v-if="!isLoading">
       <v-form @submit.prevent ref="formLogin">
 
-        <v-img class="mx-auto my-6" max-width="100" src="@/assets/logo_vkr.svg">
+        <v-img v-if="!mobile" class="mx-auto my-6" max-width="100" src="@/assets/logovertical.svg">
         </v-img>
+        <v-img v-else class="mx-auto my-6" max-width="100" src="@/assets/logohoritzontal.svg">
+        </v-img>
+
 
         <v-row class="d-flex justify-center">
           <v-card elevation="8" :min-width="mobile ? '100%' : '448'" rounded="lg" color="secondary" :loading="loading">

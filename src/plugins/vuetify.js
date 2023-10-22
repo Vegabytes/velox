@@ -42,10 +42,10 @@ const customDarkTheme = {
   colors: {
     background: '#000b18',
     surface: '#000b18',
-    primary: 'd7e4ed',
+    primary: '#d7e4ed',
     onPrimary: MaastrichtBlue,
     secondary: MaastrichtBlue,
-    error: 'd7e4ed',
+    error: '#d7e4ed',
   }
 }
 

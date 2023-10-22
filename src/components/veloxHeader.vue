@@ -1,8 +1,10 @@
 <template>
   <v-row>
     <v-col :cols="mobile ? 2 : 2" class="d-flex justify-center align-center pa-0">
-      <v-img class="mt-3" :max-width="mobile ? '40' : '100'" src="@/assets/logo_vkr.svg" style="cursor: pointer"
-        @click="irHome()" />
+      <v-img v-if="mobile" class="mt-3" :max-width="mobile ? '40' : '100'" src="@/assets/logovertical.svg"
+        style="cursor: pointer" @click="irHome()" />
+      <v-img v-else class="mt-3" :max-width="mobile ? '40' : '100'" src="@/assets/logohoritzontal.svg"
+        style="cursor: pointer" @click="irHome()" />
     </v-col>
     <v-col :cols="mobile ? 10 : 10" class="d-flex justify-center pa-0">
 
