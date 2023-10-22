@@ -193,8 +193,12 @@
                   </v-card-item>
                   <v-card-item class="justify-center">
 
-                    <v-img :width="300" aspect-ratio="16/9" cover class="rounded"
+                    <v-img :width="300" aspect-ratio="16/9" cover class="rounded" v-if="imagenExiste(`${url}/${infractionToEdit.imagePath}/${imagenes[2]}`)"
                       :src="`${url}/${infractionToEdit.imagePath}/${imagenes[2]}`"></v-img>
+
+                    <v-img :width="300" aspect-ratio="16/9" cover class="rounded" v-if="!imagenExiste(`${url}/${infractionToEdit.imagePath}/${imagenes[2]}`)"
+                      :src="`${url}/${infractionToEdit.imagePath}/${imagenes[3]}`"></v-img>
+
                   </v-card-item>
                   <v-divider class="mb-4" />
                 </v-card>
@@ -278,7 +282,7 @@ let contadorImg = ref(0)
 
 
 const imagenes = [
-  'front_right.jpg', 'v1_right.jpg', 'back_right.jpg',
+  'front_right.jpg', 'v1_right.jpg', 'back_right.jpg.crop.jpg', 'back_right.jpg'
 ]
 
 onBeforeMount(async () => {
@@ -390,6 +394,12 @@ const print = () => {
   window.print();
 }
 
+const imagenExiste = (imagen) => {
+      const img = new Image();
+      img.src = imagen;
+      return img.complete;
+}
+
 </script>
 
 
@@ -398,5 +408,12 @@ const print = () => {
   border-radius: 3px;
   border: solid 1px black;
 }
+
+@media print {
+  @page {
+    size: landscape;
+  }
+}
+
 </style>
 
