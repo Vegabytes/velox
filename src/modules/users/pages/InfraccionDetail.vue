@@ -1,13 +1,14 @@
 <template>
   <br>
-  <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
+  <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'" class="printable-padding">
     <v-form @submit.prevent ref="formInfraction">
-      <v-card elevation="8" rounded="lg" color="secondary" v-if="!loadingStore.isLoading">
-        <veloxHeader :path="currentGroup.path" :name="currentGroup.name" :description="currentGroup.description" />
-        <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'">
+      <v-card id="printable" elevation="8" rounded="lg" color="secondary" v-if="!loadingStore.isLoading">
+        <veloxHeader class="no-printable" :path="currentGroup.path" :name="currentGroup.name"
+          :description="currentGroup.description" />
+        <v-container fluid :class="mobile ? 'pa-1' : 'pa-10'" class="printable-padding-horizontal">
 
 
-          <v-row class="mt-4 my-8 justify-space-between">
+          <v-row class="mt-4 my-8 justify-space-between no-printable">
             <v-col>
               <h2 class="text-primary text-h5 text-lg-h3 text-md-h4">Detalles de la infracción</h2>
               <h2 v-if="!loadingStore.isLoading && (!infraccion || infraccion.length === 0)"
@@ -21,10 +22,10 @@
             </v-breadcrumbs>
           </v-row>
 
-          <v-divider thickness="3" class="mb-4"></v-divider>
+          <v-divider thickness="3" class="mb-4 no-printable"></v-divider>
 
           <v-card class="mt-2" variant="flat" v-if="!loadingStore.isLoading && infraccion && infraccion.length > 0">
-            <v-row>
+            <v-row class="no-printable">
               <v-col cols="12" md="12" lg="6">
                 <v-card-actions v-if="isAdmin">
 
@@ -42,19 +43,21 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="12" class=" pa-4">
+              <v-col cols="12" class="printable-padding pa-4">
                 <v-card variant="outlined">
                   <v-card-item>
-                    <p class="text-primary py-2 text-uppercase text-h5">Seguridad vial. Seguridad del control del
+                    <p class="printable-title text-primary py-2 text-uppercase text-h5">Seguridad vial. Seguridad del
+                      control del
                       tráfico.</p>
                     <v-row class="justify-space-between">
                       <v-col cols="12" sm="5" class="items-center d-flex">
-                        <p class="text-primary text-h6">Identificación del dispositivo de adquisición de datos:</p>
+                        <p class="printable-subtitle text-primary text-h6">Identificación del dispositivo de adquisición
+                          de datos:</p>
                       </v-col>
                       <v-col cols="12" sm="5" class="justify-sm-center d-flex">
-                        <p class="text-primary text-h6">{{ deviceName }}</p>
+                        <p class="printable-subtitle text-primary text-h6">{{ deviceName }}</p>
                       </v-col>
-                      <v-col cols="12" sm="2" class="justify-center items-center d-flex">
+                      <v-col cols="12" sm="2" class="justify-center items-center d-flex printable-image">
                         <v-img height="100px" width="100" cover class="rounded" :src="devicePath"></v-img>
                       </v-col>
                     </v-row>
@@ -63,15 +66,15 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="12" lg="5" class=" pa-4">
+              <v-col cols="12" lg="5" class="pa-4">
 
                 <v-card variant="outlined">
                   <v-card-item>
                     <v-card-title>
-                      <p class="text-primary py-2">Ordenanza municipal de circulación Infringida</p>
+                      <p class="text-primary pt-2">Ordenanza municipal de circulación Infringida</p>
                     </v-card-title>
                   </v-card-item>
-                  <v-divider class="mb-4" />
+                  <v-divider class="mb-4 no-printable" />
                   <v-card-title>
                     <v-text-field variant="underlined" density="compact" v-model="infractionToEdit.infractionDesc"
                       label="Selección de la infracción cometida"></v-text-field>
@@ -87,7 +90,7 @@
                       <p class="text-primary  py-2">Datos de la infracción</p>
                     </v-card-title>
                   </v-card-item>
-                  <v-divider class="mb-4" />
+                  <v-divider class="mb-4 no-printable" />
                   <v-card-title>
                     <v-text-field variant="underlined" density="compact" disabled v-model="infractionToEdit.position"
                       label="Posición
@@ -96,7 +99,7 @@
                       label="Dirección infracción"></v-text-field>
 
 
-                    <p class="text-primary font-weight-bold my-4 text-body-1">Fecha de la infracción</p>
+                    <p class="text-primary font-weight-bold mb-4 text-body-1">Fecha de la infracción</p>
 
                     <div class="mt-2 mb-8">
                       <Datepicker v-model="infractionToEdit.dateLog" locale="es" :format="format" :format-locale="es"
@@ -133,7 +136,7 @@
                       <p class="text-primary  py-2">Datos del vehículo</p>
                     </v-card-title>
                   </v-card-item>
-                  <v-divider class="mb-4" />
+                  <v-divider class="mb-4 no-printable" />
                   <v-card-title>
                     <v-text-field variant="underlined" density="compact" v-model="infractionToEdit.vehicle"
                       label="Vehículo"></v-text-field>
@@ -157,7 +160,7 @@
                       <p class="text-primary  py-2">Datos del conductor</p>
                     </v-card-title>
                   </v-card-item>
-                  <v-divider class="mb-4" />
+                  <v-divider class="mb-4 no-printable" />
                   <v-card-title>
                     <v-text-field variant="underlined" density="compact" v-model="infractionToEdit.driverName"
                       label="Nombre"></v-text-field>
@@ -180,7 +183,7 @@
                   <v-card-title>
                     <p class="text-primary  py-2">Imágenes del vehículo</p>
                   </v-card-title>
-                  <v-divider class="mb-4" />
+                  <v-divider class="mb-4 no-printable" />
                   <v-card-item class="justify-center">
 
                     <v-img :width="300" aspect-ratio="16/9" cover class="rounded"
@@ -193,14 +196,16 @@
                   </v-card-item>
                   <v-card-item class="justify-center">
 
-                    <v-img :width="300" aspect-ratio="16/9" cover class="rounded" v-if="imagenExiste(`${url}/${infractionToEdit.imagePath}/${imagenes[2]}`)"
+                    <v-img :width="300" aspect-ratio="16/9" cover class="rounded"
+                      v-if="imagenExiste(`${url}/${infractionToEdit.imagePath}/${imagenes[2]}`)"
                       :src="`${url}/${infractionToEdit.imagePath}/${imagenes[2]}`"></v-img>
 
-                    <v-img :width="300" aspect-ratio="16/9" cover class="rounded" v-if="!imagenExiste(`${url}/${infractionToEdit.imagePath}/${imagenes[2]}`)"
+                    <v-img :width="300" aspect-ratio="16/9" cover class="rounded"
+                      v-if="!imagenExiste(`${url}/${infractionToEdit.imagePath}/${imagenes[2]}`)"
                       :src="`${url}/${infractionToEdit.imagePath}/${imagenes[3]}`"></v-img>
 
                   </v-card-item>
-                  <v-divider class="mb-4" />
+                  <v-divider class="mb-4 no-printable" />
                 </v-card>
               </v-col>
             </v-row>
@@ -395,9 +400,9 @@ const print = () => {
 }
 
 const imagenExiste = (imagen) => {
-      const img = new Image();
-      img.src = imagen;
-      return img.complete;
+  const img = new Image();
+  img.src = imagen;
+  return img.complete;
 }
 
 </script>
@@ -410,10 +415,59 @@ const imagenExiste = (imagen) => {
 }
 
 @media print {
+
   @page {
-    size: landscape;
+    /*     size: A4 landscape; */
+    page-break-before: avoid;
+
+    /*   page-orientation: rotate-left; */
+
+  }
+
+  #printable {
+    max-width: 100vw;
+    max-height: 100vh;
+    box-shadow: none !important;
+  }
+
+  .printable-title {
+    font-size: 1.1rem !important;
+  }
+
+  .printable-subtitle {
+    font-size: 0.9rem !important;
+  }
+
+  .no-printable {
+    display: none;
+  }
+
+  div.printable-padding {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    padding-left: 10px !important;
+    padding-right: 9px !important;
+  }
+
+  div.printable-padding-horizontal {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+
+  }
+
+  .printable-image {
+    margin-top: -4rem;
+  }
+
+  div.v-card-title {
+    font-size: 1rem !important;
+  }
+
+  .v-label {
+    font-size: .9rem !important;
   }
 }
-
 </style>
 
