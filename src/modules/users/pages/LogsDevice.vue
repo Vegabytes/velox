@@ -123,7 +123,7 @@ const pageCount = computed(() => {
 
 const headers = [
   { title: 'Id', align: 'start', key: 'id', },
-  { title: 'Log', align: 'start', key: 'timestamp' }
+  { title: 'Denuncia', align: 'start', key: 'timestamp' }
 ]
 
 const projection = ref("EPSG:4326");

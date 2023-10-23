@@ -232,7 +232,7 @@ const breadcrumbsItems = [
     to: { name: 'Logs' },
   },
   {
-    title: 'Logs',
+    title: 'Denuncias',
     disabled: true,
     href: 'breadcrumbs_link_1',
   },
