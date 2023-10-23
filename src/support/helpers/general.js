@@ -18,8 +18,30 @@ export const formatDateShort = dateString => {
   if (dd < 10) dd = '0' + dd;
   if (mm < 10) mm = '0' + mm;
 
-  const formattedDate = dd + '/' + mm + '/' + yyyy;
+  const formattedDate = dd + '/' + mm + '/' + yyyy + ':';
   return formattedDate;
+}
+
+
+function padTwoDigits(num) {
+  return num.toString().padStart(2, "0");
+}
+
+export const dateInYyyyMmDdHhMmSs = (datString, dateDiveder = '/') => {
+  const date = new Date(datString);
+  return (
+    [
+      padTwoDigits(date.getDate()),
+      padTwoDigits(date.getMonth() + 1),
+      date.getFullYear(),
+    ].join(dateDiveder) +
+    " " +
+    [
+      padTwoDigits(date.getHours()),
+      padTwoDigits(date.getMinutes()),
+      padTwoDigits(date.getSeconds()),
+    ].join(":")
+  );
 }
 
 

@@ -38,9 +38,9 @@
                     <td>{{ item.eventType }}</td>
                     <td>{{ item.plate }}</td>
                     <td>{{ item.emissions }}</td>
-                    <td v-if="item.metadata">{{ item.metadata.RealVel }}</td>
-                    <td v-if="item.metadata">{{ item.metadata.idUser }}</td>
-                    <td v-if="item.metadata">{{ item.metadata.idDevice }}</td>
+                    <td>{{ item.RealVel }}</td>
+                    <td>{{ item.idUser }}</td>
+                    <td>{{ item.idDevice }}</td>
                     <td>{{ item.status }}</td>
                     <td>
                       <v-row>
@@ -76,7 +76,7 @@ import { VDataTable } from 'vuetify/labs/VDataTable'
 import veloxHeader from '@/components/veloxHeader.vue'
 import { useDisplay } from 'vuetify';
 import { useRoute, useRouter } from "vue-router";
-import { formatDateShort,formatDate } from '@/support/helpers/general'
+import { formatDate, dateInYyyyMmDdHhMmSs, formatDateShort } from '@/support/helpers/general'
 
 const { mobile } = useDisplay()
 const appStore = useAppStore()
@@ -96,9 +96,9 @@ const headers = [
   { title: 'Tipo de infracción', align: 'start', key: 'eventType', },
   { title: 'Matrícula', align: 'start', key: 'plate', },
   { title: 'Emisiones', align: 'start', key: 'emissions', },
-  { title: 'Velocidad detectada', align: 'start', key: 'metadata1', },
-  { title: 'Id Usuario', align: 'start', key: 'metadata2', },
-  { title: 'Id Dispositivo', align: 'start', key: 'metadata', },
+  { title: 'Velocidad detectada', align: 'start', key: 'RealVel', },
+  { title: 'Id Usuario', align: 'start', key: 'idUser', },
+  { title: 'Id Dispositivo', align: 'start', key: 'idDevice', },
   { title: 'Status', align: 'start', key: 'status', },
   { title: 'Ver', align: 'start', key: '' },
 ]
@@ -164,7 +164,8 @@ const getInfracciones = async () => {
     let dataFormatted = []
 
     res.data.forEach((e) => {
-      e.dateLog = formatDate(e.dateLog)
+      e.dateLog = dateInYyyyMmDdHhMmSs(e.dateLog)
+      e = { ...e, ...e.metadata }
       dataFormatted.push(e)
     });
 
