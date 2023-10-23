@@ -1,12 +1,12 @@
 <template>
   <v-row>
-    <v-col :cols="mobile ? 2 : 2" class="d-flex justify-center align-center pa-0">
-      <v-img v-if="mobile" class="mt-3" :max-width="mobile ? '40' : '100'" src="@/assets/logovertical.svg"
+    <v-col :cols="mobile ? 3 : 3" class="d-flex justify-center align-center pa-0">
+      <v-img v-if="mobile" class="mt-3" :max-width="mobile ? '100' : '100'" :max-height="mobile ? '88' : '88'" src="@/assets/logovertical.svg"
         style="cursor: pointer" @click="irHome()" />
-      <v-img v-else class="mt-3" :max-width="mobile ? '40' : '100'" src="@/assets/logohoritzontal.svg"
+      <v-img v-else class="mt-3" :max-width="mobile ? '40' : '275'" :max-height="mobile ? auto : '180'"  src="@/assets/logohoritzontal.svg"
         style="cursor: pointer" @click="irHome()" />
     </v-col>
-    <v-col :cols="mobile ? 10 : 10" class="d-flex justify-center pa-0">
+    <v-col :cols="mobile ? 9 : 9" class="d-flex justify-center pa-0">
 
       <v-img :src="`${path}/${props.path}`" class="align-end rounded-bs-xl" style="cursor: pointer" @click="irHome()"
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" :height="mobile ? '100px' : '200px'" cover>
