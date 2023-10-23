@@ -76,7 +76,7 @@ import { VDataTable } from 'vuetify/labs/VDataTable'
 import veloxHeader from '@/components/veloxHeader.vue'
 import { useDisplay } from 'vuetify';
 import { useRoute, useRouter } from "vue-router";
-import { formatDateShort } from '@/support/helpers/general'
+import { formatDateShort,formatDate } from '@/support/helpers/general'
 
 const { mobile } = useDisplay()
 const appStore = useAppStore()
@@ -164,7 +164,7 @@ const getInfracciones = async () => {
     let dataFormatted = []
 
     res.data.forEach((e) => {
-      e.dateLog = formatDateShort(e.dateLog)
+      e.dateLog = formatDate(e.dateLog)
       dataFormatted.push(e)
     });
 
